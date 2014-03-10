@@ -175,6 +175,11 @@ window.onload = function () {
         }
     }
 
+    function getCellEl(y, x, subel) {
+        if (subel == null) subel = "";
+        return document.querySelector("#r" + y + "c" + x + subel);
+    }
+
     function selectCell(y, x) {
         selr = y;
         selc = x;
@@ -188,7 +193,7 @@ window.onload = function () {
                 els[j].classList.remove(styleClasses[i]);
         }
 
-        document.querySelector("#r" + y + "c" + x).classList.add("selCell");
+        getCellEl(y,x).classList.add("selCell");
         var cells = document.querySelectorAll("." + seldir + ((seldir == "across") ? across : down));
         for (var i=0; i<cells.length; i++)
             cells[i].classList.add("selCells");
@@ -202,9 +207,26 @@ window.onload = function () {
         }
     }
 
-    function insertLetter(y, x, v) {
+    function checkSolved() {
+        var tableClasses = document.querySelector("#grid table").classList;
+        tableClasses.remove("solved");
+        for (var i=0; i<puzzle.nrow; i++)
+            for (var j=0; j<puzzle.ncol; j++)
+                if (puzzle.grid[i][j].solution && fill[i][j] != puzzle.grid[i][j].solution)
+                    return;
+        tableClasses.add("solved");
+    }
+
+    function insertLetter(v, y, x, skipcheck) {
+        if (x == null) x = selc;
+        if (y == null) y = selr;
+        if (v == "solve") v = puzzle.grid[y][x].solution;
         fill[y][x] = v;
-        document.querySelector("#r" + y + "c" + x + " .letter").innerText = v;
+        var el = getCellEl(y, x, " .letter");
+        el.innerText = v;
+        el.classList.remove("error");
+        if (!skipcheck)
+            checkSolved();
     }
 
     function stepCoords(coords, dir) {
@@ -267,7 +289,7 @@ window.onload = function () {
 
     document.addEventListener('keydown', function(e) {
         if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode == 32) { // space
-            insertLetter(selr, selc, String.fromCharCode(e.keyCode));
+            insertLetter(String.fromCharCode(e.keyCode));
             moveCursor(1, false);
         } else if (e.keyCode == 13) { // enter
             seldir = (seldir == "across") ? "down" : "across";
@@ -289,11 +311,30 @@ window.onload = function () {
         } else if (e.keyCode == 8) { // backspace
             if (fill[selr][selc] == " ")
                 moveCursor(-1, false);
-            insertLetter(selr, selc, " ");
+            insertLetter(" ");
         } else {
             console.log(e.keyCode);
         }
         e.preventDefault();
+    });
+
+    document.getElementById('reveal').addEventListener('click', function() {
+        insertLetter("solve");
+        moveCursor(1, false);
+    });
+
+    document.getElementById('check').addEventListener('click', function() {
+        for (var i=0; i<puzzle.nrow; i++)
+            for (var j=0; j<puzzle.ncol; j++)
+                if (fill[i][j] != puzzle.grid[i][j].solution && fill[i][j] != " ")
+                    getCellEl(i, j, " .letter").classList.add("error");
+    });
+
+    document.getElementById('solve').addEventListener('click', function() {
+        for (var i=0; i<puzzle.nrow; i++)
+            for (var j=0; j<puzzle.ncol; j++)
+                insertLetter("solve", i, j, true);
+        checkSolved();
     });
 
     // Add an event listener that is pending on the initialization

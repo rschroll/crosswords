@@ -52,6 +52,11 @@
     margin: auto;
 }
 
+#grid .solved {
+    background: #efe;
+    box-shadow: inset 0 0 5em #7f7;
+}
+
 #grid td {
     position: relative;
     width: 1.5em;
@@ -80,6 +85,10 @@
 
 #grid .selCell {
     background: #ffbb99;
+}
+
+#grid .error {
+    color: red;
 }
 
 /* Get rid of chevrons */
