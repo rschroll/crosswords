@@ -158,7 +158,7 @@ window.onload = function () {
             cells = document.querySelectorAll("." + seldir + num);
         for (var i=0; i<cells.length; i++) {
             var coords = coordsFromID(cells[i].id);
-            if (!fill[coords[0]][coords[1]]) {
+            if (fill[coords[0]][coords[1]] == " ") {
                 selectCell(coords[0], coords[1]);
                 return;
             }
@@ -202,8 +202,99 @@ window.onload = function () {
         }
     }
 
+    function insertLetter(y, x, v) {
+        fill[y][x] = v;
+        document.querySelector("#r" + y + "c" + x + " .letter").innerText = v;
+    }
+
+    function stepCoords(coords, dir) {
+        var y = coords[0] + dir[0],
+            x = coords[1] + dir[1];
+        if (x >= puzzle.ncol) {
+            x = 0;
+            y += 1;
+            if (y >= puzzle.nrow)
+                y = 0;
+        } else if (x < 0) {
+            x = puzzle.ncol - 1;
+            y -= 1;
+            if (y < 0)
+                y = puzzle.nrow - 1;
+        }
+
+        if (y >= puzzle.nrow) {
+            y = 0;
+            x += 1;
+            if (x >= puzzle.ncol)
+                x = 0;
+        } else if (y < 0) {
+            y = puzzle.nrow - 1;
+            x -= 1;
+            if (x < 0)
+                x = puzzle.ncol - 1;
+        }
+        return [y, x];
+    }
+
+    function moveCursor(dir, wrap) {
+        var dx = (seldir == "across") ? dir : 0,
+            dy = (seldir == "down") ? dir : 0,
+            coords = stepCoords([selr, selc], [dy, dx]);
+        while (puzzle.grid[coords[0]][coords[1]].type == "block") {
+            coords = stepCoords(coords, [dy, dx]);
+        }
+        if (wrap || (coords[0] == selr + dy && coords[1] == selc + dx))
+            selectCell(coords[0], coords[1]);
+    }
+
+    function moveClue(dir) {
+        var clue = document.querySelector("#" + seldir + " .selClue"),
+            next = (dir > 0) ? clue.nextSibling : clue.previousSibling,
+            event = new Event("click", {
+                                  "view": window,
+                                  "bubbles": true,
+                                  "cancelable": true });
+        if (next == null) {
+            seldir = (seldir == "across") ? "down" : "across";
+            var clues = document.querySelectorAll("#" + seldir + " ul li");
+            next = clues[(dir > 0) ? 0 : clues.length -1 ];
+        }
+        next.dispatchEvent(event);
+    }
+
     // http://cdn.games.arkadiumhosted.com/washingtonpost/crossynergy/cs140308.jpz
     loadJPZfile("file:///home/rschroll/touch/crosswords/test/cs140308.jpz");
+
+    document.addEventListener('keydown', function(e) {
+        if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode == 32) { // space
+            insertLetter(selr, selc, String.fromCharCode(e.keyCode));
+            moveCursor(1, false);
+        } else if (e.keyCode == 13) { // enter
+            seldir = (seldir == "across") ? "down" : "across";
+            selectCell(selr, selc);
+        } else if (e.keyCode == 9) { // tab
+            moveClue(e.shiftKey ? -1 : 1);
+        } else if (e.keyCode == 37) { // left
+            seldir = "across";
+            moveCursor(-1, true);
+        } else if (e.keyCode == 38) { // up
+            seldir = "down";
+            moveCursor(-1, true);
+        } else if (e.keyCode == 39) { // right
+            seldir = "across";
+            moveCursor(1, true);
+        } else if (e.keyCode == 40) { // down
+            seldir = "down";
+            moveCursor(1, down);
+        } else if (e.keyCode == 8) { // backspace
+            if (fill[selr][selc] == " ")
+                moveCursor(-1, false);
+            insertLetter(selr, selc, " ");
+        } else {
+            console.log(e.keyCode);
+        }
+        e.preventDefault();
+    });
 
     // Add an event listener that is pending on the initialization
     //  of the platform layer API, if it is being used.
