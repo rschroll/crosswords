@@ -17,9 +17,9 @@ function JPZtoJSON(doc) {
         grid: [],
         across: [],
         down: []};
-    var metadata = doc.querySelector("metadata");
-    for (var i=0; i<metadata.childElementCount; i++)
-        retval.metadata[metadata.children[i].nodeName] = metadata.children[i].textContent;
+    metadata = doc.querySelectorAll("metadata *");
+    for (var i=0; i<metadata.length; i++)
+        retval.metadata[metadata[i].nodeName] = metadata[i].textContent;
 
     var grid = doc.querySelector("grid");
     retval.ncol = intAttribute(grid, "width");
