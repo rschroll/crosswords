@@ -195,10 +195,10 @@ window.onload = function () {
         for (var i=0; i<2; i++) {
             var clue = document.querySelector(["#across" + across, "#down" + down][i]);
             clue.classList.add("selClue");
-            var center = clue.offsetTop + clue.offsetHeight/2;
             var parent = clue.offsetParent;
-            if (center < parent.scrollTop || center > parent.scrollTop + parent.offsetHeight)
-                parent.scrollTop = center - parent.offsetHeight/2;
+            if (clue.offsetTop < parent.scrollTop ||
+                    clue.offsetTop + clue.offsetHeight > parent.scrollTop + parent.offsetHeight)
+                parent.scrollTop = clue.offsetTop + clue.offsetHeight/2 - parent.offsetHeight/2;
         }
     }
 
