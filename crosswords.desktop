@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=crosswords
+Exec=ubuntu-html5-app-launcher $@ --www=www
+Icon=qmlscene
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true

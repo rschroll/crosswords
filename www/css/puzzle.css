@@ -1,0 +1,112 @@
+#puzzle-page {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 75px;
+    bottom: 0;
+    height: auto;
+}
+
+#grid {
+    position: absolute;
+    left: 0;
+    right: 50%;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+}
+
+#across {
+    position: absolute;
+    left: 50%;
+    right: 0;
+    top: 0;
+    bottom: 50%;
+    overflow: hidden;
+    border-bottom: 0.1rem solid #c9c9c9;
+}
+
+#down {
+    position: absolute;
+    left: 50%;
+    right: 0;
+    top: 50%;
+    bottom: 0;
+    overflow: auto;
+}
+
+.clues ul {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 1.8rem;
+    bottom: 0;
+    overflow: auto;
+}
+
+#grid table {
+    border-collapse: collapse;
+    border: 3px solid black;
+    color: black;
+    background: white;
+    margin: auto;
+}
+
+#grid td {
+    position: relative;
+    width: 1.5em;
+    height: 1.5em;
+    border: 2px solid black;
+    text-align: center;
+    cursor: text;
+}
+
+#grid td.block {
+    background: black;
+    cursor: normal;
+}
+
+#grid .number {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 65%;
+    margin-top: -15%;
+}
+
+#grid .selCells {
+    background: #ffff99;
+}
+
+#grid .selCell {
+    background: #ffbb99;
+}
+
+/* Get rid of chevrons */
+.clues ul li>a::after {
+    display: none;
+}
+
+.clues ul li {
+    height: auto;
+    border-bottom: none;
+}
+
+.clues>header+ul li {
+    padding-left: 0;
+}
+
+.clues ul li>a {
+    height: auto;
+    line-height: normal;
+    white-space: normal;
+    padding-left: 3rem;
+    text-indent: -2rem;
+}
+
+.clues .selClue {
+    background: #ffff99;
+}
+.clues .selClue a {
+    color: #606060;
+}
