@@ -18,15 +18,20 @@
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/page.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/pagestacks.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/tabs.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
 
     <!-- Cordova platform API access - Uncomment this to have access to the Javascript APIs -->
     <!-- <script src="cordova/cordova.js"></script> -->
 
+    <link href="css/app.css" rel="stylesheet" type="text/css" />
+    <link href="css/list.css" rel="stylesheet" type="text/css" />
     <link href="css/puzzle.css" rel="stylesheet" type="text/css" />
+
     <script src="js/jszip.js"></script>
     <!-- Application script -->
     <script src="js/app.js"></script>
     <script src="js/loaders.js"></script>
+    <script src="js/list.js"></script>
     <script src="js/puzzle.js"></script>
   </head>
 
@@ -35,30 +40,28 @@
     <div data-role="mainview">
 
       <header data-role="header">
-        <ul data-role="tabs">
-          <li data-role="tabitem" data-page="puzzle-page">Crossword Puzzle</li>
-        </ul>
       </header>
 
       <div data-role="content">
 
+        <div data-role="pagestack">
+
           <!-- The application main page -->
 
-          <div data-role="page" id="puzzle-page">
+          <div data-role="page" data-title="Puzzles" id="list-page">
+
+              <div>
+                  <button id="open" data-role="button" class="ubuntu" style="width: 100%">
+                    Open puzzle
+                  </button>
+              </div>
+
+          </div>
+
+          <div data-role="page" data-title="Crossword Puzzle" id="puzzle-page">
 
             <div id="grid">
               <table></table>
-              <div>
-                  <button id="reveal" data-role="button" class="ubuntu" style="width: 8em">
-                    Reveal
-                  </button>
-                  <button id="check" data-role="button" class="ubuntu" style="width: 8em">
-                    Check
-                  </button>
-                  <button id="solve" data-role="button" class="ubuntu" style="width: 8em">
-                    Solve
-                  </button>
-              </div>
             </div>
 
             <section data-role="list" id="across" class="clues">
@@ -71,7 +74,28 @@
               <ul data-role="listview"></ul>
             </section>
 
+            <footer data-role="footer" id="puzzle-footer">
+              <nav>
+                <ul>
+                <li><a href="#" id="solve">
+                  <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/tick@30.png" alt="Solve" />
+                  <span>Solve</span>
+                </a></li>
+                <li><a href="#" id="check">
+                  <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/tick@30.png" alt="Check" />
+                  <span>Check</span>
+                </a></li>
+                <li><a href="#" id="reveal">
+                  <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/tick@30.png" alt="Reveal" />
+                  <span>Reveal</span>
+                </a></li>
+                </ul>
+              </nav>
+            </footer>
+
           </div>
+
+        </div>
 
       </div>
       

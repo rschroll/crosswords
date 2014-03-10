@@ -149,6 +149,8 @@ function initPuzzle(UI) {
         self.load = function (doc) {
             puzzle = doc;
             var table = document.querySelector("#grid table");
+            while (table.firstChild)
+                table.removeChild(table.firstChild)
             for (var i=0; i<puzzle.nrow; i++) {
                 var row = document.createElement("tr");
                 table.appendChild(row);
@@ -172,12 +174,14 @@ function initPuzzle(UI) {
             }
 
             var across = UI.list("[id='across']");
+            across.removeAllItems();
             for (var i=0; i<puzzle.across.length; i++) {
                 if (puzzle.across[i])
                     across.append(i + ". " + puzzle.across[i], "", "across" + i, clickClue, ["across", i]);
             }
 
             var down = UI.list("[id='down']");
+            down.removeAllItems();
             for (var i=0; i<puzzle.down.length; i++) {
                 if (puzzle.down[i])
                     down.append(i + ". " + puzzle.down[i], "", "down" + i, clickClue, ["down", i]);
@@ -192,7 +196,9 @@ function initPuzzle(UI) {
 
             while (puzzle.grid[selr][selc].type == "block")
                 selc += 1;
+            UI.pagestack.push("puzzle-page");
             selectCell(selr, selc);
+            window.setTimeout(function () { UI.toolbar("puzzle-footer").hide(); }, 5000);
         }
 
         document.addEventListener('keydown', function(e) {
