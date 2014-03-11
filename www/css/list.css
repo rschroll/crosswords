@@ -1,3 +1,21 @@
+#sources {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 50%;
+    overflow: auto;
+}
+
+#dates {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: 0;
+    overflow: auto;
+}
+
 #list-page [data-role="footer"] {
     display: none !important;
 }
