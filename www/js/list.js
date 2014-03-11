@@ -56,11 +56,17 @@ function initList(UI) {
         function listSource(el, urlFn) {
             var dates = UI.list("[id='dates']");
             dates.removeAllItems();
+            document.querySelector("#dates").scrollTop = 0;
             var d = new Date();
             for (var i=0; i<14; i++) {
                 dates.append(d.toDateString(), "", null, clickPuzzle, urlFn(d));
                 d.setDate(d.getDate() - 1);
             }
+
+            var sources = document.querySelectorAll("#sources li");
+            for (var i=0; i<sources.length; i++)
+                sources[i].classList.remove("selected");
+            el.parentElement.classList.add("selected");
         }
 
         function init() {
