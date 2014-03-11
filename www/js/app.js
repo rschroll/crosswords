@@ -1,3 +1,9 @@
+/* Copyright 2014 Robert Schroll
+ *
+ * This file is part of Crosswords and is distributed under the terms
+ * of the GPL. See the file LICENSE for full details.
+ */
+
 /**
  * Wait before the DOM has been loaded before initializing the Ubuntu UI layer
  */

@@ -8,7 +8,7 @@
             "desktop": "crosswords.desktop"
         }
     },
-    "maintainer": "",
+    "maintainer": "Robert Schroll <rschroll@gmail.com>",
     "name": "com.ubuntu.developer.rschroll.crosswords",
     "title": "Crosswords",
     "version": "0.1"

@@ -1,3 +1,9 @@
+/* Copyright 2014 Robert Schroll
+ *
+ * This file is part of Crosswords and is distributed under the terms
+ * of the GPL. See the file LICENSE for full details.
+ */
+
 // Namespace system adopted from
 // http://appendto.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1/
 function initPuzzle(UI) {

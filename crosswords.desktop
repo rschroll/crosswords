@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=crosswords
+Name=Crosswords
 Exec=ubuntu-html5-app-launcher $@ --www=www
-Icon=qmlscene
+Icon=crosswords.svg
 Terminal=false
 Type=Application
 X-Ubuntu-Touch=true
