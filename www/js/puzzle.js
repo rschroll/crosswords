@@ -253,18 +253,20 @@ function initPuzzle(UI) {
                 selectCell(selr, selc);
             } else if (e.keyCode == 9) { // tab
                 moveClue(e.shiftKey ? -1 : 1);
-            } else if (e.keyCode == 37) { // left
-                seldir = "across";
-                moveCursor(-1, true);
-            } else if (e.keyCode == 38) { // up
-                seldir = "down";
-                moveCursor(-1, true);
-            } else if (e.keyCode == 39) { // right
-                seldir = "across";
-                moveCursor(1, true);
-            } else if (e.keyCode == 40) { // down
-                seldir = "down";
-                moveCursor(1, down);
+            } else if (e.keyCode == 37 || e.keyCode == 39) { // left, right
+                if (seldir != "across") {
+                    seldir = "across";
+                    selectCell(selr, selc);
+                } else {
+                    moveCursor((e.keyCode == 37) ? -1 : 1, true);
+                }
+            } else if (e.keyCode == 38 || e.keyCode == 40) { // up, down
+                if (seldir != "down") {
+                    seldir = "down";
+                    selectCell(selr, selc);
+                } else {
+                    moveCursor((e.keyCode == 38) ? -1 : 1, true);
+                }
             } else if (e.keyCode == 8) { // backspace
                 if (fill[selr][selc] == " ")
                     moveCursor(-1, false);
