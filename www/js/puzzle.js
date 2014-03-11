@@ -8,6 +8,7 @@ function initPuzzle(UI) {
         var selr = 0;
         var selc = 0;
         var seldir = "across";
+        var fitzoom = 1;
 
         function coordsFromID(id) {
             var coords = id.slice(1).split("c");
@@ -55,10 +56,29 @@ function initPuzzle(UI) {
                     els[j].classList.remove(styleClasses[i]);
             }
 
-            getCellEl(y,x).classList.add("selCell");
+            var cell = getCellEl(y,x);
+            cell.classList.add("selCell");
             var cells = document.querySelectorAll("." + seldir + ((seldir == "across") ? across : down));
             for (var i=0; i<cells.length; i++)
                 cells[i].classList.add("selCells");
+            var top = cells[0].offsetTop,
+                left = cells[0].offsetLeft,
+                bottom = cells[cells.length-1].offsetTop + cells[cells.length-1].offsetHeight,
+                right = cells[cells.length-1].offsetLeft + cells[cells.length-1].offsetWidth,
+                parent = cells[0].offsetParent;
+            if (left < parent.scrollLeft || right > parent.scrollLeft + parent.offsetWidth) {
+                if (right - left < parent.offsetWidth)
+                    parent.scrollLeft = (left + right - parent.offsetWidth)/2;
+                else
+                    parent.scrollLeft = cell.offsetLeft + (cell.offsetWidth - parent.offsetWidth)/2;
+            }
+            if (top < parent.scrollTop || bottom > parent.scrollTop + parent.offsetHeight) {
+                if (bottom - top < parent.offsetHeight)
+                    parent.scrollTop = (top + bottom - parent.offsetHeight)/2;
+                else
+                    parent.scrollTop = cell.offsetTop + (cell.offsetHeight - parent.offsetHeight)/2;
+            }
+
             for (var i=0; i<2; i++) {
                 var clue = document.querySelector(["#across" + across, "#down" + down][i]);
                 clue.classList.add("selClue");
@@ -146,6 +166,25 @@ function initPuzzle(UI) {
             next.dispatchEvent(event);
         }
 
+        function setFitzoom() {
+            var container = document.querySelector("#grid");
+            var grid = document.querySelector("#grid table");
+            // clientWidth <= offsetWidth, which contains borders + scrollbars
+            fitzoom = Math.min(container.clientWidth / grid.offsetWidth,
+                               container.clientHeight / grid.offsetHeight) * 0.98;
+            if (fitzoom > 1 || fitzoom > grid.style.zoom)
+                grid.style.zoom = fitzoom;
+        }
+
+        function zoom(dir) {
+            if (fitzoom > 1)
+                return
+
+            var grid = document.querySelector("#grid table");
+            var scale = (dir > 0) ? 1.1 : 1/1.1;
+            grid.style.zoom = Math.min(Math.max(grid.style.zoom * scale, fitzoom), 1);
+        }
+
         self.load = function (doc) {
             puzzle = doc;
             var table = document.querySelector("#grid table");
@@ -198,10 +237,14 @@ function initPuzzle(UI) {
                 selc += 1;
             UI.pagestack.push("puzzle-page");
             selectCell(selr, selc);
+            setFitzoom();
             window.setTimeout(function () { UI.toolbar("puzzle-footer").hide(); }, 5000);
         }
 
         document.addEventListener('keydown', function(e) {
+            if (UI.pagestack.currentPage() != "puzzle-page")
+                return;
+
             if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode == 32) { // space
                 insertLetter(String.fromCharCode(e.keyCode));
                 moveCursor(1, false);
@@ -226,11 +269,34 @@ function initPuzzle(UI) {
                 if (fill[selr][selc] == " ")
                     moveCursor(-1, false);
                 insertLetter(" ");
+            } else if (e.keyCode == 188) { // comma
+                zoom(-1);
+            } else if (e.keyCode == 190) { // period
+                zoom(1);
             } else {
                 console.log(e.keyCode);
             }
             e.preventDefault();
         });
+
+        window.addEventListener("resize", function () {
+            if (UI.pagestack.currentPage() != "puzzle-page")
+                return;
+
+            setFitzoom();
+        });
+
+        document.getElementById("grid").addEventListener("wheel", function (e) {
+            // Not working right now.
+            if (e.ctrlKey) {
+                console.log(e);
+                if (e.wheelDeltaY < 0)
+                    zoom(-1);
+                if (e.wheelDeltaY > 0)
+                    zoom(1);
+                e.preventDefault();
+            }
+        })
 
         document.getElementById('reveal').addEventListener('click', function() {
             insertLetter("solve");

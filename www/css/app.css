@@ -12,4 +12,6 @@
     right: 0;
     top: 0;
     bottom: 0;
+    height: auto;
+    width: auto;
 }
