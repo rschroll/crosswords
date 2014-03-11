@@ -135,3 +135,11 @@
 .clues .selClue a {
     color: #606060;
 }
+
+#info-dialog p {
+    margin-top: 0.5rem;
+}
+
+#info-copyright {
+    font-size: 0.7rem;
+}

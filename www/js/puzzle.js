@@ -235,6 +235,8 @@ function initPuzzle(UI) {
 
             while (puzzle.grid[selr][selc].type == "block")
                 selc += 1;
+            document.querySelector("#puzzle-page").setAttribute("data-title", puzzle.metadata["title"] ||
+                                                                "Crossword Puzzle");
             UI.pagestack.push("puzzle-page");
             selectCell(selr, selc);
             setFitzoom();
@@ -300,23 +302,35 @@ function initPuzzle(UI) {
             }
         })
 
-        document.getElementById('reveal').addEventListener('click', function() {
+        document.getElementById("info").addEventListener("click", function() {
+            document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"];
+            document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"];
+            document.querySelector("#info-description").innerHTML = puzzle.metadata["description"];
+            document.querySelector("#info-copyright").innerHTML = puzzle.metadata["copyright"];
+            UI.dialog("info-dialog").show();
+        });
+
+        document.getElementById("reveal").addEventListener("click", function() {
             insertLetter("solve");
             moveCursor(1, false);
         });
 
-        document.getElementById('check').addEventListener('click', function() {
+        document.getElementById("check").addEventListener("click", function() {
             for (var i=0; i<puzzle.nrow; i++)
                 for (var j=0; j<puzzle.ncol; j++)
                     if (fill[i][j] != puzzle.grid[i][j].solution && fill[i][j] != " ")
                         getCellEl(i, j, " .letter").classList.add("error");
         });
 
-        document.getElementById('solve').addEventListener('click', function() {
+        document.getElementById("solve").addEventListener("click", function() {
             for (var i=0; i<puzzle.nrow; i++)
                 for (var j=0; j<puzzle.ncol; j++)
                     insertLetter("solve", i, j, true);
             checkSolved();
+        });
+
+        document.querySelector("#info-dialog button").addEventListener("click", function() {
+            UI.dialog("info-dialog").hide();
         });
 
     })(window.puzzle = window.puzzle || {})
