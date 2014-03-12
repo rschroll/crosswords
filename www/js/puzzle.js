@@ -322,10 +322,14 @@ function initPuzzle(UI) {
         });
 
         document.getElementById("check").addEventListener("click", function() {
+            var grid = document.querySelector("#grid table");
+            grid.classList.add("checking");
             for (var i=0; i<puzzle.nrow; i++)
                 for (var j=0; j<puzzle.ncol; j++)
                     if (fill[i][j] != puzzle.grid[i][j].solution && fill[i][j] != " ")
                         getCellEl(i, j, " .letter").classList.add("error");
+            grid.offsetWidth; // Force layout, to allow for class change to take effect.
+            grid.classList.remove("checking");
         });
 
         document.getElementById("solve").addEventListener("click", function() {
