@@ -54,4 +54,16 @@
         };
     }
 
+    self.forEach = function (solved, callback) {
+        var range = solved ? IDBKeyRange.only(1) : IDBKeyRange.upperBound(1, true);
+        var index = db.transaction(["puzzles"]).objectStore("puzzles").index("completion");
+        index.openCursor(range).onsuccess = function (e) {
+            var cursor = e.target.result;
+            if (cursor) {
+                callback(cursor.value.url, cursor.value.puzzle, cursor.value.fill, cursor.value.completion);
+                cursor.continue();
+            }
+        }
+    }
+
 })(window.database = window.database || {})

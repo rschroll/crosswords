@@ -32,6 +32,18 @@ function initList(UI) {
             puzzle.loadURL(url);
         }
 
+        function readyLists(el) {
+            var dates = UI.list("[id='dates']");
+            dates.removeAllItems();
+            document.querySelector("#dates").scrollTop = 0;
+
+            var sources = document.querySelectorAll("#sources li");
+            for (var i=0; i<sources.length; i++)
+                sources[i].classList.remove("selected");
+            el.parentElement.classList.add("selected");
+            return dates;
+        }
+
         function appendDateSaved(dates) {
             return function (url, puzzle, fill, completion) {
                 var percent = (completion*100).toFixed(0) + "%";
@@ -47,23 +59,26 @@ function initList(UI) {
         }
 
         function listSource(el, urlFn) {
-            var dates = UI.list("[id='dates']");
-            dates.removeAllItems();
-            document.querySelector("#dates").scrollTop = 0;
+            var dates = readyLists(el);
             var d = new Date();
             for (var i=0; i<14; i++) {
                 database.getPuzzle(urlFn(d), appendDateSaved(dates), appendDateNew(dates, d));
                 d.setDate(d.getDate() - 1);
             }
+        }
 
-            var sources = document.querySelectorAll("#sources li");
-            for (var i=0; i<sources.length; i++)
-                sources[i].classList.remove("selected");
-            el.parentElement.classList.add("selected");
+        function listSaved(el, solved) {
+            var dates = readyLists(el);
+            dates.removeAllItems();
+            document.querySelector("#dates").scrollTop = 0;
+            database.forEach(solved, appendDateSaved(dates));
         }
 
         function init() {
             var sources = UI.list("[id='sources']");
+            sources.append("In Progress", "", null, listSaved, false);
+            sources.append("Completed", "", null, listSaved, true);
+
             var k = Object.keys(urlGens).sort();
             for (var i=0; i<k.length; i++)
                 sources.append(k[i], "", null, listSource, urlGens[k[i]]);
