@@ -200,7 +200,7 @@ function initPuzzle(UI) {
             grid.style.zoom = Math.min(Math.max(grid.style.zoom * scale, fitzoom), 1);
         }
 
-        function loadDoc(surl, doc, sfill) {
+        function loadDoc(surl, doc, sfill, completion) {
             url = surl;
             puzzle = doc;
             if (sfill == null) {
@@ -215,6 +215,10 @@ function initPuzzle(UI) {
             }
 
             var table = document.querySelector("#grid table");
+            if (completion == 1)
+                table.classList.add("solved");
+            else
+                table.classList.remove("solved");
             while (table.firstChild)
                 table.removeChild(table.firstChild)
             for (var i=0; i<puzzle.nrow; i++) {
