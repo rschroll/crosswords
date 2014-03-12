@@ -6,25 +6,8 @@
 
 (function (self) {
 
-    var db;
-
-    function openDatabase() {
-        var request = indexedDB.open("crosswords", 1);
-        request.onerror = function (e) {
-            console.log("Opening database: " + e);
-        };
-        request.onupgradeneeded = function (e) {
-            var objectStore = e.target.result.createObjectStore("puzzles", { keyPath: "url" });
-            objectStore.createIndex("completion", "completion", { unique: false });
-        };
-        request.onsuccess = function (e) {
-            db = request.result;
-            db.onerror = function (event) {
-                console.log("Database error: " + event.target.errorCode);
-            };
-        };
-    }
-    openDatabase();
+    var db = localStorage["crosswords"] ? JSON.parse(localStorage["crosswords"]) :
+                                          { puzzles: {}, inprogress: [], completed: [] };
 
     // Completion worked out from fill, but capped at 0.99.  Must pass 1 for full completion.
     self.putPuzzle = function (url, puzzle, fill, completion) {
@@ -40,29 +23,35 @@
                 completion = Math.min(count/puzzle.ncells, 0.99);
             }
         }
-        var obj = { url: url, puzzle: puzzle, fill: fill, completion: completion };
-        db.transaction(["puzzles"], "readwrite").objectStore("puzzles").put(obj);
+        var obj = { puzzle: puzzle, fill: fill, completion: completion };
+        db.puzzles[url] = obj;
+
+        var i = db.inprogress.indexOf(url);
+        if (i > -1)
+            db.inprogress.splice(i, 1);
+        i = db.completed.indexOf(url);
+        if (i > -1)
+            db.completed.splice(i, 1);
+        if (completion == 1)
+            db.completed.splice(0, 0, url);
+        else
+            db.inprogress.splice(0, 0, url);
+        localStorage["crosswords"] = JSON.stringify(db);
     }
 
     self.getPuzzle = function (url, onsucceed, onfail) {
-        db.transaction(["puzzles"]).objectStore("puzzles").get(url).onsuccess = function (e) {
-            var data = e.target.result;
-            if (data != undefined)
-                onsucceed(data.url, data.puzzle, data.fill, data.completion);
-            else
-                onfail(url);
-        };
+        var data = db.puzzles[url];
+        if (data == undefined)
+            onfail(url);
+        else
+            onsucceed(url, data.puzzle, data.fill, data.completion);
     }
 
     self.forEach = function (solved, callback) {
-        var range = solved ? IDBKeyRange.only(1) : IDBKeyRange.upperBound(1, true);
-        var index = db.transaction(["puzzles"]).objectStore("puzzles").index("completion");
-        index.openCursor(range).onsuccess = function (e) {
-            var cursor = e.target.result;
-            if (cursor) {
-                callback(cursor.value.url, cursor.value.puzzle, cursor.value.fill, cursor.value.completion);
-                cursor.continue();
-            }
+        var list = solved ? db.completed : db.inprogress;
+        for (var i=0; i<list.length; i++) {
+            var data = db.puzzles[list[i]];
+            callback(list[i], data.puzzle, data.fill, data.completion);
         }
     }
 
