@@ -35,12 +35,14 @@ function initList(UI) {
         function readyLists(el) {
             var dates = UI.list("[id='dates']");
             dates.removeAllItems();
-            document.querySelector("#dates").scrollTop = 0;
 
-            var sources = document.querySelectorAll("#sources li");
-            for (var i=0; i<sources.length; i++)
-                sources[i].classList.remove("selected");
-            el.parentElement.classList.add("selected");
+            var selected = document.querySelector("#sources .selected a");
+            if (selected != el) {
+                document.querySelector("#dates").scrollTop = 0;
+                if (selected)
+                    selected.parentElement.classList.remove("selected");
+                el.parentElement.classList.add("selected");
+            }
             return dates;
         }
 
@@ -82,6 +84,14 @@ function initList(UI) {
             var k = Object.keys(urlGens).sort();
             for (var i=0; i<k.length; i++)
                 sources.append(k[i], "", null, listSource, urlGens[k[i]]);
+
+            UI.pagestack.onPageChanged(function (e) {
+                if (e.page == "list-page") {
+                    var selected = document.querySelector("#sources .selected a");
+                    if (selected)
+                        selected.click();
+                }
+            });
         }
         init();
 
