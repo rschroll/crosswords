@@ -9,12 +9,14 @@
 function initPuzzle(UI) {
     (function (self) {
 
+        var url = url;
         var puzzle = null;
         var fill = [];
         var selr = 0;
         var selc = 0;
         var seldir = "across";
         var fitzoom = 1;
+        var solved = false;
 
         function coordsFromID(id) {
             var coords = id.slice(1).split("c");
@@ -98,11 +100,18 @@ function initPuzzle(UI) {
         function checkSolved() {
             var tableClasses = document.querySelector("#grid table").classList;
             tableClasses.remove("solved");
+            solved = false;
             for (var i=0; i<puzzle.nrow; i++)
                 for (var j=0; j<puzzle.ncol; j++)
                     if (puzzle.grid[i][j].solution && fill[i][j] != puzzle.grid[i][j].solution)
                         return;
             tableClasses.add("solved");
+            solved = true;
+        }
+
+        function checkAndSave() {
+            checkSolved();
+            database.putPuzzle(url, puzzle, fill, solved ? 1 : null);
         }
 
         function insertLetter(v, y, x, skipcheck) {
@@ -114,7 +123,7 @@ function initPuzzle(UI) {
             el.innerText = v;
             el.classList.remove("error");
             if (!skipcheck)
-                checkSolved();
+                checkAndSave();
         }
 
         function stepCoords(coords, dir) {
@@ -191,8 +200,20 @@ function initPuzzle(UI) {
             grid.style.zoom = Math.min(Math.max(grid.style.zoom * scale, fitzoom), 1);
         }
 
-        self.load = function (doc) {
+        function loadDoc(surl, doc, sfill) {
+            url = surl;
             puzzle = doc;
+            if (sfill == null) {
+                fill = [];
+                for (var i=0; i<puzzle.nrow; i++) {
+                    fill[i] = [];
+                    for (var j=0; j<puzzle.ncol; j++)
+                        fill[i][j] = " ";
+                }
+            } else {
+                fill = sfill;
+            }
+
             var table = document.querySelector("#grid table");
             while (table.firstChild)
                 table.removeChild(table.firstChild)
@@ -212,7 +233,7 @@ function initPuzzle(UI) {
                         cell.classList.add("down" + grid.down);
                     if (grid.number)
                         cell.innerHTML = "<span class='number'>" + grid.number + "</span>";
-                    cell.innerHTML += "<span class='letter'></span>"
+                    cell.innerHTML += "<span class='letter'>" + fill[i][j] + "</span>";
                     cell.id = "r" + i + "c" + j;
                     row.appendChild(cell);
                 }
@@ -232,13 +253,8 @@ function initPuzzle(UI) {
                     down.append(i + ". " + puzzle.down[i], "", "down" + i, clickClue, ["down", i]);
             }
 
-            fill = [];
-            for (var i=0; i<puzzle.nrow; i++) {
-                fill[i] = [];
-                for (var j=0; j<puzzle.ncol; j++)
-                    fill[i][j] = " ";
-            }
-
+            selr = 0;
+            selc = 0;
             while (puzzle.grid[selr][selc].type == "block")
                 selc += 1;
             document.querySelector("#puzzle-page").setAttribute("data-title", puzzle.metadata["title"] ||
@@ -248,6 +264,37 @@ function initPuzzle(UI) {
             setFitzoom();
             window.setTimeout(function () { UI.toolbar("puzzle-footer").hide(); }, 5000);
         }
+
+        function loadRemote(url) {
+            var fn = url.split("/").slice(-1)[0];
+            var xhr = new XMLHttpRequest();
+            var type = (fn.slice(-3) == "jpz") ? "arraybuffer" : "string";
+            xhr.open("GET", url);
+            xhr.responseType = type;
+
+            xhr.onreadystatechange = function(e) {
+                if (this.readyState == 4 ) {
+                    if (this.status == 200) {
+                        var parser = new DOMParser();
+                        if (type == "arraybuffer") {
+                            var zip = new JSZip(this.response);
+                            var str = zip.file(fn).asText();
+                        } else {
+                            var str = this.response;
+                        }
+                        var doc = parser.parseFromString(str.replace("&nbsp;", " "), "text/xml");
+                        loadDoc(url, JPZtoJSON(doc));
+                    } else {
+                        console.log("Problems loading puzzle!")
+                    }
+                }
+            }
+            xhr.send();
+        }
+
+        self.loadURL = function (url) {
+            database.getPuzzle(url, loadDoc, loadRemote)
+        };
 
         document.addEventListener('keydown', function(e) {
             if (UI.pagestack.currentPage() != "puzzle-page")
@@ -336,7 +383,7 @@ function initPuzzle(UI) {
             for (var i=0; i<puzzle.nrow; i++)
                 for (var j=0; j<puzzle.ncol; j++)
                     insertLetter("solve", i, j, true);
-            checkSolved();
+            checkAndSave();
         });
 
         document.querySelector("#info-dialog button").addEventListener("click", function() {

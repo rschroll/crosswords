@@ -28,35 +28,8 @@ function initList(UI) {
             }
         };
 
-        function loadJPZfile(url) {
-            var fn = url.split("/").slice(-1)[0];
-            var xhr = new XMLHttpRequest();
-            var type = (fn.slice(-3) == "jpz") ? "arraybuffer" : "string";
-            xhr.open("GET", url);
-            xhr.responseType = type;
-
-            xhr.onreadystatechange = function(e) {
-                if (this.readyState == 4 ) {
-                    if (this.status == 200) {
-                        var parser = new DOMParser();
-                        if (type == "arraybuffer") {
-                            var zip = new JSZip(this.response);
-                            var str = zip.file(fn).asText();
-                        } else {
-                            var str = this.response;
-                        }
-                        var doc = parser.parseFromString(str.replace("&nbsp;", " "), "text/xml");
-                        puzzle.load(JPZtoJSON(doc));
-                    } else {
-                        console.log("Problems loading puzzle!")
-                    }
-                }
-            }
-            xhr.send();
-        }
-
         function clickPuzzle(el, url) {
-            loadJPZfile(url);
+            puzzle.loadURL(url);
         }
 
         function listSource(el, urlFn) {

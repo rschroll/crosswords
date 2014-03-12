@@ -22,7 +22,9 @@ function JPZtoJSON(doc) {
         metadata: {},
         grid: [],
         across: [],
-        down: []};
+        down: [],
+        ncells: 0
+    };
     metadata = doc.querySelectorAll("metadata *");
     for (var i=0; i<metadata.length; i++)
         retval.metadata[metadata[i].nodeName] = metadata[i].textContent;
@@ -42,6 +44,8 @@ function JPZtoJSON(doc) {
             number: cell.getAttribute("number"),
             type: cell.getAttribute("type")
         };
+        if (cell.getAttribute("type") != "block")
+            retval.ncells += 1;
     }
 
     var clues = doc.querySelectorAll("crossword clues");
