@@ -35,9 +35,9 @@
                 var count = 0;
                 for (var i=0; i<puzzle.nrow; i++)
                     for (var j=0; j<puzzle.ncol; j++)
-                        if (puzzle.grid[i][j] != " ")
+                        if (fill[i][j] != " ")
                             count += 1;
-                completion = Math.min(count/puzzle.ncells, 0.99)
+                completion = Math.min(count/puzzle.ncells, 0.99);
             }
         }
         var obj = { url: url, puzzle: puzzle, fill: fill, completion: completion };

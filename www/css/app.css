@@ -21,3 +21,9 @@
     height: auto;
     width: auto;
 }
+
+[data-role="list"] ul li>label {
+    line-height: 2.2rem;
+    text-align: right;
+    padding-right: 1.3rem;
+}

@@ -32,13 +32,27 @@ function initList(UI) {
             puzzle.loadURL(url);
         }
 
+        function appendDateSaved(dates) {
+            return function (url, puzzle, fill, completion) {
+                var percent = (completion*100).toFixed(0) + "%";
+                dates.append(puzzle.metadata["title"], percent, null, clickPuzzle, url);
+            }
+        }
+
+        function appendDateNew(dates, d) {
+            var dstr = d.toDateString();
+            return function (url) {
+                dates.append(dstr, "", null, clickPuzzle, url);
+            }
+        }
+
         function listSource(el, urlFn) {
             var dates = UI.list("[id='dates']");
             dates.removeAllItems();
             document.querySelector("#dates").scrollTop = 0;
             var d = new Date();
             for (var i=0; i<14; i++) {
-                dates.append(d.toDateString(), "", null, clickPuzzle, urlFn(d));
+                database.getPuzzle(urlFn(d), appendDateSaved(dates), appendDateNew(dates, d));
                 d.setDate(d.getDate() - 1);
             }
 
