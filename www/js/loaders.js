@@ -42,7 +42,8 @@ function JPZtoJSON(doc) {
         retval.grid[intAttribute(cell, "y")-1][intAttribute(cell, "x")-1] = {
             solution: cell.getAttribute("solution"),
             number: cell.getAttribute("number"),
-            type: cell.getAttribute("type")
+            type: cell.getAttribute("type"),
+            shape: cell.getAttribute("background-shape")
         };
         if (cell.getAttribute("type") != "block")
             retval.ncells += 1;

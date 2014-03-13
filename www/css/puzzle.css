@@ -102,6 +102,11 @@
     cursor: normal;
 }
 
+#grid td.circle{
+    background-image: url(../img/circle.svg);
+    background-size: contain;
+}
+
 #grid .number {
     position: absolute;
     left: 0;

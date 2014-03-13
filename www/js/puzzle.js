@@ -237,6 +237,8 @@ function initPuzzle(UI) {
                         cell.classList.add("down" + grid.down);
                     if (grid.number)
                         cell.innerHTML = "<span class='number'>" + grid.number + "</span>";
+                    if (grid.shape)
+                        cell.classList.add(grid.shape);
                     cell.innerHTML += "<span class='letter'>" + fill[i][j] + "</span>";
                     cell.id = "r" + i + "c" + j;
                     row.appendChild(cell);
