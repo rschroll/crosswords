@@ -272,7 +272,7 @@ function initPuzzle(UI) {
         function loadRemote(url) {
             var fn = url.split("/").slice(-1)[0];
             var xhr = new XMLHttpRequest();
-            var type = (fn.slice(-3) == "jpz") ? "arraybuffer" : "string";
+            var type = (fn.slice(-3) == "jpz") ? "arraybuffer" : "text";
             xhr.open("GET", url);
             xhr.responseType = type;
 
