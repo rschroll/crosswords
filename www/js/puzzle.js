@@ -314,19 +314,17 @@ function initPuzzle(UI) {
                 selectCell(selr, selc);
             } else if (e.keyCode == 9) { // tab
                 moveClue(e.shiftKey ? -1 : 1);
-            } else if (e.keyCode == 37 || e.keyCode == 39) { // left, right
-                if (seldir != "across") {
-                    seldir = "across";
+            } else if (e.keyCode >= 37 && e.keyCode <= 40) { // left, up, right, down
+                var dir = (e.keyCode % 2) ? "across" : "down";
+                var inc = (e.keyCode < 39) ? -1 : 1;
+                if (seldir != dir && fill[selr][selc] == " ") {
+                    // Change direction only if cell is empty
+                    seldir = dir;
                     selectCell(selr, selc);
                 } else {
-                    moveCursor((e.keyCode == 37) ? -1 : 1, true);
-                }
-            } else if (e.keyCode == 38 || e.keyCode == 40) { // up, down
-                if (seldir != "down") {
-                    seldir = "down";
-                    selectCell(selr, selc);
-                } else {
-                    moveCursor((e.keyCode == 38) ? -1 : 1, true);
+                    // Otherwise, change direction and step
+                    seldir = dir;
+                    moveCursor(inc, true);
                 }
             } else if (e.keyCode == 8) { // backspace
                 if (fill[selr][selc] == " ")
