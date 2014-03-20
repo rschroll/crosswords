@@ -16,7 +16,8 @@ function initPuzzle(UI) {
         var selc = 0;
         var seldir = "across";
         var fitzoom = 1;
-        var fitoffset = [0, 0];
+        var startzoom = 1;
+        var startoffset = [0, 0];
         var gridzoom = 1;
         var gridoffset = [0, 0];
         var container = { X: 0, Y: 0, width: 0, height: 0 };
@@ -44,11 +45,9 @@ function initPuzzle(UI) {
         }
 
         function clickCell(y, x) {
-            return function () {
-                if (selr == y && selc == x)
-                    seldir = (seldir == "across") ? "down" : "across";
-                selectCell(y, x);
-            }
+            if (selr == y && selc == x)
+                seldir = (seldir == "across") ? "down" : "across";
+            selectCell(y, x);
         }
 
         function getCellEl(y, x, subel) {
@@ -92,7 +91,7 @@ function initPuzzle(UI) {
                     gridoffset[0] = container.height / 2 -
                                         gridzoom * (cell.offsetTop + cell.offsetHeight/2);
             }
-            fixView();
+            fixView(true);
 
             for (var i=0; i<2; i++) {
                 var clue = document.querySelector(["#across" + across, "#down" + down][i]);
@@ -206,7 +205,12 @@ function initPuzzle(UI) {
             fixView();
         }
 
-        function fixView() {
+        function fixView(animate) {
+            if (animate)
+                document.querySelector("#grid table").classList.add("animate");
+            else
+                document.querySelector("#grid table").classList.remove("animate");
+
             if (gridzoom < fitzoom)
                 gridzoom = fitzoom;
             if (container.width >= grid.width * gridzoom) {
@@ -232,6 +236,12 @@ function initPuzzle(UI) {
             document.querySelector("#grid table").style.webkitTransform =
                 "matrix(" + gridzoom + ", 0, 0, " + gridzoom + ", " +
                 gridoffset[1] + ", " + gridoffset[0] + ")";
+        }
+
+        function setStart() {
+            startzoom = gridzoom;
+            startoffset = gridoffset;
+            document.querySelector("#grid table").classList.remove("animate");
         }
 
         function zoom(ratio, ctr) {
@@ -270,8 +280,6 @@ function initPuzzle(UI) {
                     var grid = puzzle.grid[i][j];
                     if (grid.type == "block")
                         cell.classList.add("block");
-                    else
-                        cell.addEventListener("click", clickCell(i, j))
                     if (grid.across)
                         cell.classList.add("across" + grid.across);
                     if (grid.down)
@@ -391,6 +399,31 @@ function initPuzzle(UI) {
             if (e.wheelDeltaY > 0)
                 zoom(1.1, ctr);
             e.preventDefault();
+        });
+
+        var hammer = Hammer(document.getElementById("grid"), { prevent_default: true });
+
+        hammer.on("dragstart", setStart);
+        hammer.on("drag", function (e) {
+            gridoffset = [startoffset[0] + e.gesture.deltaY, startoffset[1] + e.gesture.deltaX];
+            setTransform();
+        });
+        hammer.on("dragend", function (e) {
+            fixView(true);
+        });
+
+        hammer.on("tap", function (e) {
+            var el = e.target;
+            while (!el.id)
+                el = el.parentElement;
+            var coords = coordsFromID(el.id);
+            if (!isNaN(coords[0]) && !isNaN(coords[1]) && !el.classList.contains("block"))
+                clickCell(coords[0], coords[1]);
+        });
+
+        document.querySelector("#grid table").addEventListener("webkitTransitionEnd", function (e) {
+            if (e.propertyName == "transform" || e.propertyName == "-webkit-transform")
+                e.target.classList.remove("animate");
         });
 
         document.getElementById("info").addEventListener("click", function() {

@@ -85,6 +85,11 @@
     -webkit-transition: background 0s, box-shadow 0s;
 }
 
+#grid .animate {
+    transition: transform 0.15s ease;
+    -webkit-transition: -webkit-transform 0.15s ease;
+}
+
 #grid tr {
     display: block;
     white-space: pre;
