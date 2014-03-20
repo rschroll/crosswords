@@ -67,8 +67,8 @@
 }
 
 #grid table {
-    border-collapse: collapse;
-    border: 3px solid black;
+    display: block;
+    border: 2px solid black;
     color: black;
     background: white;
     transition: background 2s, box-shadow 2s;
@@ -87,12 +87,17 @@
     -webkit-transition: background 0s, box-shadow 0s;
 }
 
+#grid tr {
+    display: block;
+    white-space: pre;
+}
+
 #grid td {
+    display: inline-block;
     position: relative;
     width: 1.5em;
-    min-width: 1.5em;
     height: 1.5em;
-    border: 2px solid black;
+    border: 1px solid black;
     text-align: center;
     cursor: text;
 }

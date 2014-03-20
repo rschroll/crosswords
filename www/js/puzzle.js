@@ -16,6 +16,7 @@ function initPuzzle(UI) {
         var selc = 0;
         var seldir = "across";
         var fitzoom = 1;
+        var gridzoom = 1;
         var solved = false;
 
         function coordsFromID(id) {
@@ -187,8 +188,10 @@ function initPuzzle(UI) {
             // clientWidth <= offsetWidth, which contains borders + scrollbars
             fitzoom = Math.min(container.clientWidth / grid.offsetWidth,
                                container.clientHeight / grid.offsetHeight) * 0.98;
-            if (fitzoom > 1 || fitzoom > grid.style.zoom)
-                grid.style.zoom = fitzoom;
+            if (fitzoom > 1 || fitzoom > gridzoom) {
+                gridzoom = fitzoom;
+                grid.style.webkitTransform = "matrix(" + gridzoom + ", 0, 0, " + gridzoom + ", 0, 0)";
+            }
         }
 
         function zoom(dir) {
@@ -197,7 +200,8 @@ function initPuzzle(UI) {
 
             var grid = document.querySelector("#grid table");
             var scale = (dir > 0) ? 1.1 : 1/1.1;
-            grid.style.zoom = Math.min(Math.max(grid.style.zoom * scale, fitzoom), 1);
+            gridzoom = Math.min(Math.max(gridzoom * scale, fitzoom), 1);
+            grid.style.webkitTransform = "matrix(" + gridzoom + ", 0, 0, " + gridzoom + ", 0, 0)";
         }
 
         function loadDoc(surl, doc, sfill, completion) {
