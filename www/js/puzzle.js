@@ -16,7 +16,11 @@ function initPuzzle(UI) {
         var selc = 0;
         var seldir = "across";
         var fitzoom = 1;
+        var fitoffset = [0, 0];
         var gridzoom = 1;
+        var gridoffset = [0, 0];
+        var container = { X: 0, Y: 0, width: 0, height: 0 };
+        var grid = { width: 0, height: 0 };
         var solved = false;
 
         function coordsFromID(id) {
@@ -73,20 +77,22 @@ function initPuzzle(UI) {
             var top = cells[0].offsetTop,
                 left = cells[0].offsetLeft,
                 bottom = cells[cells.length-1].offsetTop + cells[cells.length-1].offsetHeight,
-                right = cells[cells.length-1].offsetLeft + cells[cells.length-1].offsetWidth,
-                parent = cells[0].offsetParent;
-            if (left < parent.scrollLeft || right > parent.scrollLeft + parent.offsetWidth) {
-                if (right - left < parent.offsetWidth)
-                    parent.scrollLeft = (left + right - parent.offsetWidth)/2;
+                right = cells[cells.length-1].offsetLeft + cells[cells.length-1].offsetWidth;
+            if (left < -gridoffset[1] / gridzoom || right > (container.width - gridoffset[1]) / gridzoom) {
+                if (right - left < container.width / gridzoom)
+                    gridoffset[1] = (container.width - gridzoom * (left + right))/2;
                 else
-                    parent.scrollLeft = cell.offsetLeft + (cell.offsetWidth - parent.offsetWidth)/2;
+                    gridoffset[1] = container.width / 2 -
+                                        gridzoom * (cell.offsetLeft + cell.offsetWidth/2);
             }
-            if (top < parent.scrollTop || bottom > parent.scrollTop + parent.offsetHeight) {
-                if (bottom - top < parent.offsetHeight)
-                    parent.scrollTop = (top + bottom - parent.offsetHeight)/2;
+            if (top < -gridoffset[0] / gridzoom || bottom > (container.height - gridoffset[0]) / gridzoom) {
+                if (bottom - top < container.height / gridzoom)
+                    gridoffset[0] = (container.height - gridzoom * (top + bottom))/2;
                 else
-                    parent.scrollTop = cell.offsetTop + (cell.offsetHeight - parent.offsetHeight)/2;
+                    gridoffset[0] = container.height / 2 -
+                                        gridzoom * (cell.offsetTop + cell.offsetHeight/2);
             }
+            fixView();
 
             for (var i=0; i<2; i++) {
                 var clue = document.querySelector(["#across" + across, "#down" + down][i]);
@@ -182,26 +188,57 @@ function initPuzzle(UI) {
             next.dispatchEvent(event);
         }
 
-        function setFitzoom() {
-            var container = document.querySelector("#grid");
-            var grid = document.querySelector("#grid table");
+        function setGeometry() {
+            var containerEl = document.querySelector("#grid"),
+                gridEl = document.querySelector("#grid table");
             // clientWidth <= offsetWidth, which contains borders + scrollbars
-            fitzoom = Math.min(container.clientWidth / grid.offsetWidth,
-                               container.clientHeight / grid.offsetHeight) * 0.98;
-            if (fitzoom > 1 || fitzoom > gridzoom) {
-                gridzoom = fitzoom;
-                grid.style.webkitTransform = "matrix(" + gridzoom + ", 0, 0, " + gridzoom + ", 0, 0)";
+            container = { X: containerEl.offsetLeft, Y: containerEl.offsetTop,
+                          width: containerEl.offsetWidth, height: containerEl.offsetHeight };
+            grid = { width: gridEl.offsetWidth, height: gridEl.offsetHeight };
+            while (containerEl = containerEl.offsetParent) {
+                container.X += containerEl.offsetLeft;
+                container.Y += containerEl.offsetTop;
             }
+
+            fitzoom = Math.min(container.width / grid.width, container.height / grid.height);
+            // Reset our view.  (Is this the right thing to do?)
+            gridzoom = fitzoom;
+            fixView();
         }
 
-        function zoom(dir) {
-            if (fitzoom > 1)
-                return
+        function fixView() {
+            if (gridzoom < fitzoom)
+                gridzoom = fitzoom;
+            if (container.width >= grid.width * gridzoom) {
+                gridoffset[1] = (container.width - grid.width * gridzoom)/2;
+            } else {
+                if (gridoffset[1] > 0)
+                    gridoffset[1] = 0;
+                if (gridoffset[1] < container.width - grid.width * gridzoom)
+                    gridoffset[1] = container.width - grid.width * gridzoom;
+            }
+            if (container.height >= grid.height * gridzoom) {
+                gridoffset[0] = (container.height - grid.height * gridzoom)/2;
+            } else {
+                if (gridoffset[0] > 0)
+                    gridoffset[0] = 0;
+                if (gridoffset[0] < container.height - grid.height * gridzoom)
+                    gridoffset[0] = container.height - grid.height * gridzoom;
+            }
+            setTransform();
+        }
 
-            var grid = document.querySelector("#grid table");
-            var scale = (dir > 0) ? 1.1 : 1/1.1;
-            gridzoom = Math.min(Math.max(gridzoom * scale, fitzoom), 1);
-            grid.style.webkitTransform = "matrix(" + gridzoom + ", 0, 0, " + gridzoom + ", 0, 0)";
+        function setTransform() {
+            document.querySelector("#grid table").style.webkitTransform =
+                "matrix(" + gridzoom + ", 0, 0, " + gridzoom + ", " +
+                gridoffset[1] + ", " + gridoffset[0] + ")";
+        }
+
+        function zoom(ratio, ctr) {
+            gridzoom *= ratio;
+            gridoffset = [ratio * gridoffset[0] + ctr[0] * (1 - ratio),
+                          ratio * gridoffset[1] + ctr[1] * (1 - ratio)];
+            fixView();
         }
 
         function loadDoc(surl, doc, sfill, completion) {
@@ -271,7 +308,7 @@ function initPuzzle(UI) {
                                                                 "Crossword Puzzle");
             UI.pagestack.push("puzzle-page");
             selectCell(selr, selc);
-            setFitzoom();
+            setGeometry();
             window.setTimeout(function () { UI.toolbar("puzzle-footer").hide(); }, 5000);
         }
 
@@ -334,10 +371,6 @@ function initPuzzle(UI) {
                 if (fill[selr][selc] == " ")
                     moveCursor(-1, false);
                 insertLetter(" ");
-            } else if (e.keyCode == 188) { // comma
-                zoom(-1);
-            } else if (e.keyCode == 190) { // period
-                zoom(1);
             } else {
                 console.log(e.keyCode);
             }
@@ -348,20 +381,17 @@ function initPuzzle(UI) {
             if (UI.pagestack.currentPage() != "puzzle-page")
                 return;
 
-            setFitzoom();
+            setGeometry();
         });
 
         document.getElementById("grid").addEventListener("wheel", function (e) {
-            // Not working right now.
-            if (e.ctrlKey) {
-                console.log(e);
-                if (e.wheelDeltaY < 0)
-                    zoom(-1);
-                if (e.wheelDeltaY > 0)
-                    zoom(1);
-                e.preventDefault();
-            }
-        })
+            var ctr = [e.pageY - container.Y, e.pageX - container.X];
+            if (e.wheelDeltaY < 0)
+                zoom(1/1.1, ctr);
+            if (e.wheelDeltaY > 0)
+                zoom(1.1, ctr);
+            e.preventDefault();
+        });
 
         document.getElementById("info").addEventListener("click", function() {
             document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"];

@@ -15,11 +15,7 @@
     right: 50%;
     top: 0;
     bottom: 0;
-    overflow: auto;
-    /* http://www.hughlashbrooke.com/two-methods-for-vertical-centering-in-css/ */
-    display: -webkit-box;
-    -webkit-box-pack: center;
-    -webkit-box-align: center;
+    overflow: hidden;
 }
 
 #across {
@@ -46,7 +42,7 @@
         right: 15px;
         bottom: 50%;
     }
-    
+
     #across {
         left: 0;
         right: 50%;
@@ -68,6 +64,8 @@
 
 #grid table {
     display: block;
+    position: absolute;
+    -webkit-transform-origin: top left;
     border: 2px solid black;
     color: black;
     background: white;
