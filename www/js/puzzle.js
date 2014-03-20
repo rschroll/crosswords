@@ -244,11 +244,11 @@ function initPuzzle(UI) {
             document.querySelector("#grid table").classList.remove("animate");
         }
 
-        function zoom(ratio, ctr) {
-            gridzoom *= ratio;
-            gridoffset = [ratio * gridoffset[0] + ctr[0] * (1 - ratio),
-                          ratio * gridoffset[1] + ctr[1] * (1 - ratio)];
-            fixView();
+        function zoom(ratio, e) {
+            var ctr = [e.pageY - container.Y, e.pageX - container.X];
+            gridzoom = startzoom * ratio;
+            gridoffset = [ratio * startoffset[0] + ctr[0] * (1 - ratio),
+                          ratio * startoffset[1] + ctr[1] * (1 - ratio)];
         }
 
         function loadDoc(surl, doc, sfill, completion) {
@@ -393,12 +393,13 @@ function initPuzzle(UI) {
         });
 
         document.getElementById("grid").addEventListener("wheel", function (e) {
-            var ctr = [e.pageY - container.Y, e.pageX - container.X];
+            setStart();
             if (e.wheelDeltaY < 0)
-                zoom(1/1.1, ctr);
+                zoom(1/1.1, e);
             if (e.wheelDeltaY > 0)
-                zoom(1.1, ctr);
+                zoom(1.1, e);
             e.preventDefault();
+            fixView();
         });
 
         var hammer = Hammer(document.getElementById("grid"), { prevent_default: true });
@@ -419,6 +420,15 @@ function initPuzzle(UI) {
             var coords = coordsFromID(el.id);
             if (!isNaN(coords[0]) && !isNaN(coords[1]) && !el.classList.contains("block"))
                 clickCell(coords[0], coords[1]);
+        });
+
+        hammer.on("transformstart", setStart);
+        hammer.on("transform", function (e) {
+            zoom(e.gesture.scale, e.gesture.center);
+            setTransform();
+        });
+        hammer.on("transformend", function (e) {
+            fixView(true);
         });
 
         document.querySelector("#grid table").addEventListener("webkitTransitionEnd", function (e) {
