@@ -310,6 +310,7 @@ function initPuzzle(UI) {
 
             selr = 0;
             selc = 0;
+            seldir = "across";
             while (puzzle.grid[selr][selc].type == "block")
                 selc += 1;
             document.querySelector("#puzzle-page").setAttribute("data-title", puzzle.metadata["title"] ||
