@@ -214,20 +214,20 @@ function initPuzzle(UI) {
             if (gridzoom < fitzoom)
                 gridzoom = fitzoom;
             if (container.width >= grid.width * gridzoom) {
-                gridoffset[1] = (container.width - grid.width * gridzoom)/2;
+                gridoffset[1] = Math.round((container.width - grid.width * gridzoom)/2);
             } else {
                 if (gridoffset[1] > 0)
                     gridoffset[1] = 0;
                 if (gridoffset[1] < container.width - grid.width * gridzoom)
-                    gridoffset[1] = container.width - grid.width * gridzoom;
+                    gridoffset[1] = Math.round(container.width - grid.width * gridzoom);
             }
             if (container.height >= grid.height * gridzoom) {
-                gridoffset[0] = (container.height - grid.height * gridzoom)/2;
+                gridoffset[0] = Math.round((container.height - grid.height * gridzoom)/2);
             } else {
                 if (gridoffset[0] > 0)
                     gridoffset[0] = 0;
                 if (gridoffset[0] < container.height - grid.height * gridzoom)
-                    gridoffset[0] = container.height - grid.height * gridzoom;
+                    gridoffset[0] = Math.round(container.height - grid.height * gridzoom);
             }
             setTransform();
         }
