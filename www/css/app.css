@@ -4,6 +4,12 @@
  * of the GPL. See the file LICENSE for full details.
  */
 
+body {
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    cursor: default;
+}
+
 [data-role="pagestack"] {
     position: absolute;
     left: 0;

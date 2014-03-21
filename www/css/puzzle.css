@@ -108,7 +108,7 @@
 
 #grid td.block {
     background: black;
-    cursor: normal;
+    cursor: default;
 }
 
 #grid td.circle{
