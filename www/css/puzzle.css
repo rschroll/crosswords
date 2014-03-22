@@ -53,11 +53,15 @@
     }
 }
 
+.clues {
+    border-top: none;
+}
+
 .clues ul {
     position: absolute;
     left: 0;
     right: 0;
-    top: 1.8rem;
+    top: 1.9rem;  /* Header line-height + bottom border */
     bottom: 0;
     overflow: auto;
 }
@@ -116,12 +120,16 @@
     background-size: contain;
 }
 
+#grid .letter {
+    line-height: 1.5em;
+}
+
 #grid .number {
     position: absolute;
     left: 0;
     top: 0;
     font-size: 65%;
-    margin-top: -15%;
+    margin-top: -0.15rem;
 }
 
 #grid .selCells {
