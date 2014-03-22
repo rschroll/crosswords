@@ -17,13 +17,18 @@ function initList(UI) {
             return strZero(d.getFullYear() % 100) + strZero(d.getMonth() + 1) + strZero(d.getDate());
         }
 
-        function lastTwoWeeks(fn) {
+        function eightDigitDate(d) {
+            return d.getFullYear() + strZero(d.getMonth() + 1) + strZero(d.getDate()) ;
+        }
+
+        function lastTwoWeeks(fn, skip) {
             return function () {
                 var date = new Date();
                 var retval = [];
 
                 for (var i=0; i<14; i++) {
-                    retval.push({ date: date.toDateString(), url: fn(date) });
+                    if (!skip || skip.indexOf(date.getDay()) == -1)
+                        retval.push({ date: date.toDateString(), url: fn(date) });
                     date.setDate(date.getDate() - 1);
                 }
                 return retval;
@@ -73,13 +78,24 @@ function initList(UI) {
                         sixDigitDate(date) + "-data.xml";
             }, 2),
             "Wall Street Journal": weekly(function (date) {
-                return "http://blogs.wsj.com/applets/wsjxwd" + date.getFullYear() +
-                        strZero(date.getMonth() + 1) + strZero(date.getDate()) + ".dat";
+                return "http://blogs.wsj.com/applets/wsjxwd" + eightDigitDate(date) + ".dat";
             }, 5),
             "WSJ Greater New York": weekly(function (date) {
                 return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
                         strZero(date.getDate()) + date.getFullYear() + ".dat";
-            }, 1)
+            }, 1),
+            "Thomas Joseph": lastTwoWeeks(function (date) {
+                return "http://puzzles.kingdigital.com/javacontent/clues/joseph/" +
+                        eightDigitDate(date) + ".txt";
+            }, [0]),
+            "Eugene Sheffer": lastTwoWeeks(function (date) {
+                return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
+                        eightDigitDate(date) + ".txt";
+            }, [0]),
+            "King Premier": weekly(function (date) {
+                return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
+                        eightDigitDate(date) + ".txt";
+            }, 0)
         };
 
         function clickPuzzle(el, url) {

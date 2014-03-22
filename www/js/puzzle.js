@@ -357,6 +357,10 @@ function initPuzzle(UI) {
                             json = WSJtoJSON(str);
                             break;
 
+                          case "txt":
+                            json = KingTXTtoJSON(str, url);
+                            break;
+
                           default:
                             error = "Unknown format (" + ext + ")";
                         }

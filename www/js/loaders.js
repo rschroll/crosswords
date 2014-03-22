@@ -196,3 +196,70 @@ function WSJtoJSON(str) {
     }
     return retval;
 }
+
+function KingTXTtoJSON(str, url) {
+    var retval = {
+        metadata: {},
+        grid: [],
+        across: [],
+        down: [],
+        ncells: 0
+    };
+    // No metadata in this format, so make up a title from the URL
+    var m = url.match(/clues\/(\w*)\/(\d{4})(\d{2})(\d{2}).txt/),
+        name = { joseph: "Thomas Joseph", sheffer: "Eugene Sheffer", premier: "King Premier" }[m[1]],
+        date = new Date(m[2] + "-" + m[3] + "-" + m[4]);
+    // date is interpreted as midnight in UTC, but will print in current time zone, so shift it
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+    retval.metadata["title"] = name + " Crossword—" + date.toDateString();
+
+    var parts = str.split("{"),
+        numbers = parts[1].split("|\r\n").map(function (s) {
+            return s.trim().split(/ +/).map(function (n) {
+                return parseInt(n);
+            })
+        }),
+        letters = parts[2].split("|\r\n").map(function (s) {
+            return s.trim().split(/ +/);
+        });
+    retval.nrow = numbers.length;
+    retval.ncol = numbers[0].length;
+    for (var i=0; i<retval.nrow; i++) {
+        retval.grid[i] = [];
+        for (var j=0; j<retval.ncol; j++) {
+            if (numbers[i][j] != -1) {
+                retval.ncells += 1;
+                retval.grid[i][j] = {
+                    solution: letters[i][j],
+                    number: numbers[i][j] || null
+                };
+                if (j == 0 || retval.grid[i][j-1].type == "block") {
+                    retval.grid[i][j].across = retval.grid[i][j].number;
+                } else {
+                    retval.grid[i][j].across = retval.grid[i][j-1].across;
+                }
+                if (i==0 || retval.grid[i-1][j].type == "block") {
+                    retval.grid[i][j].down = retval.grid[i][j].number;
+                } else {
+                    retval.grid[i][j].down = retval.grid[i-1][j].down;
+                }
+            } else {
+                retval.grid[i][j] = { type: "block" };
+            }
+        }
+    }
+
+    function separateClues(list) {
+        return list.split("|\r\n").map(function (s) {
+            var m = s.match(/([0-9]+)\. (.*\S)/);
+            return [parseInt(m[1]), m[2]];
+        });
+    }
+    var acrossClues = separateClues(parts[3]);
+    for (var i=0; i<acrossClues.length; i++)
+        retval.across[acrossClues[i][0]] = acrossClues[i][1];
+    var downClues = separateClues(parts[4]);
+    for (var i=0; i<downClues.length; i++)
+        retval.down[downClues[i][0]] = downClues[i][1];
+    return retval;
+}
