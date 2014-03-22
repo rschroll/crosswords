@@ -30,26 +30,32 @@ function initList(UI) {
             }
         }
 
+        function weekly(fn, day) {
+            return function () {
+                var date = new Date();
+                var retval = [];
+
+                var delta = day - date.getDay();
+                if (delta > 0)
+                    delta -= 7;
+                date.setDate(date.getDate() + delta);
+                for (var i=0; i<10; i++) {
+                    retval.push({ date: date.toDateString(), url: fn(date) });
+                    date.setDate(date.getDate() - 7);
+                }
+                return retval;
+            }
+        }
+
         var urlGens = {
             "Washington Post": lastTwoWeeks(function (date) {
                 return "http://cdn.games.arkadiumhosted.com/washingtonpost/crossynergy/cs" +
                         sixDigitDate(date) + ".jpz";
             }),
-            "Washington Post Puzzler": function () {
-                var date = new Date();
-                var retval = [];
-
-                date.setDate(date.getDate() - date.getDay());  // Last Sunday
-                for (var i=0; i<10; i++) {
-                    retval.push({
-                        date: date.toDateString(),
-                        url: "http://cdn.games.arkadiumhosted.com/washingtonpost/puzzler/puzzle_" +
-                                sixDigitDate(date) + ".xml"
-                    });
-                    date.setDate(date.getDate() - 7);
-                }
-                return retval;
-            },
+            "Washington Post Puzzler": weekly(function (date) {
+                return "http://cdn.games.arkadiumhosted.com/washingtonpost/puzzler/puzzle_" +
+                        sixDigitDate(date) + ".xml";
+            }, 0),
             "LA Times": lastTwoWeeks(function (date) {
                 return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
                         sixDigitDate(date) + ".xml";
@@ -61,7 +67,11 @@ function initList(UI) {
             "Universal": lastTwoWeeks(function (date) {
                 return "http://picayune.uclick.com/comics/fcx/data/fcx" +
                         sixDigitDate(date) + "-data.xml";
-            })
+            }),
+            "Jonesin' Crosswords": weekly(function (date) {
+                return "http://picayune.uclick.com/comics/jnz/data/jnz" +
+                        sixDigitDate(date) + "-data.xml";
+            }, 2)
         };
 
         function clickPuzzle(el, url) {

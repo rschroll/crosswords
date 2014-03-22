@@ -79,7 +79,8 @@ function JPZtoJSON(doc) {
 function UClickXMLtoJSON(doc) {
 
     function getValue(tagname) {
-        return doc.querySelector(tagname).getAttribute("v");
+        var el = doc.querySelector(tagname);
+        return el ? el.getAttribute("v") : null;
     }
 
     var retval = {
@@ -90,7 +91,8 @@ function UClickXMLtoJSON(doc) {
         ncells: 0
     };
     retval.metadata["title"] = getValue("Title");
-    retval.metadata["creator"] = getValue("Author") + " / Ed. " + getValue("Editor");
+    var ed = getValue("Editor");
+    retval.metadata["creator"] = getValue("Author") + (ed ? " / Ed. " + getValue("Editor") : "");
     retval.metadata["copyright"] = getValue("Copyright");
     retval.metadata["description"] = getValue("Category");
 
