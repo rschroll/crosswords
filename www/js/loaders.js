@@ -75,3 +75,68 @@ function JPZtoJSON(doc) {
 
     return retval;
 }
+
+function UClickXMLtoJSON(doc) {
+
+    function getValue(tagname) {
+        return doc.querySelector(tagname).getAttribute("v");
+    }
+
+    var retval = {
+        metadata: {},
+        grid: [],
+        across: [],
+        down: [],
+        ncells: 0
+    };
+    retval.metadata["title"] = getValue("Title");
+    retval.metadata["creator"] = getValue("Author") + " / Ed. " + getValue("Editor");
+    retval.metadata["copyright"] = getValue("Copyright");
+    retval.metadata["description"] = getValue("Category");
+
+    retval.ncol = parseInt(getValue("Width"));
+    retval.nrow = parseInt(getValue("Height"));
+    var letters = getValue("AllAnswer");
+    for (var i=0; i<retval.nrow; i++) {
+        retval.grid[i] = [];
+        for (var j=0; j<retval.ncol; j++) {
+            var letter = letters[i*retval.nrow + j];
+            retval.grid[i][j] = {
+                solution: (letter == "-") ? null : letter,
+                type: (letter == "-") ? "block" : null
+            };
+            if (letter != "-")
+                retval.ncells += 1;
+        }
+    }
+
+    var acrossClues = doc.querySelectorAll("across *");
+    for (var i=0; i<acrossClues.length; i++) {
+        var clue = acrossClues[i];
+        var number = parseInt(clue.getAttribute("cn"));
+        retval.across[number] = decodeURIComponent(clue.getAttribute("c"));
+        var n = parseInt(clue.getAttribute("n")) - 1,
+            x = n % retval.nrow,
+            y = Math.floor(n / retval.nrow),
+            l = clue.getAttribute("a").length;
+        retval.grid[y][x].number = number;
+        for (var j=0; j<l; j++)
+            retval.grid[y][x+j].across = number;
+    }
+
+    var downClues = doc.querySelectorAll("down *");
+    for (var i=0; i<downClues.length; i++) {
+        var clue = downClues[i];
+        var number = parseInt(clue.getAttribute("cn"));
+        retval.down[number] = decodeURIComponent(clue.getAttribute("c"));
+        var n = parseInt(clue.getAttribute("n")) - 1,
+            x = n % retval.nrow,
+            y = Math.floor(n / retval.nrow),
+            l = clue.getAttribute("a").length;
+        retval.grid[y][x].number = number;
+        for (var j=0; j<l; j++)
+            retval.grid[y+j][x].down = number;
+    }
+
+    return retval;
+}

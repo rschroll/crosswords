@@ -17,15 +17,51 @@ function initList(UI) {
             return strZero(d.getFullYear() % 100) + strZero(d.getMonth() + 1) + strZero(d.getDate());
         }
 
+        function lastTwoWeeks(fn) {
+            return function () {
+                var date = new Date();
+                var retval = [];
+
+                for (var i=0; i<14; i++) {
+                    retval.push({ date: date.toDateString(), url: fn(date) });
+                    date.setDate(date.getDate() - 1);
+                }
+                return retval;
+            }
+        }
+
         var urlGens = {
-            "Washington Post": function (date) {
+            "Washington Post": lastTwoWeeks(function (date) {
                 return "http://cdn.games.arkadiumhosted.com/washingtonpost/crossynergy/cs" +
                         sixDigitDate(date) + ".jpz";
+            }),
+            "Washington Post Puzzler": function () {
+                var date = new Date();
+                var retval = [];
+
+                date.setDate(date.getDate() - date.getDay());  // Last Sunday
+                for (var i=0; i<10; i++) {
+                    retval.push({
+                        date: date.toDateString(),
+                        url: "http://cdn.games.arkadiumhosted.com/washingtonpost/puzzler/puzzle_" +
+                                sixDigitDate(date) + ".xml"
+                    });
+                    date.setDate(date.getDate() - 7);
+                }
+                return retval;
             },
-            "LA Times": function (date) {
+            "LA Times": lastTwoWeeks(function (date) {
                 return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
                         sixDigitDate(date) + ".xml";
-            }
+            }),
+            "USA Today": lastTwoWeeks(function (date) {
+                return "http://picayune.uclick.com/comics/usaon/data/usaon" +
+                        sixDigitDate(date) + "-data.xml";
+            }),
+            "Universal": lastTwoWeeks(function (date) {
+                return "http://picayune.uclick.com/comics/fcx/data/fcx" +
+                        sixDigitDate(date) + "-data.xml";
+            })
         };
 
         function clickPuzzle(el, url) {
@@ -53,8 +89,7 @@ function initList(UI) {
             }
         }
 
-        function appendDateNew(dates, d) {
-            var dstr = d.toDateString();
+        function appendDateNew(dates, dstr) {
             return function (url) {
                 dates.append(dstr, "", null, clickPuzzle, url);
             }
@@ -62,11 +97,9 @@ function initList(UI) {
 
         function listSource(el, urlFn) {
             var dates = readyLists(el);
-            var d = new Date();
-            for (var i=0; i<14; i++) {
-                database.getPuzzle(urlFn(d), appendDateSaved(dates), appendDateNew(dates, d));
-                d.setDate(d.getDate() - 1);
-            }
+            var urls = urlFn();
+            for (var i=0; i<urls.length; i++)
+                database.getPuzzle(urls[i].url, appendDateSaved(dates), appendDateNew(dates, urls[i].date));
         }
 
         function listSaved(el, solved) {

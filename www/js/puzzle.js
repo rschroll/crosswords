@@ -341,10 +341,12 @@ function initPuzzle(UI) {
                         var doc = parser.parseFromString(str.replace("&nbsp;", " "), "text/xml"),
                             rootname = doc.firstChild.nodeName,
                             json;
-                        if (rootname == "crossword-compiler")
+                        if (rootname == "crossword-compiler" || rootname == "crossword-compiler-applet")
                             json = JPZtoJSON(doc);
+                        else if (rootname == "crossword")
+                            json = UClickXMLtoJSON(doc);
                         else
-                            loadError(url, "Unknown format");
+                            loadError(url, "Unknown format (" + rootname + ")");
                         loadDoc(url, json);
                     } else {
                         loadError(url, "Server status " + this.status);
