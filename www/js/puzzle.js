@@ -323,8 +323,9 @@ function initPuzzle(UI) {
 
         function loadRemote(url) {
             var fn = url.split("/").slice(-1)[0];
+            var ext = fn.slice(-3);
             var xhr = new XMLHttpRequest();
-            var type = (fn.slice(-3) == "jpz") ? "arraybuffer" : "text";
+            var type = (ext == "jpz") ? "arraybuffer" : "text";
             xhr.open("GET", url);
             xhr.responseType = type;
 
@@ -338,16 +339,31 @@ function initPuzzle(UI) {
                         } else {
                             var str = this.response;
                         }
-                        var doc = parser.parseFromString(str.replace("&nbsp;", " "), "text/xml"),
-                            rootname = doc.firstChild.nodeName,
-                            json;
-                        if (rootname == "crossword-compiler" || rootname == "crossword-compiler-applet")
-                            json = JPZtoJSON(doc);
-                        else if (rootname == "crossword")
-                            json = UClickXMLtoJSON(doc);
+                        var json, error;
+                        switch (ext) {
+                          case "jpz":
+                          case "xml":
+                            var doc = parser.parseFromString(str.replace("&nbsp;", " "), "text/xml"),
+                                rootname = doc.firstChild.nodeName;
+                            if (rootname == "crossword-compiler" || rootname == "crossword-compiler-applet")
+                                json = JPZtoJSON(doc);
+                            else if (rootname == "crossword")
+                                json = UClickXMLtoJSON(doc);
+                            else
+                                error = "Unknown format (" + rootname + ")";
+                            break;
+
+                          case "dat":
+                            json = WSJtoJSON(str);
+                            break;
+
+                          default:
+                            error = "Unknown format (" + ext + ")";
+                        }
+                        if (!error)
+                            loadDoc(url, json);
                         else
-                            loadError(url, "Unknown format (" + rootname + ")");
-                        loadDoc(url, json);
+                            loadError(url, error);
                     } else {
                         loadError(url, "Server status " + this.status);
                     }
@@ -452,10 +468,10 @@ function initPuzzle(UI) {
         });
 
         document.getElementById("info").addEventListener("click", function() {
-            document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"];
-            document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"];
-            document.querySelector("#info-description").innerHTML = puzzle.metadata["description"];
-            document.querySelector("#info-copyright").innerHTML = puzzle.metadata["copyright"];
+            document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";
+            document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"] || "";
+            document.querySelector("#info-description").innerHTML = puzzle.metadata["description"] || "";
+            document.querySelector("#info-copyright").innerHTML = puzzle.metadata["copyright"] || "";
             UI.dialog("info-dialog").show();
         });
 

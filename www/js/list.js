@@ -71,7 +71,15 @@ function initList(UI) {
             "Jonesin' Crosswords": weekly(function (date) {
                 return "http://picayune.uclick.com/comics/jnz/data/jnz" +
                         sixDigitDate(date) + "-data.xml";
-            }, 2)
+            }, 2),
+            "Wall Street Journal": weekly(function (date) {
+                return "http://blogs.wsj.com/applets/wsjxwd" + date.getFullYear() +
+                        strZero(date.getMonth() + 1) + strZero(date.getDate()) + ".dat";
+            }, 5),
+            "WSJ Greater New York": weekly(function (date) {
+                return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
+                        strZero(date.getDate()) + date.getFullYear() + ".dat";
+            }, 1)
         };
 
         function clickPuzzle(el, url) {
