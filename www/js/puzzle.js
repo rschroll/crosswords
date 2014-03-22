@@ -338,14 +338,26 @@ function initPuzzle(UI) {
                         } else {
                             var str = this.response;
                         }
-                        var doc = parser.parseFromString(str.replace("&nbsp;", " "), "text/xml");
-                        loadDoc(url, JPZtoJSON(doc));
+                        var doc = parser.parseFromString(str.replace("&nbsp;", " "), "text/xml"),
+                            rootname = doc.firstChild.nodeName,
+                            json;
+                        if (rootname == "crossword-compiler")
+                            json = JPZtoJSON(doc);
+                        else
+                            loadError(url, "Unknown format");
+                        loadDoc(url, json);
                     } else {
-                        console.log("Problems loading puzzle!")
+                        loadError(url, "Server status " + this.status);
                     }
                 }
             }
             xhr.send();
+        }
+
+        function loadError(url, message) {
+            document.querySelector("#error-url").innerHTML = url;
+            document.querySelector("#error-message").innerHTML = message;
+            UI.dialog("load-error-dialog").show();
         }
 
         self.loadURL = function (url) {
@@ -470,6 +482,10 @@ function initPuzzle(UI) {
 
         document.querySelector("#info-dialog button").addEventListener("click", function() {
             UI.dialog("info-dialog").hide();
+        });
+
+       document.querySelector("#load-error-dialog button").addEventListener("click", function() {
+            UI.dialog("load-error-dialog").hide();
         });
 
     })(window.puzzle = window.puzzle || {})

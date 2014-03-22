@@ -180,3 +180,16 @@
 #info-copyright {
     font-size: 0.7rem;
 }
+
+#load-error-dialog p {
+    margin-top: 1rem;
+}
+
+#error-message::before, #error-message::after {
+    content: "\"";
+}
+
+#error-url {
+    font-style: italic;
+    word-wrap: break-word;
+}
