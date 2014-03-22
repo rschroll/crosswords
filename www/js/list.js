@@ -24,31 +24,25 @@ function initList(UI) {
         function lastTwoWeeks(fn, skip) {
             return function () {
                 var date = new Date();
-                var retval = [];
-
                 for (var i=0; i<14; i++) {
                     if (!skip || skip.indexOf(date.getDay()) == -1)
-                        retval.push({ date: date.toDateString(), url: fn(date) });
+                        appendDate(fn(date), date.toDateString());
                     date.setDate(date.getDate() - 1);
                 }
-                return retval;
             }
         }
 
         function weekly(fn, day) {
             return function () {
                 var date = new Date();
-                var retval = [];
-
                 var delta = day - date.getDay();
                 if (delta > 0)
                     delta -= 7;
                 date.setDate(date.getDate() + delta);
                 for (var i=0; i<10; i++) {
-                    retval.push({ date: date.toDateString(), url: fn(date) });
+                    appendDate(fn(date), date.toDateString());
                     date.setDate(date.getDate() - 7);
                 }
-                return retval;
             }
         }
 
@@ -113,34 +107,32 @@ function initList(UI) {
                     selected.parentElement.classList.remove("selected");
                 el.parentElement.classList.add("selected");
             }
-            return dates;
         }
 
-        function appendDateSaved(dates) {
-            return function (url, puzzle, fill, completion) {
-                var percent = (completion*100).toFixed(0) + "%";
-                dates.append(puzzle.metadata["title"], percent, null, clickPuzzle, url);
-            }
+        function appendDateSaved(url, puzzle, fill, completion) {
+            var percent = (completion*100).toFixed(0) + "%";
+            UI.list("[id='dates']").append(puzzle.metadata["title"], percent, null, clickPuzzle, url);
         }
 
-        function appendDateNew(dates, dstr) {
+        function appendDateNew(dstr) {
             return function (url) {
-                dates.append(dstr, "", null, clickPuzzle, url);
+                UI.list("[id='dates']").append(dstr, "", null, clickPuzzle, url);
             }
+        }
+
+        function appendDate(url, dstr) {
+            database.getPuzzle(url, appendDateSaved, appendDateNew(dstr));
         }
 
         function listSource(el, urlFn) {
-            var dates = readyLists(el);
-            var urls = urlFn();
-            for (var i=0; i<urls.length; i++)
-                database.getPuzzle(urls[i].url, appendDateSaved(dates), appendDateNew(dates, urls[i].date));
+            readyLists(el);
+            urlFn();
         }
 
         function listSaved(el, solved) {
-            var dates = readyLists(el);
-            dates.removeAllItems();
+            readyLists(el);
             document.querySelector("#dates").scrollTop = 0;
-            database.forEach(solved, appendDateSaved(dates));
+            database.forEach(solved, appendDateSaved);
         }
 
         function init() {
