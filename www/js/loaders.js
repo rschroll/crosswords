@@ -263,3 +263,60 @@ function KingTXTtoJSON(str, url) {
         retval.down[downClues[i][0]] = downClues[i][1];
     return retval;
 }
+
+function NYTtoJSON(str) {
+    var retval = {
+        metadata: {},
+        grid: [],
+        across: [],
+        down: [],
+        ncells: 0
+    };
+    var nyt = JSON.parse(str).results[0];
+    retval.metadata["title"] = "NYT " + nyt.puzzle_meta.publishType + "—" + nyt.puzzle_meta.printDate;
+    retval.metadata["creator"] = nyt.puzzle_meta.author + " / Ed. " + nyt.puzzle_meta.editor;
+    retval.metadata["copyright"] = nyt.puzzle_meta.copyright;
+    retval.metadata["description"] = nyt.puzzle_meta.notes;
+
+    retval.nrow = nyt.puzzle_meta.height;
+    retval.ncol = nyt.puzzle_meta.width;
+    for (var i=0; i<retval.nrow; i++) {
+        retval.grid[i] = [];
+        for (var j=0; j<retval.ncol; j++) {
+            var letter = nyt.puzzle_data.answers[i*retval.nrow + j];
+            retval.grid[i][j] = letter ? { solution: letter } : { type: "block" };
+            if (letter)
+                retval.ncells += 1;
+        }
+    }
+
+    var elem = document.createElement("div");
+    function entityDecode(input) {
+        elem.innerHTML = input;
+        return elem.childNodes[0].nodeValue;
+    }
+    var acrossClues = nyt.puzzle_data.clues.A;
+    for (var i=0; i<acrossClues.length; i++) {
+        var clue = acrossClues[i];
+        retval.across[clue.clueNum] = entityDecode(clue.value);
+        var x1 = clue.clueStart % retval.nrow,
+            x2 = clue.clueEnd % retval.nrow,
+            y = Math.floor(clue.clueStart / retval.nrow);
+        retval.grid[y][x1].number = clue.clueNum;
+        for (var x=x1; x<=x2; x++)
+            retval.grid[y][x].across = clue.clueNum;
+    }
+
+    var downClues = nyt.puzzle_data.clues.D;
+    for (var i=0; i<downClues.length; i++) {
+        var clue = downClues[i];
+        retval.down[clue.clueNum] = entityDecode(clue.value);
+        var x = clue.clueStart % retval.nrow,
+            y1 = Math.floor(clue.clueStart / retval.nrow),
+            y2 = Math.floor(clue.clueEnd / retval.nrow);
+        retval.grid[y1][x].number = clue.clueNum;
+        for (var y=y1; y<=y2; y++)
+            retval.grid[y][x].down = clue.clueNum;
+    }
+    return retval;
+}

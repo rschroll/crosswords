@@ -89,7 +89,39 @@ function initList(UI) {
             "King Premier": weekly(function (date) {
                 return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
                         eightDigitDate(date) + ".txt";
-            }, 0)
+            }, 0),
+            "New York Times Classics": function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://www.nytimes.com/svc/crosswords/v2/puzzles-for-section-front.json");
+                xhr.responseType = "text";
+                //xhr.withCredentials = true;
+
+                function error(msg) {
+                    console.log(msg);
+                }
+
+                xhr.onreadystatechange = function(e) {
+                    if (this.readyState != 4 )
+                        return;
+
+                    if (this.status != 200)
+                        return error("Status: " + this.status);
+
+                    var resp = JSON.parse(this.response);
+                    if (resp.status != "OK")
+                        return error("JSON status: " + resp.status);
+
+                    var puzzles = resp.results.free_puzzles[200].results;
+                    for (var i=0; i<puzzles.length; i++) {
+                        var date = new Date(puzzles[i].print_date);
+                        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                        var url = "http://www.nytimes.com/svc/crosswords/v2/puzzle/daily-" +
+                                    puzzles[i].print_date + ".json";
+                        appendDate(url, date.toDateString());
+                    }
+                }
+                xhr.send();
+            }
         };
 
         function clickPuzzle(el, url) {

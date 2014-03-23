@@ -361,6 +361,10 @@ function initPuzzle(UI) {
                             json = KingTXTtoJSON(str, url);
                             break;
 
+                          case "son":  // Actually json, but truncated by above
+                            json = NYTtoJSON(str);
+                            break;
+
                           default:
                             error = "Unknown format (" + ext + ")";
                         }
