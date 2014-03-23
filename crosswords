@@ -1,0 +1,78 @@
+#!/usr/bin/env python
+
+# Copyright 2014 Robert Schroll
+#
+# This file is part of Crosswords and is distributed under the terms
+# of the GPL. See the file LICENSE for full details.
+
+import os
+# Adjust libraries with GI_TYPELIB_PATH
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import WebKit
+
+SCROLL_SCRIPT = """
+function gtkScrollEvent(dir, x, y) {
+    var grid = document.querySelector("#grid");
+    if (grid.parentElement.querySelector(":hover") == grid) {
+        var event = document.createEvent("MouseEvents");
+        event.initMouseEvent("wheel", true, true, window, 0,
+                             0, 0, x, y,
+                             false, false, false, false,
+                             0, null);
+        event.wheelDeltaY = dir;
+        grid.dispatchEvent(event);
+    }
+}
+"""
+
+DIR_MAP = {
+    Gdk.ScrollDirection.UP: 1,
+    Gdk.ScrollDirection.DOWN: -1,
+    Gdk.ScrollDirection.LEFT: 0,
+    Gdk.ScrollDirection.RIGHT: 0,
+    Gdk.ScrollDirection.SMOOTH: 0
+}
+
+def make_window():
+    win = Gtk.Window(default_width=900, default_height=600)
+    sw = Gtk.ScrolledWindow()
+    win.add(sw)
+    view = WebKit.WebView()
+    sw.add(view)
+    win.connect('destroy', Gtk.main_quit)
+    view.connect('scroll-event', on_scroll_event)
+    view.connect('notify::load-status', on_load)
+    win.set_title('Crosswords')
+    win.show_all()
+
+    view.get_settings().set_property('enable-developer-extras', True)
+    view.get_settings().set_property('enable-universal-access-from-file-uris', True)
+    inspector = view.get_inspector()
+    inspector.connect('inspect-web-view', activate_inspector)
+
+    view.load_uri('file://' + os.path.join(os.path.dirname(os.path.abspath(__file__)), 'www', 'index.html'))
+
+def on_scroll_event(view, event):
+    direction = DIR_MAP[event.direction]
+    if direction:
+        view.execute_script("gtkScrollEvent(%i, %f, %f)" % (direction, event.x, event.y))
+
+def on_load(view, status_enum):
+    if view.get_property('load-status') == WebKit.LoadStatus.FINISHED:
+        view.execute_script(SCROLL_SCRIPT)
+
+def activate_inspector(inspector, target):
+    window = Gtk.Window(default_width=900, default_height=600)
+    scrolled = Gtk.ScrolledWindow()
+    window.add(scrolled)
+    inspector_view = WebKit.WebView()
+    scrolled.add(inspector_view)
+    window.show_all()
+    window.connect('delete-event', lambda x,y: inspector.close())
+    return inspector_view
+
+
+if __name__ == '__main__':
+    make_window()
+    Gtk.main()
