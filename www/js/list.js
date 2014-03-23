@@ -97,7 +97,7 @@ function initList(UI) {
                 //xhr.withCredentials = true;
 
                 function error(msg) {
-                    console.log(msg);
+                    noDates("Could not load puzzle list (" + msg + ")");
                 }
 
                 xhr.onreadystatechange = function(e) {
@@ -105,7 +105,7 @@ function initList(UI) {
                         return;
 
                     if (this.status != 200)
-                        return error("Status: " + this.status);
+                        return error("Server status: " + this.status);
 
                     var resp = JSON.parse(this.response);
                     if (resp.status != "OK")
@@ -129,8 +129,8 @@ function initList(UI) {
         }
 
         function readyLists(el) {
-            var dates = UI.list("[id='dates']");
-            dates.removeAllItems();
+            UI.list("[id='dates']").removeAllItems();
+            document.querySelector("#dates-notes").style.display = "none";
 
             var selected = document.querySelector("#sources .selected a");
             if (selected != el) {
@@ -156,6 +156,12 @@ function initList(UI) {
             database.getPuzzle(url, appendDateSaved, appendDateNew(dstr));
         }
 
+        function noDates(msg) {
+            var notes = document.querySelector("#dates-notes");
+            notes.style.display = "block";
+            notes.children[0].textContent = msg;
+        }
+
         function listSource(el, urlFn) {
             readyLists(el);
             urlFn();
@@ -164,7 +170,7 @@ function initList(UI) {
         function listSaved(el, solved) {
             readyLists(el);
             document.querySelector("#dates").scrollTop = 0;
-            database.forEach(solved, appendDateSaved);
+            database.forEach(solved, appendDateSaved, noDates);
         }
 
         function init() {

@@ -22,6 +22,31 @@
     overflow: auto;
 }
 
+#dates-notes {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    display: none;
+}
+
+#dates-notes::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    width: 0.1rem;
+    height: 100%;
+    margin-left: -0.1rem;
+}
+
+#dates-notes span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 50%;
+}
+
 #list-page [data-role="footer"] {
     display: none !important;
 }
