@@ -52,7 +52,7 @@ Ubuntu touch devices.  Foremost is that there is no way to trigger
 the on-screen keyboard ([#1296462][1296462]).  Without a way to
 enter letters, doing crosswords is difficult.  Additional issues
 include [#1296463][1296463], [#1296468][1296468], and
-[#1296469][1296462].
+[#1296469][1296469].
 
 While actually playing on a touch device will be an exercise in
 frustration, testing and bug-hunting would be very useful,
