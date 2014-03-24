@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>{{ page.title }}</title>
+    <style>
+      body {
+        background: #ededf0 url("{{ site.baseurl }}/ubuntu/img/background_paper@30.png") repeat;
+        font-family: "Ubuntu", sans-serif;
+        max-width: 40em;
+        margin: auto;
+      }
+      h1 {
+        text-align: center;
+      }
+      h1::before {
+        content: "";
+        display: inline-block;
+        width: 75px;
+        height: 75px;
+        margin-right: 15px;
+        background-image: url("{{ site.baseurl }}/crosswords.svg");
+        background-size: contain;
+        vertical-align: middle;
+      }
+      img[title="screenshot"] {
+        max-width: 100%;
+        border: 1px solid #666;
+      }
+    </style>
+  </head>
+
+  <body>
+
+{{ content }}
+
+  </body>
+</html>
