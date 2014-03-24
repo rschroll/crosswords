@@ -58,70 +58,7 @@ function initList(UI) {
             "LA Times": lastTwoWeeks(function (date) {
                 return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
                         sixDigitDate(date) + ".xml";
-            }),
-            "USA Today": lastTwoWeeks(function (date) {
-                return "http://picayune.uclick.com/comics/usaon/data/usaon" +
-                        sixDigitDate(date) + "-data.xml";
-            }),
-            "Universal": lastTwoWeeks(function (date) {
-                return "http://picayune.uclick.com/comics/fcx/data/fcx" +
-                        sixDigitDate(date) + "-data.xml";
-            }),
-            "Jonesin' Crosswords": weekly(function (date) {
-                return "http://picayune.uclick.com/comics/jnz/data/jnz" +
-                        sixDigitDate(date) + "-data.xml";
-            }, 2),
-            "Wall Street Journal": weekly(function (date) {
-                return "http://blogs.wsj.com/applets/wsjxwd" + eightDigitDate(date) + ".dat";
-            }, 5),
-            "WSJ Greater New York": weekly(function (date) {
-                return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
-                        strZero(date.getDate()) + date.getFullYear() + ".dat";
-            }, 1),
-            "Thomas Joseph": lastTwoWeeks(function (date) {
-                return "http://puzzles.kingdigital.com/javacontent/clues/joseph/" +
-                        eightDigitDate(date) + ".txt";
-            }, [0]),
-            "Eugene Sheffer": lastTwoWeeks(function (date) {
-                return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
-                        eightDigitDate(date) + ".txt";
-            }, [0]),
-            "King Premier": weekly(function (date) {
-                return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
-                        eightDigitDate(date) + ".txt";
-            }, 0),
-            "New York Times Classics": function () {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "http://www.nytimes.com/svc/crosswords/v2/puzzles-for-section-front.json");
-                xhr.responseType = "text";
-                //xhr.withCredentials = true;
-
-                function error(msg) {
-                    noDates("Could not load puzzle list (" + msg + ")");
-                }
-
-                xhr.onreadystatechange = function(e) {
-                    if (this.readyState != 4 )
-                        return;
-
-                    if (this.status != 200)
-                        return error("Server status: " + this.status);
-
-                    var resp = JSON.parse(this.response);
-                    if (resp.status != "OK")
-                        return error("JSON status: " + resp.status);
-
-                    var puzzles = resp.results.free_puzzles[200].results;
-                    for (var i=0; i<puzzles.length; i++) {
-                        var date = new Date(puzzles[i].print_date);
-                        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-                        var url = "http://www.nytimes.com/svc/crosswords/v2/puzzle/daily-" +
-                                    puzzles[i].print_date + ".json";
-                        appendDate(url, date.toDateString());
-                    }
-                }
-                xhr.send();
-            }
+            })
         };
 
         function clickPuzzle(el, url) {
