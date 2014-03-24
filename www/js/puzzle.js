@@ -24,6 +24,8 @@ function initPuzzle(UI) {
         var grid = { width: 0, height: 0 };
         var solved = false;
 
+        var transformName = (document.body.style.transform == "") ? "transform" : "webkitTransform";
+
         function coordsFromID(id) {
             var coords = id.slice(1).split("c");
             return [parseInt(coords[0]), parseInt(coords[1])];
@@ -126,7 +128,7 @@ function initPuzzle(UI) {
             if (v == "solve") v = puzzle.grid[y][x].solution;
             fill[y][x] = v;
             var el = getCellEl(y, x, " .letter");
-            el.innerText = v;
+            el.textContent = v;
             el.classList.remove("error");
             if (!skipcheck)
                 checkAndSave();
@@ -233,7 +235,7 @@ function initPuzzle(UI) {
         }
 
         function setTransform() {
-            document.querySelector("#grid table").style.webkitTransform =
+            document.querySelector("#grid table").style[transformName] =
                 "matrix(" + gridzoom + ", 0, 0, " + gridzoom + ", " +
                 gridoffset[1] + ", " + gridoffset[0] + ")";
         }
@@ -432,10 +434,11 @@ function initPuzzle(UI) {
         });
 
         document.getElementById("grid").addEventListener("wheel", function (e) {
+            var deltaY = (e.deltaY != undefined) ? e.deltaY : -e.wheelDeltaY
             setStart();
-            if (e.wheelDeltaY < 0)
+            if (deltaY > 0)
                 zoom(1/1.1, e);
-            if (e.wheelDeltaY > 0)
+            if (deltaY < 0)
                 zoom(1.1, e);
             e.preventDefault();
             fixView();
@@ -470,10 +473,12 @@ function initPuzzle(UI) {
             fixView(true);
         });
 
-        document.querySelector("#grid table").addEventListener("webkitTransitionEnd", function (e) {
+        function onTransitionEnd(e) {
             if (e.propertyName == "transform" || e.propertyName == "-webkit-transform")
                 e.target.classList.remove("animate");
-        });
+        }
+        document.querySelector("#grid table").addEventListener("webkitTransitionEnd", onTransitionEnd);
+        document.querySelector("#grid table").addEventListener("transitionend", onTransitionEnd);
 
         document.getElementById("info").addEventListener("click", function() {
             document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";

@@ -69,6 +69,7 @@
 #grid table {
     display: block;
     position: absolute;
+    transform-origin: top left;
     -webkit-transform-origin: top left;
     border: 2px solid black;
     color: black;
