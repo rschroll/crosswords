@@ -31,7 +31,8 @@ git clone https://github.com/rschroll/crosswords.git
 If you're not a git person, you can download Crosswords as a
 [zip file][2].
 
-Alternatively, you can download it as a [click package][3].
+Alternatively, you can download it as a [click package][3] or from the
+Ubuntu click store.
 
 [1]: https://github.com/rschroll/crosswords
 [2]: https://github.com/rschroll/crosswords/archive/master.zip
@@ -47,12 +48,19 @@ word so well.  Here are some notes that might help:
 
 ### On devices (and emulators)
 
-There are a number of bugs that keep Crosswords from running well on
-Ubuntu touch devices.  Foremost is that there is no way to trigger
-the on-screen keyboard ([#1296462][1296462]).  Without a way to
-enter letters, doing crosswords is difficult.  Additional issues
-include [#1296463][1296463], [#1296468][1296468], and
-[#1296469][1296469].
+There are several bugs that keep Crosswords from running well on Ubuntu
+touch devices.  First, the on-screen keyboard will cover the bottom
+section of the app.  This has been reported upstream
+([#1296463][1296463]), and there is a fix available.  It has not been
+merged in yet, so you'll have to get by without seeing the last few
+clues.  Additionally, clicks on buttons in the toolbar are not
+registered.  This has also been reported ([#1296469][1296469]), but
+there is no fix yet.
+
+Crosswords has work-arounds in place to deal with the on-screen keyboard
+not appearing ([#1296462][1296462]) and lists not scrolling
+([#1296468][1296468]).  It's not unlikely that you'll see some odd
+behavior in these areas.
 
 While actually playing on a touch device will be an exercise in
 frustration, testing and bug-hunting would be very useful,
