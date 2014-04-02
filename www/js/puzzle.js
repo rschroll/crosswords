@@ -416,6 +416,12 @@ function initPuzzle(UI) {
                     seldir = dir;
                     moveCursor(inc, true);
                 }
+            } else if (e.keyCode == 35 || e.keyCode == 36) { // end, home
+                var clue = document.querySelector("#" + seldir + " .selClue"),
+                    cells = document.querySelectorAll("." + clue.id),
+                    cell = cells[(e.keyCode == 35) ? cells.length - 1 : 0],
+                    coords = coordsFromID(cell.id);
+                selectCell(coords[0], coords[1]);
             } else if (e.keyCode == 8) { // backspace
                 if (fill[selr][selc] == " ")
                     moveCursor(-1, false);
