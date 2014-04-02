@@ -500,6 +500,9 @@ function initPuzzle(UI) {
         document.querySelector("#grid table").addEventListener("webkitTransitionEnd", onTransitionEnd);
         document.querySelector("#grid table").addEventListener("transitionend", onTransitionEnd);
 
+        dragScroll(document.querySelector("#across ul"));
+        dragScroll(document.querySelector("#down ul"));
+
         document.getElementById("info").addEventListener("click", function() {
             document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";
             document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"] || "";

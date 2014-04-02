@@ -194,6 +194,9 @@ function initList(UI) {
                     document.querySelector("#focuser").focus();
                 }
             });
+
+            dragScroll(document.querySelector("#sources"));
+            dragScroll(document.querySelector("#dates"));
         }
         init();
 
