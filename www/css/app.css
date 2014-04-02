@@ -33,3 +33,11 @@ body {
     text-align: right;
     padding-right: 1.3rem;
 }
+
+#focuser {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1;
+    width: 1;
+}

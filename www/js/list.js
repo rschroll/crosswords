@@ -187,6 +187,11 @@ function initList(UI) {
                     var selected = document.querySelector("#sources .selected a");
                     if (selected)
                         selected.click();
+                    window.showOSK = false;
+                    document.querySelector("#focuser").blur();
+                } else {
+                    window.showOSK = true;
+                    document.querySelector("#focuser").focus();
                 }
             });
         }

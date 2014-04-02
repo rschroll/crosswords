@@ -17,6 +17,12 @@ window.onload = function () {
             document.querySelector("[data-role='header']").offsetHeight + 1 + "px";
     UI.pagestack.push("list-page");
 
+    window.showOSK = false;
+    document.querySelector("#focuser").addEventListener("blur", function (e) {
+        if (window.showOSK)
+            e.target.focus();
+    });
+
     // Add an event listener that is pending on the initialization
     //  of the platform layer API, if it is being used.
     document.addEventListener("deviceready", function() {

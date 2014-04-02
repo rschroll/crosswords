@@ -432,6 +432,20 @@ function initPuzzle(UI) {
             e.preventDefault();
         });
 
+        // For some reason, this fires twice for each character input, but not for space...
+        var prevchar = "";
+        document.querySelector("#focuser").addEventListener("input", function (e){
+            var char = e.target.value.toUpperCase();
+            if (char && char == prevchar && char != " ") {
+                prevchar = "";
+            } else {
+                insertLetter(char);
+                prevchar = char;
+                moveCursor(1, false);
+            }
+            e.target.value = "";
+        });
+
         window.addEventListener("resize", function () {
             if (UI.pagestack.currentPage() != "puzzle-page")
                 return;
