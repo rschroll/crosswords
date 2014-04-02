@@ -416,6 +416,12 @@ function initPuzzle(UI) {
                     seldir = dir;
                     moveCursor(inc, true);
                 }
+            } else if (e.keyCode == 35 || e.keyCode == 36) { // end, home
+                var clue = document.querySelector("#" + seldir + " .selClue"),
+                    cells = document.querySelectorAll("." + clue.id),
+                    cell = cells[(e.keyCode == 35) ? cells.length - 1 : 0],
+                    coords = coordsFromID(cell.id);
+                selectCell(coords[0], coords[1]);
             } else if (e.keyCode == 8) { // backspace
                 if (fill[selr][selc] == " ")
                     moveCursor(-1, false);
@@ -424,6 +430,20 @@ function initPuzzle(UI) {
                 console.log(e.keyCode);
             }
             e.preventDefault();
+        });
+
+        // For some reason, this fires twice for each character input, but not for space...
+        var prevchar = "";
+        document.querySelector("#focuser").addEventListener("input", function (e){
+            var char = e.target.value.toUpperCase();
+            if (char && char == prevchar && char != " ") {
+                prevchar = "";
+            } else {
+                insertLetter(char);
+                prevchar = char;
+                moveCursor(1, false);
+            }
+            e.target.value = "";
         });
 
         window.addEventListener("resize", function () {
@@ -479,6 +499,9 @@ function initPuzzle(UI) {
         }
         document.querySelector("#grid table").addEventListener("webkitTransitionEnd", onTransitionEnd);
         document.querySelector("#grid table").addEventListener("transitionend", onTransitionEnd);
+
+        dragScroll(document.querySelector("#across ul"));
+        dragScroll(document.querySelector("#down ul"));
 
         document.getElementById("info").addEventListener("click", function() {
             document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";
