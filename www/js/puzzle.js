@@ -503,7 +503,7 @@ function initPuzzle(UI) {
         dragScroll(document.querySelector("#across ul"));
         dragScroll(document.querySelector("#down ul"));
 
-        document.getElementById("info").addEventListener("click", function() {
+        UI.button("info").click(function () {
             document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";
             document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"] || "";
             document.querySelector("#info-description").innerHTML = puzzle.metadata["description"] || "";
@@ -511,12 +511,12 @@ function initPuzzle(UI) {
             UI.dialog("info-dialog").show();
         });
 
-        document.getElementById("reveal").addEventListener("click", function() {
+        UI.button("reveal").click(function () {
             insertLetter("solve");
             moveCursor(1, false);
         });
 
-        document.getElementById("check").addEventListener("click", function() {
+        UI.button("check").click(function () {
             var grid = document.querySelector("#grid table");
             grid.classList.add("checking");
             for (var i=0; i<puzzle.nrow; i++)
@@ -527,7 +527,7 @@ function initPuzzle(UI) {
             grid.classList.remove("checking");
         });
 
-        document.getElementById("solve").addEventListener("click", function() {
+        UI.button("solve").click(function () {
             for (var i=0; i<puzzle.nrow; i++)
                 for (var j=0; j<puzzle.ncol; j++)
                     insertLetter("solve", i, j, true);
