@@ -17,9 +17,8 @@ You can also open `www/index.html` in your WebKit-based web browser.
 not load, due to cross-origin restrictions.  You may be able to fix this
 with your browser's settings.
 
-Crosswords should work on the phone, but you can't do much without the
-on-screen keyboard.  So far, I haven't worked out how to trigger it from
-the HTML5 SDK.
+Crosswords will sort-of work on the phone, but we're waiting on a fix
+for the on-screen keyboard before it's really useful.
 
 License
 -------

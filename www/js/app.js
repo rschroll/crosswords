@@ -23,6 +23,16 @@ window.onload = function () {
             e.target.focus();
     });
 
+    // Fix back button in toolbar
+    var backs = document.querySelectorAll("[data-role='back']");
+    for (var i=0; i<backs.length; i++)
+        UI.button(backs[i].id).click(function (e) {
+            // This fires after existing handler (if it is triggered), so this will
+            // cause problems if we ever get more than two pages in the stack.
+            if (UI.pagestack.depth() > 1)
+                UI.pagestack.pop();
+        });
+
     // Add an event listener that is pending on the initialization
     //  of the platform layer API, if it is being used.
     document.addEventListener("deviceready", function() {

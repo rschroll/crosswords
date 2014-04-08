@@ -91,7 +91,7 @@
     -webkit-transition: background 0s, box-shadow 0s;
 }
 
-#grid .animate {
+#grid.animate table {
     transition: transform 0.15s ease, background 2s, box-shadow 2s;
     -webkit-transition: -webkit-transform 0.15s ease, background 2s, box-shadow 2s;
 }
@@ -143,6 +143,40 @@
 
 #grid .error {
     color: red;
+}
+
+#Hscroll, #Vscroll {
+    position: absolute;
+    background: #999;
+    opacity: 0;
+    transition: opacity 2s;
+    -webkit-transition: opacity 2s;
+    border-radius: 3px;
+}
+
+#Hscroll.show, #Vscroll.show {
+    opacity: 0.75;
+    transition: none;
+    -webkit-transition: none;
+}
+
+#Hscroll {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 6px;
+}
+
+#Vscroll {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 6px;
+}
+
+#grid.animate > div {
+    transition: top 0.15s, left 0.15s, height 0.15s, width 0.15s, opacity 2s;
+    -webkit-transition: top 0.15s, left 0.15s, height 0.15s, width 0.15s, opacity 2s;
 }
 
 /* Get rid of chevrons */

@@ -209,9 +209,11 @@ function initPuzzle(UI) {
 
         function fixView(animate) {
             if (animate)
-                document.querySelector("#grid table").classList.add("animate");
+                document.querySelector("#grid").classList.add("animate");
             else
-                document.querySelector("#grid table").classList.remove("animate");
+                document.querySelector("#grid").classList.remove("animate");
+            document.querySelector("#Vscroll").classList.remove("show");
+            document.querySelector("#Hscroll").classList.remove("show");
 
             if (gridzoom < fitzoom)
                 gridzoom = fitzoom;
@@ -238,12 +240,25 @@ function initPuzzle(UI) {
             document.querySelector("#grid table").style[transformName] =
                 "matrix(" + gridzoom + ", 0, 0, " + gridzoom + ", " +
                 gridoffset[1] + ", " + gridoffset[0] + ")";
+            var Vstyle = document.querySelector("#Vscroll").style,
+                Hstyle = document.querySelector("#Hscroll").style;
+            Vstyle["height"] = container.height * container.height / (grid.height * gridzoom) + "px";
+            Hstyle["width"] = container.width * container.width / (grid.width * gridzoom) + "px";
+            Vstyle["top"] = -container.height * gridoffset[0] / (grid.height * gridzoom) + "px";
+            Hstyle["left"] = -container.width * gridoffset[1] / (grid.width * gridzoom) + "px";
+        }
+
+        function showScrolls() {
+            document.querySelector("#Vscroll").classList.add("show");
+            document.querySelector("#Hscroll").classList.add("show");
+            document.body.offsetWidth; // Force layout, to allow for class change to take effect.
         }
 
         function setStart() {
             startzoom = gridzoom;
             startoffset = gridoffset;
-            document.querySelector("#grid table").classList.remove("animate");
+            document.querySelector("#grid").classList.remove("animate");
+            showScrolls();
         }
 
         function zoom(ratio, e) {
@@ -493,17 +508,10 @@ function initPuzzle(UI) {
             fixView(true);
         });
 
-        function onTransitionEnd(e) {
-            if (e.propertyName == "transform" || e.propertyName == "-webkit-transform")
-                e.target.classList.remove("animate");
-        }
-        document.querySelector("#grid table").addEventListener("webkitTransitionEnd", onTransitionEnd);
-        document.querySelector("#grid table").addEventListener("transitionend", onTransitionEnd);
-
         dragScroll(document.querySelector("#across ul"));
         dragScroll(document.querySelector("#down ul"));
 
-        document.getElementById("info").addEventListener("click", function() {
+        UI.button("info").click(function () {
             document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";
             document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"] || "";
             document.querySelector("#info-description").innerHTML = puzzle.metadata["description"] || "";
@@ -511,12 +519,12 @@ function initPuzzle(UI) {
             UI.dialog("info-dialog").show();
         });
 
-        document.getElementById("reveal").addEventListener("click", function() {
+        UI.button("reveal").click(function () {
             insertLetter("solve");
             moveCursor(1, false);
         });
 
-        document.getElementById("check").addEventListener("click", function() {
+        UI.button("check").click(function () {
             var grid = document.querySelector("#grid table");
             grid.classList.add("checking");
             for (var i=0; i<puzzle.nrow; i++)
@@ -527,7 +535,7 @@ function initPuzzle(UI) {
             grid.classList.remove("checking");
         });
 
-        document.getElementById("solve").addEventListener("click", function() {
+        UI.button("solve").click(function () {
             for (var i=0; i<puzzle.nrow; i++)
                 for (var j=0; j<puzzle.ncol; j++)
                     insertLetter("solve", i, j, true);

@@ -16,10 +16,12 @@ function dragScroll(element) {
         element.style.transition = element.style.webkitTransition = "";
     });
     hammer.on("drag", function (e) {
-        var scrollTop = scrollStart - e.gesture.deltaY;
-        element.scrollTop = scrollTop;
-        element.style.borderTopWidth = (scrollTop < 0) ? -scrollTop + "px" : "0";
-        element.style.borderBottomWidth = (scrollTop > maxScroll) ? (scrollTop - maxScroll) + "px" : "0";
+        if (maxScroll > 0) {
+            var scrollTop = scrollStart - e.gesture.deltaY;
+            element.scrollTop = scrollTop;
+            element.style.borderTopWidth = (scrollTop < 0) ? -scrollTop + "px" : "0";
+            element.style.borderBottomWidth = (scrollTop > maxScroll) ? (scrollTop - maxScroll) + "px" : "0";
+        }
     });
     hammer.on("dragend", function (e) {
         element.style.transition = element.style.webkitTransition = "border-width 0.25s";
