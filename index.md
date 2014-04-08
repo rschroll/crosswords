@@ -7,10 +7,10 @@ Crosswords for Ubuntu
 
 Crosswords in a work-in-progress app for Ubuntu, with the goal of
 letting you solve your favorite puzzles on your phone, tablet, and
-desktop.  At the moment, it is very much an alpha, but you still may
-be interested in trying it.
+desktop.  Crosswords itself is fairly stable now, but we're waiting on
+some issues in the SDK.
 
-![Screenshot](assets/crosswords1.png "screenshot")
+![Screenshot](assets/crosswords2.png "screenshot")
 
 Features
 --------
@@ -36,7 +36,7 @@ Ubuntu click store.
 
 [1]: https://github.com/rschroll/crosswords
 [2]: https://github.com/rschroll/crosswords/archive/master.zip
-[3]: assets/crosswords_0.1_all.click
+[3]: assets/crosswords_0.2_all.click
 
 Running It
 ----------
@@ -48,29 +48,28 @@ word so well.  Here are some notes that might help:
 
 ### On devices (and emulators)
 
-There are several bugs that keep Crosswords from running well on Ubuntu
-touch devices.  First, the on-screen keyboard will cover the bottom
-section of the app.  This has been reported upstream
-([#1296463][1296463]), and there is a fix available.  It has not been
-merged in yet, so you'll have to get by without seeing the last few
-clues.  Additionally, clicks on buttons in the toolbar are not
-registered.  This has also been reported ([#1296469][1296469]), but
-there is no fix yet.
+A bug in the SDK ([#1296463][1296463]) meant that the on-screen keyboard
+would cover some of the content.  This has been fixed, but I don't know
+if the fix has made it into images yet.
 
 Crosswords has work-arounds in place to deal with the on-screen keyboard
-not appearing ([#1296462][1296462]) and lists not scrolling
-([#1296468][1296468]).  It's not unlikely that you'll see some odd
-behavior in these areas.
+not appearing ([#1296462][1296462]), lists not scrolling
+([#1296468][1296468]), clicks on buttons in the toolbar not registering
+([#1296469][1296469], [#1302284][1302284]), and the toolbar not hiding
+itself ([#1293899][1293899]).  It's not improbable that you'll see some
+odd behavior in these areas.
 
 While actually playing on a touch device will be an exercise in
 frustration, testing and bug-hunting would be very useful,
 especially since I only have an emulator for these purposes.  Please
 [report any bugs](#reporting_bugs) that you find!
 
+[1293899]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1293899
 [1296462]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1296462
 [1296463]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1296463
 [1296468]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1296468
 [1296469]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1296469
+[1302284]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1302284
 
 ### On the desktop
 
