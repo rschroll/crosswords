@@ -213,13 +213,15 @@ function KingTXTtoJSON(str, url) {
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     retval.metadata["title"] = name + " Crossword—" + date.toDateString();
 
+    // Sometimes lines are split by \n, sometimes by \r\n...
+    str = str.replace(/\r/g, "");
     var parts = str.split("{"),
-        numbers = parts[1].split("|\r\n").map(function (s) {
+        numbers = parts[1].split("|\n").map(function (s) {
             return s.trim().split(/ +/).map(function (n) {
                 return parseInt(n);
             })
         }),
-        letters = parts[2].split("|\r\n").map(function (s) {
+        letters = parts[2].split("|\n").map(function (s) {
             return s.trim().split(/ +/);
         });
     retval.nrow = numbers.length;
@@ -250,7 +252,7 @@ function KingTXTtoJSON(str, url) {
     }
 
     function separateClues(list) {
-        return list.split("|\r\n").map(function (s) {
+        return list.split("|\n").map(function (s) {
             var m = s.match(/([0-9]+)\. (.*\S)/);
             return [parseInt(m[1]), m[2]];
         });
