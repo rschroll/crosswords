@@ -36,7 +36,7 @@ Ubuntu click store.
 
 [1]: https://github.com/rschroll/crosswords
 [2]: https://github.com/rschroll/crosswords/archive/master.zip
-[3]: assets/crosswords_0.2_all.click
+[3]: assets/crosswords_0.2.1_all.click
 
 Running It
 ----------
