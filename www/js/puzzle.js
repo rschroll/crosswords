@@ -411,6 +411,8 @@ function initPuzzle(UI) {
             if (UI.pagestack.currentPage() != "puzzle-page")
                 return;
 
+            if (e.keyCode == 229) // Returned by soft keyboard
+                return;           // Let through and deal with in focuser input listener.
             if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode == 32) { // space
                 insertLetter(String.fromCharCode(e.keyCode));
                 moveCursor(1, false);
