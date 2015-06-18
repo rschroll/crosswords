@@ -4,12 +4,16 @@
  * of the GPL. See the file LICENSE for full details.
  */
 
-#puzzle-page {
+puzzle-page {
+    position: absolute;
     top: 15px;
     bottom: 15px;
+    left: 0;
+    right: 0;
+    display: none;
 }
 
-#grid {
+#gridcontainer {
     position: absolute;
     left: 15px;
     right: 50%;
@@ -38,7 +42,7 @@
 }
 
 @media all and (orientation:portrait) {
-    #grid {
+    #gridcontainer {
         right: 15px;
         bottom: 50%;
     }
@@ -66,7 +70,7 @@
     overflow: auto;
 }
 
-#grid table {
+#grid {
     display: block;
     position: absolute;
     transform-origin: top left;
@@ -78,18 +82,18 @@
     -webkit-transition: background 2s, box-shadow 2s;
 }
 
-#grid .solved {
+#grid.solved {
     background: #efe;
     box-shadow: inset 0 0 5em #7f7;
 }
 
-#grid.animate table {
+#gridcontainer.animate table {
     transition: transform 0.15s ease, background 2s, box-shadow 2s;
     -webkit-transition: -webkit-transform 0.15s ease, background 2s, box-shadow 2s;
 }
 
 /* Specify table to be more specific than .animate */
-#grid table.checking {
+#grid.checking {
     background: #ffe;
     box-shadow: inset 0 0 5em #ff7;
     transition: background 0s, box-shadow 0s;
@@ -174,7 +178,7 @@
     width: 6px;
 }
 
-#grid.animate > div {
+#gridcontainer.animate > div {
     transition: top 0.15s, left 0.15s, height 0.15s, width 0.15s, opacity 2s;
     -webkit-transition: top 0.15s, left 0.15s, height 0.15s, width 0.15s, opacity 2s;
 }

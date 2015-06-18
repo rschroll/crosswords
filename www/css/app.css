@@ -10,24 +10,6 @@ body {
     cursor: default;
 }
 
-[data-role="pagestack"] {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-}
-
-[data-role="page"] {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    height: auto;
-    width: auto;
-}
-
 [data-role="list"] ul li>label {
     line-height: 2.2rem;
     text-align: right;
@@ -38,6 +20,6 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    height: 1;
-    width: 1;
+    height: 1px;
+    width: 1px;
 }

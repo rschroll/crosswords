@@ -39,22 +39,12 @@
         localStorage["crosswords"] = JSON.stringify(db);
     }
 
-    self.getPuzzle = function (url, onsucceed, onfail) {
-        var data = db.puzzles[url];
-        if (data == undefined)
-            onfail(url);
-        else
-            onsucceed(url, data.puzzle, data.fill, data.completion);
+    self.getPuzzle = function (url) {
+        return db.puzzles[url];
     }
 
-    self.forEach = function (solved, callback, callbackNone) {
-        var list = solved ? db.completed : db.inprogress;
-        for (var i=0; i<list.length; i++) {
-            var data = db.puzzles[list[i]];
-            callback(list[i], data.puzzle, data.fill, data.completion);
-        }
-        if (!list.length)
-            callbackNone(solved ? "No completed puzzles" : "No puzzles in progress");
+    self.getPuzzleUrls = function (solved) {
+        return solved ? db.completed : db.inprogress;
     }
 
 })(window.database = window.database || {})

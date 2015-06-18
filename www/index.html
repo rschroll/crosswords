@@ -15,20 +15,6 @@ of the GPL. See the file LICENSE for full details.
     <!-- Ubuntu UI Style imports - Ambiance theme -->
     <link href="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css" />
 
-    <!-- Ubuntu UI javascript imports - Ambiance theme -->
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/fast-buttons.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/core.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/buttons.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/dialogs.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/list.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/page.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/pagestacks.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/tabs.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
-
-    <!-- Cordova platform API access - Uncomment this to have access to the Javascript APIs -->
-    <!-- <script src="cordova/cordova.js"></script> -->
-
     <link href="css/app.css" rel="stylesheet" type="text/css" />
     <link href="css/list.css" rel="stylesheet" type="text/css" />
     <link href="css/puzzle.css" rel="stylesheet" type="text/css" />
@@ -37,111 +23,38 @@ of the GPL. See the file LICENSE for full details.
     <script src="js/hammer.js"></script>
     <!-- Application script -->
     <script src="js/dragscroll.js"></script>
-    <script src="js/app.js"></script>
     <script src="js/loaders.js"></script>
     <script src="js/database.js"></script>
-    <script src="js/list.js"></script>
-    <script src="js/puzzle.js"></script>
+    <script src="js/riot+compiler.js"></script>
   </head>
 
   <body>
     <input type="password" id="focuser" />
+    
+    <list-page></list-page>
+    <puzzle-page></puzzle-page>
+    
+    <script src="list-page.tag" type="riot/tag"></script>
+    <script src="puzzle-page.tag" type="riot/tag"></script>
+    <script>
+      riot.compile(function () {
+        var list = riot.mount("list-page")[0];
+        var puzzle = riot.mount("puzzle-page")[0];
+        riot.route.parser(function (path) {
+          return [path];
+        });
+        riot.route(function (url) {
+          if (url == "") {
+            puzzle.root.style.display = "none";
+            list.root.style.display = "block";
+          } else {
+            puzzle.root.style.display = "block";
+            list.root.style.display = "none";
+            puzzle.loadURL(url);
+          }
+        });
+      });
+    </script>
 
-    <div data-role="mainview">
-
-      <header data-role="header">
-      </header>
-
-      <div data-role="content">
-
-        <div data-role="pagestack">
-
-          <!-- The application main page -->
-
-          <div data-role="page" data-title="Puzzles" id="list-page">
-
-              <section data-role="list" id="sources">
-                <ul data-role="listview">
-                </ul>
-              </section>
-
-              <section data-role="list" id="dates">
-                <ul data-rol="list-view"></ul>
-                <div id="dates-notes"><span></span></div>
-              </section>
-
-          </div>
-
-          <div data-role="page" data-title="Crossword Puzzle" id="puzzle-page">
-
-            <div id="grid">
-              <table></table>
-              <div id="Vscroll"></div>
-              <div id="Hscroll"></div>
-            </div>
-
-            <section data-role="list" id="across" class="clues">
-              <header class="large-font">Across</header>
-              <ul data-role="listview"></ul>
-            </section>
-
-            <section data-role="list" id="down" class="clues">
-              <header class="large-font">Down</header>
-              <ul data-role="listview"></ul>
-            </section>
-
-            <footer data-role="footer" id="puzzle-footer">
-              <nav>
-                <ul>
-                <li><a href="#" id="solve">
-                  <img src="img/compose.svg" alt="Solve" />
-                  <span>Solve</span>
-                </a></li>
-                <li><a href="#" id="check">
-                  <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/tick@30.png" alt="Check" />
-                  <span>Check</span>
-                </a></li>
-                <li><a href="#" id="reveal">
-                  <img src="img/reveal.svg" alt="Reveal" />
-                  <span>Reveal</span>
-                </a></li>
-                <li><a href="#" id="info">
-                  <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/actions/info.svg" alt="Info" />
-                  <span>Info</span>
-                </a></li>
-                </ul>
-              </nav>
-            </footer>
-
-          </div>
-
-        </div>
-
-        <div data-role="dialog" id="info-dialog">
-          <section>
-            <h1></h1>
-            <p id="info-creator"></p>
-            <p id="info-description"></p>
-            <p id="info-copyright"></p>
-            <menu>
-              <button data-role="button">OK</button>
-            </menu>
-          </section>
-        </div>
-
-        <div data-role="dialog" id="load-error-dialog">
-          <section>
-            <h1>Error Loading Puzzle</h1>
-            <p>Crosswords received an error, <span id="error-message"></span>, while trying to open
-            the puzzle at <span id="error-url"></span>.</p>
-            <menu>
-              <button data-role="button">Bummer</button>
-            </menu>
-          </section>
-        </div>
-
-      </div>
-
-    </div>
   </body>
 </html>

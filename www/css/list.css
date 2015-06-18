@@ -4,6 +4,14 @@
  * of the GPL. See the file LICENSE for full details.
  */
 
+list-page {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 #sources {
     position: absolute;
     top: 0;
@@ -22,6 +30,10 @@
     overflow: auto;
 }
 
+#dates > li > span {
+    float: right;
+}
+
 #dates-notes {
     position: absolute;
     top: 0;
@@ -29,7 +41,6 @@
     left: 0;
     right: 0;
     text-align: center;
-    display: none;
 }
 
 #dates-notes::before {
