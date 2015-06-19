@@ -76,6 +76,7 @@ puzzle-page {
     transform-origin: top left;
     -webkit-transform-origin: top left;
     border: 2px solid black;
+    border-spacing: 0;
     color: black;
     background: white;
     transition: background 2s, box-shadow 2s;

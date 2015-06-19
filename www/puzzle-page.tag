@@ -1,13 +1,13 @@
 <puzzle-page>
     <div id="gridcontainer">
         <table id="grid" class={ solved: completion == 1 }>
-            <tr each={ row, i in puzzle.grid }>
-                <td each={ cell, j in row } class={ parent.parent.gridClass(cell) } id={ 'r' + i + 'c' + j }
-                    onclick={ cell.type != 'block' && parent.parent.clickCell(i, j) }>
-                    <span class="number" if={ cell.number }>{ cell.number }</span>
-                    <span class="letter">{ parent.parent.fill[i][j] }</span>
-                </td>
-            </tr>
+            <tr each={ row, i in puzzle.grid }><!--
+             --><td each={ cell, j in row } class={ parent.parent.gridClass(cell) } id={ 'r' + i + 'c' + j }
+                    onclick={ cell.type != 'block' && parent.parent.clickCell(i, j) }><!--
+                 --><span class="number" if={ cell.number }>{ cell.number }</span><!--
+                 --><span class="letter">{ parent.parent.fill[i][j] }</span><!--
+             --></td><!--
+         --></tr>
         </table>
         <div id="Vscroll"></div>
         <div id="Hscroll"></div>
