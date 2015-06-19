@@ -212,6 +212,21 @@ puzzle-page {
     color: #606060;
 }
 
+#controls {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#controls > li {
+    display: inline-block;
+}
+#controls > li > img {
+    height: 2em;
+}
+#controls > li > span {
+    display: none;
+}
+
 #info-dialog p {
     margin-top: 0.5rem;
 }

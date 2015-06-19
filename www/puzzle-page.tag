@@ -31,28 +31,24 @@
         </ul>
     </section>
 
-    <footer data-role="footer" id="puzzle-footer">
-        <nav>
-            <ul>
-                <li><a href="#" id="solve">
-                    <img src="img/compose.svg" alt="Solve" />
-                    <span>Solve</span>
-                </a></li>
-                <li><a href="#" id="check">
-                    <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/tick@30.png" alt="Check" />
-                    <span>Check</span>
-                </a></li>
-                <li><a href="#" id="reveal">
-                    <img src="img/reveal.svg" alt="Reveal" />
-                    <span>Reveal</span>
-                </a></li>
-                <li><a href="#" id="info">
-                    <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/actions/info.svg" alt="Info" />
-                    <span>Info</span>
-                </a></li>
-            </ul>
-        </nav>
-    </footer>
+    <ul id="controls">
+        <li onclick={ solve }>
+            <img src="img/compose.svg" alt="Solve" />
+            <span>Solve</span>
+        </li>
+        <li onclick={ check }>
+            <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/tick@30.png" alt="Check" />
+            <span>Check</span>
+        </li>
+        <li onclick={ reveal }>
+            <img src="img/reveal.svg" alt="Reveal" />
+            <span>Reveal</span>
+        </li>
+        <li onclick={ info }>
+            <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/actions/info.svg" alt="Info" />
+            <span>Info</span>
+        </li>
+    </ul>
     
     <script>
         var self = this;
@@ -349,6 +345,40 @@
                                ratio * self.startoffset[1] + ctr[1] * (1 - ratio)];
         }
 
+        info(event) {
+            event.preventUpdate = true;
+            /*document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";
+            document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"] || "";
+            document.querySelector("#info-description").innerHTML = puzzle.metadata["description"] || "";
+            document.querySelector("#info-copyright").innerHTML = puzzle.metadata["copyright"] || "";
+            UI.dialog("info-dialog").show();*/
+        }
+
+        reveal(event) {
+            event.preventUpdate = true;
+            self.insertLetter("solve");
+            self.moveCursor(1, false);
+        }
+
+        check(event) {
+            event.preventUpdate = true;
+            self.grid.classList.add("checking");
+            for (var i=0; i<self.puzzle.nrow; i++)
+                for (var j=0; j<self.puzzle.ncol; j++)
+                    if (self.fill[i][j] != self.puzzle.grid[i][j].solution && self.fill[i][j] != " ")
+                        getCellEl(i, j, " .letter").classList.add("error");
+            self.grid.offsetWidth; // Force layout, to allow for class change to take effect.
+            self.grid.classList.remove("checking");
+        }
+
+        solve(event) {
+            event.preventUpdate = true;
+            for (var i=0; i<self.puzzle.nrow; i++)
+                for (var j=0; j<self.puzzle.ncol; j++)
+                    self.insertLetter("solve", i, j, true);
+            self.checkAndSave();
+        }
+
         loadDoc(surl, doc, sfill, completion) {
             self.url = surl;
             self.puzzle = doc;
@@ -563,30 +593,6 @@
 
         /*dragScroll(document.querySelector("#across ul"));
         dragScroll(document.querySelector("#down ul"));
-
-        UI.button("info").click(function () {
-            document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";
-            document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"] || "";
-            document.querySelector("#info-description").innerHTML = puzzle.metadata["description"] || "";
-            document.querySelector("#info-copyright").innerHTML = puzzle.metadata["copyright"] || "";
-            UI.dialog("info-dialog").show();
-        });
-
-        UI.button("reveal").click(function () {
-            insertLetter("solve");
-            moveCursor(1, false);
-        });
-
-        UI.button("check").click(function () {
-            var grid = document.querySelector("#grid table");
-            grid.classList.add("checking");
-            for (var i=0; i<puzzle.nrow; i++)
-                for (var j=0; j<puzzle.ncol; j++)
-                    if (fill[i][j] != puzzle.grid[i][j].solution && fill[i][j] != " ")
-                        getCellEl(i, j, " .letter").classList.add("error");
-            grid.offsetWidth; // Force layout, to allow for class change to take effect.
-            grid.classList.remove("checking");
-        });
 
         UI.button("solve").click(function () {
             for (var i=0; i<puzzle.nrow; i++)
