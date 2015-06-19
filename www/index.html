@@ -33,26 +33,61 @@ of the GPL. See the file LICENSE for full details.
     
     <list-page></list-page>
     <puzzle-page></puzzle-page>
+    <dialog title="Error Loading Puzzle" buttonlabel="Bummer">
+      <p>Crosswords received an error, <span id="error-message">{ error }</span>,
+      while trying to open the puzzle at <span id="error-url">{ url }</span>.</p>
+    </dialog>
+    <dialog buttonlabel="OK">
+      <p id="info-creator">{ creator }</p>
+      <p id="info-description">{ description }</p>
+      <p id="info-copyright">{ copyright }</p>
+    </dialog>
     
     <script src="list-page.tag" type="riot/tag"></script>
     <script src="puzzle-page.tag" type="riot/tag"></script>
+    <script src="dialog.tag" type="riot/tag"></script>
     <script>
       riot.compile(function () {
+        var displayMixin = {
+          init: function () {
+            this.displayed = false;
+            this.on("update", function () {
+              this.root.style.display = this.displayed ? "block" : "none";
+            });
+          }
+        };
+        riot.mixin('display', displayMixin);
+      
         var list = riot.mount("list-page")[0];
         var puzzle = riot.mount("puzzle-page")[0];
+        var dialogs = riot.mount("dialog");
+        
         riot.route.parser(function (path) {
-          return [path];
+          path = decodeURI(path);
+          var command = path.split("/", 1)[0];
+          var args = path.slice(command.length + 1);
+          return [command, args];
         });
-        riot.route(function (url) {
-          if (url == "") {
-            puzzle.root.style.display = "none";
-            list.root.style.display = "block";
-          } else {
-            puzzle.root.style.display = "block";
-            list.root.style.display = "none";
-            puzzle.loadURL(url);
+        
+        riot.route(function (command, args) {
+          if (command == "list") {
+            list.update({ displayed: true });
+            puzzle.update({ displayed: false, puzzle: null });  // Puzzle set to null to work around riot bug #848
+          } else if (command == "load") {
+            puzzle.loadURL(args);
+          } else if (command == "loaded") {
+            list.update({ displayed: false });
+            puzzle.update({ displayed: true });
+          } else if (command == "error") {
+            var arglist = args.split("~~~");
+            dialogs[0].update({ displayed: true, error: arglist[0], url: arglist[1] });
+          } else if (command == "info") {
+            var arglist = args.split("~~~");
+            dialogs[1].update({ displayed: true, title: arglist[0], creator: arglist[1],
+                                description: arglist[2], copyright: arglist[3] });
           }
         });
+        list.update({ displayed: true });
       });
     </script>
 

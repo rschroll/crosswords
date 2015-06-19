@@ -17,6 +17,7 @@
 
     <script>
         var self = this;
+        self.mixin("display");
         
         function strZero(n) {
             if (n < 10)
@@ -153,7 +154,7 @@
         }
 
         clickPuzzle(event) {
-            riot.route(event.item.url);
+            riot.route("load/" + event.item.url);
         }
 
 

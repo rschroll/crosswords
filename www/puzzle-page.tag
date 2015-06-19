@@ -32,6 +32,7 @@
     </section>
 
     <ul id="controls">
+        <li onclick={ back }>&lt;</li>
         <li onclick={ solve }>
             <img src="img/compose.svg" alt="Solve" />
             <span>Solve</span>
@@ -52,6 +53,7 @@
     
     <script>
         var self = this;
+        self.mixin("display");
         
         self.url = "";
         self.puzzle = null;
@@ -67,7 +69,6 @@
         self.container = { X: 0, Y: 0, width: 0, height: 0 };
         self.gridSize = { width: 0, height: 0 };
         self.solved = false;
-        self.displayed = false;
 
         self.transformName = (document.body.style.transform == "") ? "transform" : "webkitTransform";
 
@@ -347,11 +348,10 @@
 
         info(event) {
             event.preventUpdate = true;
-            /*document.querySelector("#info-dialog h1").innerHTML = puzzle.metadata["title"] || "";
-            document.querySelector("#info-creator").innerHTML = puzzle.metadata["creator"] || "";
-            document.querySelector("#info-description").innerHTML = puzzle.metadata["description"] || "";
-            document.querySelector("#info-copyright").innerHTML = puzzle.metadata["copyright"] || "";
-            UI.dialog("info-dialog").show();*/
+            riot.route(encodeURI("info/" + (self.puzzle.metadata["title"] || "") +
+                                 "~~~" + (self.puzzle.metadata["creator"] || "") +
+                                 "~~~" + (self.puzzle.metadata["description"] || "") +
+                                 "~~~" + (self.puzzle.metadata["copyright"] || "")));
         }
 
         reveal(event) {
@@ -379,6 +379,11 @@
             self.checkAndSave();
         }
 
+        back(event) {
+            event.preventUpdate = true;
+            riot.route("list");
+        }
+
         loadDoc(surl, doc, sfill, completion) {
             self.url = surl;
             self.puzzle = doc;
@@ -403,16 +408,11 @@
             //UI.pagestack.push("puzzle-page");
             //window.setTimeout(function () { UI.toolbar("puzzle-footer").hide(); }, 5000);
             
-            self.displayed = true;
-            self.update();
+            //self.update();
+            riot.route("loaded");
         }
         
-        self.on("update", function () {
-            console.log("Update");
-        });
-        
         self.on("updated", function () {
-            console.log("Updated");
             self.selectCell(self.selr, self.selc);
             self.setGeometry();
         });
@@ -476,10 +476,8 @@
             xhr.send();
         }
 
-        function loadError(url, message) {
-            document.querySelector("#error-url").innerHTML = url;
-            document.querySelector("#error-message").innerHTML = message;
-            UI.dialog("load-error-dialog").show();
+        loadError(url, message) {
+            riot.route(encodeURI("error/" + message + "~~~" + url));
         }
 
         loadURL(url) {
@@ -592,22 +590,7 @@
         });
 
         /*dragScroll(document.querySelector("#across ul"));
-        dragScroll(document.querySelector("#down ul"));
-
-        UI.button("solve").click(function () {
-            for (var i=0; i<puzzle.nrow; i++)
-                for (var j=0; j<puzzle.ncol; j++)
-                    insertLetter("solve", i, j, true);
-            checkAndSave();
-        });
-
-        document.querySelector("#info-dialog button").addEventListener("click", function() {
-            UI.dialog("info-dialog").hide();
-        });
-
-       document.querySelector("#load-error-dialog button").addEventListener("click", function() {
-            UI.dialog("load-error-dialog").hide();
-        });*/
+        dragScroll(document.querySelector("#down ul"));*/
     </script>
 
 </puzzle-page>
