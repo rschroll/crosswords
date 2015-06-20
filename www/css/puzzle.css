@@ -6,8 +6,8 @@
 
 puzzle-page {
     position: absolute;
-    top: 15px;
-    bottom: 15px;
+    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
     display: none;
@@ -17,7 +17,7 @@ puzzle-page {
     position: absolute;
     left: 15px;
     right: 50%;
-    top: 0;
+    top: 76px;
     bottom: 0;
     overflow: hidden;
 }
@@ -26,8 +26,8 @@ puzzle-page {
     position: absolute;
     left: 50%;
     right: 0;
-    top: 0;
-    bottom: 50%;
+    top: 76px;
+    bottom: calc(50% - 38px);
     overflow: hidden;
     border-bottom: 0.1rem solid #c9c9c9;
 }
@@ -36,7 +36,7 @@ puzzle-page {
     position: absolute;
     left: 50%;
     right: 0;
-    top: 50%;
+    top: calc(50% + 38px);
     bottom: 0;
     overflow: auto;
 }
@@ -44,13 +44,13 @@ puzzle-page {
 @media all and (orientation:portrait) {
     #gridcontainer {
         right: 15px;
-        bottom: 50%;
+        bottom: calc(50% - 38px);
     }
 
     #across {
         left: 0;
         right: 50%;
-        top: 50%;
+        top: calc(50% + 38px);
         bottom: 0;
         border-bottom: none;
         border-right: 0.1rem solid #c9c9c9;
@@ -185,47 +185,20 @@ puzzle-page {
 }
 
 /* Get rid of chevrons */
-.clues ul li>a::after {
+section.clues ul li::after {
     display: none;
 }
 
-.clues ul li {
+section.clues ul li {
     height: auto;
     border-bottom: none;
-}
-
-.clues>header+ul li {
-    padding-left: 0;
-}
-
-.clues ul li>a {
-    height: auto;
     line-height: normal;
     white-space: normal;
-    padding-left: 3rem;
-    text-indent: -2rem;
 }
 
-.clues .selClue {
+section.clues .selClue {
     background: #ffff99;
-}
-.clues .selClue a {
     color: #606060;
-}
-
-#controls {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-#controls > li {
-    display: inline-block;
-}
-#controls > li > img {
-    height: 2em;
-}
-#controls > li > span {
-    display: none;
 }
 
 #info-dialog p {

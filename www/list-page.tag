@@ -1,19 +1,25 @@
 <list-page>
-    <h3>Puzzles</h3>
+    <header class="page">
+        <h1>Puzzles</h1>
+    </header>
     
-    <ul id="sources">
-        <li each={ urlGens } onclick={ parent.setPuzzles }>{ title }</li>
-    </ul>
+    <section id="sources" class="list">
+        <ul>
+            <li each={ urlGens } onclick={ parent.setPuzzles }>{ title }</li>
+        </ul>
+    </section>
     
-    <ul id="dates">
-        <li each={ puzzles } onclick={ parent.clickPuzzle }>{ title }
-            <span if={ completion > 0 }>{ (completion*100).toFixed(0) + "%" }</span>
-        </li>
-    
-        <div id="dates-notes" show={ puzzles.length == 0 }>
-            <span>{ note }</span>
-        </div>
-    </ul>
+    <section id="dates" class="list">
+        <ul>
+            <li each={ puzzles } onclick={ parent.clickPuzzle }>{ title }
+                <span if={ completion > 0 }>{ (completion*100).toFixed(0) + "%" }</span>
+            </li>
+        
+            <div id="dates-notes" show={ puzzles.length == 0 }>
+                <span>{ note }</span>
+            </div>
+        </ul>
+    </section>
 
     <script>
         var self = this;

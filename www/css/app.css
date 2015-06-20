@@ -10,23 +10,10 @@ body {
     cursor: default;
 }
 
-[data-role="list"] ul li>label {
-    line-height: 2.2rem;
-    text-align: right;
-    padding-right: 1.3rem;
-}
-
 #focuser {
     position: absolute;
     top: 0;
     left: 0;
     height: 1px;
     width: 1px;
-}
-
-dialog {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: white;
 }

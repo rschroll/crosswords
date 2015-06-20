@@ -13,7 +13,7 @@ of the GPL. See the file LICENSE for full details.
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
     <!-- Ubuntu UI Style imports - Ambiance theme -->
-    <link href="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css" />
+    <link href="css/template.css" rel="stylesheet" type="text/css" />
 
     <link href="css/app.css" rel="stylesheet" type="text/css" />
     <link href="css/list.css" rel="stylesheet" type="text/css" />
@@ -33,11 +33,11 @@ of the GPL. See the file LICENSE for full details.
     
     <list-page></list-page>
     <puzzle-page></puzzle-page>
-    <dialog title="Error Loading Puzzle" buttonlabel="Bummer">
+    <dialog id="load-error-dialog" title="Error Loading Puzzle" buttonlabel="Bummer">
       <p>Crosswords received an error, <span id="error-message">{ error }</span>,
       while trying to open the puzzle at <span id="error-url">{ url }</span>.</p>
     </dialog>
-    <dialog buttonlabel="OK">
+    <dialog id="info-dialog" buttonlabel="OK">
       <p id="info-creator">{ creator }</p>
       <p id="info-description">{ description }</p>
       <p id="info-copyright">{ copyright }</p>

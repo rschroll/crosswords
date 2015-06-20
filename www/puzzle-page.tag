@@ -1,4 +1,27 @@
 <puzzle-page>
+    <header class="page">
+        <button class="back" onclick={ back }></button>
+        <h1>{ puzzle.metadata.title }</h1>
+        <ul class="actions">
+            <li onclick={ solve }>
+                <img src="img/compose.svg" alt="Solve" />
+                <span>Solve</span>
+            </li>
+            <li onclick={ check }>
+                <img src="img/tick@30.png" alt="Check" />
+                <span>Check</span>
+            </li>
+            <li onclick={ reveal }>
+                <img src="img/reveal.svg" alt="Reveal" />
+                <span>Reveal</span>
+            </li>
+            <li onclick={ info }>
+                <img src="img/info.svg" alt="Info" />
+                <span>Info</span>
+            </li>
+        </ul>
+    </header>
+
     <div id="gridcontainer">
         <table id="grid" class={ solved: completion == 1 }>
             <tr each={ row, i in puzzle.grid }><!--
@@ -13,8 +36,8 @@
         <div id="Hscroll"></div>
     </div>
 
-    <section id="across" class="clues">
-        <header class="large-font">Across</header>
+    <section id="across" class="clues list">
+        <header>Across</header>
         <ul>
             <li each={ enumerate(puzzle.across) } id={ 'across' + n } onclick={ parent.clickClue('across', n) }>
                 { n + ". " + clue }
@@ -22,34 +45,14 @@
         </ul>
     </section>
 
-    <section id="down" class="clues">
-        <header class="large-font">Down</header>
+    <section id="down" class="clues list">
+        <header>Down</header>
         <ul>
             <li each={ clue, n in puzzle.down } id={ 'down' + n } onclick={ parent.clickClue('down', n) }>
                 { n + ". " + clue }
             </li>
         </ul>
     </section>
-
-    <ul id="controls">
-        <li onclick={ back }>&lt;</li>
-        <li onclick={ solve }>
-            <img src="img/compose.svg" alt="Solve" />
-            <span>Solve</span>
-        </li>
-        <li onclick={ check }>
-            <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/tick@30.png" alt="Check" />
-            <span>Check</span>
-        </li>
-        <li onclick={ reveal }>
-            <img src="img/reveal.svg" alt="Reveal" />
-            <span>Reveal</span>
-        </li>
-        <li onclick={ info }>
-            <img src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/img/actions/info.svg" alt="Info" />
-            <span>Info</span>
-        </li>
-    </ul>
     
     <script>
         var self = this;
@@ -546,7 +549,7 @@
 
         window.addEventListener("resize", function () {
             if (self.displayed)
-                setGeometry();
+                self.setGeometry();
         });
 
         self.gridcontainer.addEventListener("wheel", function (e) {
