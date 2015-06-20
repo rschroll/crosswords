@@ -1,7 +1,7 @@
 {
     "architecture": "all",
     "description": "Crossword Puzzles",
-    "framework": "ubuntu-sdk-13.10",
+    "framework": "ubuntu-sdk-14.10",
     "hooks": {
         "crosswords": {
             "apparmor": "crosswords.json",

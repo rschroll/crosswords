@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Crosswords
-Exec=ubuntu-html5-app-launcher $@ --www=www
+Exec=ubuntu-html5-app-launcher $@ --www=www --inspector
 Icon=crosswords.svg
 Terminal=false
 Type=Application
