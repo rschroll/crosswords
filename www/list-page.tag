@@ -86,50 +86,6 @@
                     self.note = "No completed puzzles";
                     return fromList(database.getPuzzleUrls(true));
                 }},
-            { title: "Washington Post",
-                func: lastTwoWeeks(function (date) {
-                    return "http://cdn.games.arkadiumhosted.com/washingtonpost/crossynergy/cs" +
-                            sixDigitDate(date) + ".jpz";
-                })},
-            { title: "Washington Post Puzzler",
-                func: weekly(function (date) {
-                    return "http://cdn.games.arkadiumhosted.com/washingtonpost/puzzler/puzzle_" +
-                            sixDigitDate(date) + ".xml";
-                }, 0)},
-            { title: "LA Times",
-                func: lastTwoWeeks(function (date) {
-                    return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
-                            sixDigitDate(date) + ".xml";
-                })},
-            { title: "USA Today",
-                func: lastTwoWeeks(function (date) {
-                    return "http://picayune.uclick.com/comics/usaon/data/usaon" +
-                            sixDigitDate(date) + "-data.xml";
-                })},
-            { title: "Universal",
-                func: lastTwoWeeks(function (date) {
-                    return "http://picayune.uclick.com/comics/fcx/data/fcx" +
-                            sixDigitDate(date) + "-data.xml";
-                    })},
-            { title: "Jonesin' Crosswords",
-                func: weekly(function (date) {
-                    return "http://picayune.uclick.com/comics/jnz/data/jnz" +
-                            sixDigitDate(date) + "-data.xml";
-                }, 2)},
-            { title: "Wall Street Journal",
-                func: weekly(function (date) {
-                    return "http://blogs.wsj.com/applets/wsjxwd" + eightDigitDate(date) + ".dat";
-                }, 5)},
-            { title: "WSJ Greater New York",
-                func: weekly(function (date) {
-                    return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
-                            strZero(date.getDate()) + date.getFullYear() + ".dat";
-                }, 1)},
-            { title: "Thomas Joseph",
-                func: lastTwoWeeks(function (date) {
-                    return "http://puzzles.kingdigital.com/javacontent/clues/joseph/" +
-                            eightDigitDate(date) + ".txt";
-                }, [0])},
             { title: "Eugene Sheffer",
                 func: lastTwoWeeks(function (date) {
                     return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
@@ -139,7 +95,84 @@
                 func: weekly(function (date) {
                     return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
                             eightDigitDate(date) + ".txt";
-                }, 0)}
+                }, 0)},
+            { title: "LA Times",
+                func: lastTwoWeeks(function (date) {
+                    return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
+                            sixDigitDate(date) + ".xml";
+                })},
+            { title: "Merl Reagle",
+                func: weekly(function (date) {
+                    return "http://cdn.games.arkadiumhosted.com/latimes/assets/SundayCrossword/mreagle_"
+                    + sixDigitDate(date) + ".xml";
+                }, 0)},
+            { title: "New York Times Classics",
+                func: function () {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "http://www.nytimes.com/svc/crosswords/v2/puzzles-for-section-front.json");
+                    xhr.responseType = "text";
+                    //xhr.withCredentials = true;
+
+                    function error(msg) {
+                        self.update({ note: "Could not load puzzle list (" + msg + ")" });
+                    }
+
+                    xhr.onreadystatechange = function(e) {
+                        if (this.readyState != 4 )
+                            return;
+
+                        if (this.status != 200)
+                            return error("Server status: " + this.status);
+
+                        var resp = JSON.parse(this.response);
+                        if (resp.status != "OK")
+                            return error("JSON status: " + resp.status);
+
+                        var puzzles = resp.results.free_puzzles[200].results;
+                        var retval = [];
+                        for (var i=0; i<puzzles.length; i++) {
+                            var date = new Date(puzzles[i].print_date);
+                            date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                            var url = "http://www.nytimes.com/svc/crosswords/v2/puzzle/daily-" +
+                                        puzzles[i].print_date + ".json";
+                            retval.push({ url: url, title: date.toDateString() });
+                        }
+                        self.update({ puzzles: retval });
+                    }
+                    xhr.send();
+                    
+                    self.note = "Loading list...";
+                    return [];
+                }},
+            { title: "Thomas Joseph",
+                func: lastTwoWeeks(function (date) {
+                    return "http://puzzles.kingdigital.com/javacontent/clues/joseph/" +
+                            eightDigitDate(date) + ".txt";
+                }, [0])},
+            { title: "Universal",
+                func: lastTwoWeeks(function (date) {
+                    return "http://picayune.uclick.com/comics/fcx/data/fcx" +
+                            sixDigitDate(date) + "-data.xml";
+                    })},
+            { title: "USA Today",
+                func: lastTwoWeeks(function (date) {
+                    return "http://picayune.uclick.com/comics/usaon/data/usaon" +
+                            sixDigitDate(date) + "-data.xml";
+                })},
+            { title: "Wall Street Journal",
+                func: weekly(function (date) {
+                    return "http://blogs.wsj.com/applets/wsjxwd" + eightDigitDate(date) + ".dat";
+                }, 5)},
+            { title: "WSJ Greater New York",
+                func: weekly(function (date) {
+                    return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
+                            strZero(date.getDate()) + date.getFullYear() + ".dat";
+                }, 1)},
+            { title: "Washington Post",
+                func: lastTwoWeeks(function (date) {
+                    return "http://cdn.games.arkadiumhosted.com/washingtonpost/crossynergy/cs" +
+                            sixDigitDate(date) + ".jpz";
+                })}
         ];
         
         self.puzzles = [];

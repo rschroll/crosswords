@@ -430,8 +430,13 @@
                     if (this.status == 200) {
                         var parser = new DOMParser();
                         if (type == "arraybuffer") {
-                            var zip = new JSZip(this.response);
-                            var str = zip.file(fn).asText();
+                            try {
+                                var zip = new JSZip(this.response);
+                                var str = zip.file(fn).asText();
+                            } catch (error) {
+                                self.loadError(url, error.message);
+                                return;
+                            }
                         } else {
                             var str = this.response;
                         }
