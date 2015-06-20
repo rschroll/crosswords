@@ -21,10 +21,10 @@ of the GPL. See the file LICENSE for full details.
 
     <script src="js/jszip.js"></script>
     <script src="js/hammer.js"></script>
+    <script src="js/riot.js"></script>
     <!-- Application script -->
     <script src="js/loaders.js"></script>
     <script src="js/database.js"></script>
-    <script src="js/riot+compiler.js"></script>
   </head>
 
   <body>
@@ -42,11 +42,8 @@ of the GPL. See the file LICENSE for full details.
       <p id="info-copyright">{ copyright }</p>
     </overlay-dialog>
     
-    <script src="list-page.tag" type="riot/tag"></script>
-    <script src="puzzle-page.tag" type="riot/tag"></script>
-    <script src="dialog.tag" type="riot/tag"></script>
+    <script src="tags.js"></script>
     <script>
-      riot.compile(function () {
         var displayMixin = {
           init: function () {
             this.displayed = false;
@@ -87,7 +84,6 @@ of the GPL. See the file LICENSE for full details.
           }
         });
         list.update({ displayed: true });
-      });
     </script>
 
   </body>
