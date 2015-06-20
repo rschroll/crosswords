@@ -25,8 +25,7 @@
     <div id="gridcontainer">
         <table id="grid" class={ solved: completion == 1 }>
             <tr each={ row, i in puzzle.grid }><!--
-             --><td each={ cell, j in row } class={ parent.parent.gridClass(cell) } id={ 'r' + i + 'c' + j }
-                    onclick={ cell.type != 'block' && parent.parent.clickCell(i, j) }><!--
+             --><td each={ cell, j in row } class={ parent.parent.gridClass(cell) } id={ 'r' + i + 'c' + j }><!--
                  --><span class="number" if={ cell.number }>{ cell.number }</span><!--
                  --><span class="letter">{ parent.parent.fill[i][j] }</span><!--
              --></td><!--
@@ -119,12 +118,9 @@
         }
 
         clickCell(y, x) {
-            return function (event) {
-                event.preventUpdate = true;
-                if (self.selr == y && self.selc == x)
-                    self.seldir = (self.seldir == "across") ? "down" : "across";
-                self.selectCell(y, x);
-            };
+            if (self.selr == y && self.selc == x)
+                self.seldir = (self.seldir == "across") ? "down" : "across";
+            self.selectCell(y, x);
         }
 
         function getCellEl(y, x, subel) {
@@ -569,14 +565,14 @@
             self.fixView(true);
         });
 
-        /*hammer.on("tap", function (e) {
+        hammer.on("tap", function (e) {
             var el = e.target;
             while (!el.id)
                 el = el.parentElement;
             var coords = coordsFromID(el.id);
             if (!isNaN(coords[0]) && !isNaN(coords[1]) && !el.classList.contains("block"))
-                clickCell(coords[0], coords[1]);
-        });*/
+                self.clickCell(coords[0], coords[1]);
+        });
 
         hammer.on("transformstart", self.setStart);
         hammer.on("transform", function (e) {
