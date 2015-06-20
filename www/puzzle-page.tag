@@ -406,12 +406,7 @@
             self.seldir = "across";
             while (self.puzzle.grid[self.selr][self.selc].type == "block")
                 self.selc += 1;
-            //document.querySelector("#puzzle-page").setAttribute("data-title", puzzle.metadata["title"] ||
-            //                                                    "Crossword Puzzle");
-            //UI.pagestack.push("puzzle-page");
-            //window.setTimeout(function () { UI.toolbar("puzzle-footer").hide(); }, 5000);
             
-            //self.update();
             riot.route("loaded");
         }
         
@@ -591,9 +586,6 @@
         hammer.on("transformend", function (e) {
             self.fixView(true);
         });
-
-        /*dragScroll(document.querySelector("#across ul"));
-        dragScroll(document.querySelector("#down ul"));*/
     </script>
 
 </puzzle-page>

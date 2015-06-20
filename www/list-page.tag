@@ -165,14 +165,6 @@
 
 
         /*function init() {
-            var sources = UI.list("[id='sources']");
-            sources.append("In Progress", "", null, listSaved, false);
-            sources.append("Completed", "", null, listSaved, true);
-
-            var k = Object.keys(urlGens).sort();
-            for (var i=0; i<k.length; i++)
-                sources.append(k[i], "", null, listSource, urlGens[k[i]]);
-
             UI.pagestack.onPageChanged(function (e) {
                 if (e.page == "list-page") {
                     var selected = document.querySelector("#sources .selected a");
@@ -185,9 +177,6 @@
                     document.querySelector("#focuser").focus();
                 }
             });
-
-            dragScroll(document.querySelector("#sources"));
-            dragScroll(document.querySelector("#dates"));
         }
         init();*/
     </script>
