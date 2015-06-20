@@ -73,6 +73,7 @@
         self.solved = false;
 
         self.transformName = (document.body.style.transform == "") ? "transform" : "webkitTransform";
+        self.focuser = document.querySelector("#focuser");
 
         enumerate(list) {
             retval = []
@@ -409,6 +410,11 @@
         self.on("updated", function () {
             self.selectCell(self.selr, self.selc);
             self.setGeometry();
+            
+            if (self.displayed)
+                self.focuser.focus();
+            else
+                self.focuser.blur();
         });
 
         loadRemote(url) {
@@ -524,6 +530,10 @@
             e.preventDefault();
         });
 
+        self.focuser.addEventListener("blur", function (e) {
+          if (self.displayed)
+            e.target.focus();
+        });
         // For some reason, this fires twice for each character input, but not for space...
         var prevchar = "";
         document.querySelector("#focuser").addEventListener("input", function (e){
