@@ -13,6 +13,10 @@ puzzle-page {
     display: none;
 }
 
+puzzle-page header h1 {
+    max-width: calc(100% - 216px);
+}
+
 #gridcontainer {
     position: absolute;
     left: 15px;

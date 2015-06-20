@@ -30,6 +30,10 @@ list-page {
     overflow: auto;
 }
 
+#dates li {
+    padding-right: 4.5rem;
+}
+
 #dates li > span {
     position: absolute;
     right: 2rem;
