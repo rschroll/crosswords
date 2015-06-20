@@ -5,7 +5,7 @@
     
     <section id="sources" class="list">
         <ul>
-            <li each={ urlGens } onclick={ parent.setPuzzles }>{ title }</li>
+            <li each={ urlGens } class={ selected: parent.selected == title } onclick={ parent.setPuzzles }>{ title }</li>
         </ul>
     </section>
     
@@ -144,9 +144,24 @@
         
         self.puzzles = [];
         self.note = "";
+        self.selected = null;
         
         setPuzzles(event) {
-            var puzzles = event.item.func();
+            if (event.item.title == self.selected) {
+                event.preventUpdate = true;
+                return;
+            }
+            self.dates.scrollTop = 0;
+            self.selected = event.item.title;
+            self.puzzles = event.item.func();
+        }
+
+        clickPuzzle(event) {
+            riot.route("load/" + event.item.url);
+        }
+        
+        self.on("update", function () {
+            var puzzles = self.puzzles;
             for (var i in puzzles) {
                 var stored = database.getPuzzle(puzzles[i]["url"]);
                 if (stored) {
@@ -157,27 +172,6 @@
                 }
             }
             self.puzzles = puzzles;
-        }
-
-        clickPuzzle(event) {
-            riot.route("load/" + event.item.url);
-        }
-
-
-        /*function init() {
-            UI.pagestack.onPageChanged(function (e) {
-                if (e.page == "list-page") {
-                    var selected = document.querySelector("#sources .selected a");
-                    if (selected)
-                        selected.click();
-                    window.showOSK = false;
-                    document.querySelector("#focuser").blur();
-                } else {
-                    window.showOSK = true;
-                    document.querySelector("#focuser").focus();
-                }
-            });
-        }
-        init();*/
+        });
     </script>
 </list-page>
