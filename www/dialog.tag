@@ -1,4 +1,4 @@
-<dialog>
+<overlay-dialog>
     <div>
         <h1>{ title }</h1>
         <div>
@@ -20,4 +20,4 @@
             self.update({ displayed: false });
         }
     </script>
-</dialog>
+</overlay-dialog>

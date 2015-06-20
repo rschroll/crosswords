@@ -32,15 +32,15 @@ of the GPL. See the file LICENSE for full details.
     
     <list-page></list-page>
     <puzzle-page></puzzle-page>
-    <dialog id="load-error-dialog" title="Error Loading Puzzle" buttonlabel="Bummer">
+    <overlay-dialog id="load-error-dialog" title="Error Loading Puzzle" buttonlabel="Bummer">
       <p>Crosswords received an error, <span id="error-message">{ error }</span>,
       while trying to open the puzzle at <span id="error-url">{ url }</span>.</p>
-    </dialog>
-    <dialog id="info-dialog" buttonlabel="OK">
+    </overlay-dialog>
+    <overlay-dialog id="info-dialog" buttonlabel="OK">
       <p id="info-creator">{ creator }</p>
       <p id="info-description">{ description }</p>
       <p id="info-copyright">{ copyright }</p>
-    </dialog>
+    </overlay-dialog>
     
     <script src="list-page.tag" type="riot/tag"></script>
     <script src="puzzle-page.tag" type="riot/tag"></script>
@@ -59,7 +59,7 @@ of the GPL. See the file LICENSE for full details.
       
         var list = riot.mount("list-page")[0];
         var puzzle = riot.mount("puzzle-page")[0];
-        var dialogs = riot.mount("dialog");
+        var dialogs = riot.mount("overlay-dialog");
         
         riot.route.parser(function (path) {
           path = decodeURI(path);

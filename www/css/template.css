@@ -244,7 +244,6 @@ header.page button + h1 {
 .actions li img {
   position: relative;
   top: 20px;
-  content: "";
   display: block;
   width: 20px;
   height: 20px;
@@ -262,7 +261,7 @@ header.page button + h1 {
 /* ----------------------------------
  * Dialog
  * ---------------------------------- */
-dialog {
+overlay-dialog {
   background: #000;
   opacity: 0.9;
   overflow: hidden;
@@ -279,7 +278,7 @@ dialog {
   text-align: center;
   height: 100%;
 }
-dialog > div {
+overlay-dialog > div {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 1.5rem;
@@ -290,7 +289,7 @@ dialog > div {
   vertical-align: middle;
   white-space: normal;
 }
-dialog:before {
+overlay-dialog:before {
   content: "";
   display: inline-block;
   vertical-align: middle;
@@ -298,13 +297,13 @@ dialog:before {
   height: 100%;
   margin-left: -0.1rem;
 }
-dialog h1 {
+overlay-dialog h1 {
   margin: 0;
 }
-dialog p {
+overlay-dialog p {
   margin: 0;
 }
-dialog menu {
+overlay-dialog menu {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   white-space: nowrap;
@@ -313,29 +312,29 @@ dialog menu {
   display: block;
   text-align: center;
 }
-dialog menu button {
+overlay-dialog menu button {
   display: block;
   margin: 0 auto;
   margin-bottom: 10px;
   width: 200px;
 }
-dialog menu button:last-child {
+overlay-dialog menu button:last-child {
   margin-bottom: 0;
 }
 
 /* Tablet */
 @media only screen and (min-width: 870px) {
-  dialog {
+  overlay-dialog {
     background: rgba(0, 0, 0, 0.6);
     opacity: 1;
   }
-  dialog > div {
+  overlay-dialog > div {
     background: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     width: 18.7rem;
     padding: 1.8rem;
   }
-  dialog menu button {
+  overlay-dialog menu button {
     width: 100%;
     max-width: 100%;
   }
