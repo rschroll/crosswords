@@ -66,16 +66,23 @@ puzzle-page header h1 {
 
 @media only screen and (max-width: 40rem) {
     puzzle-page header.page {
-        right: 0;
+        right: calc((5rem - 60px)/2);
         bottom: calc((5rem - 60px)/2);
         width: auto;
         height: auto;
+        padding: 0 10px;
+        border-radius: 30px;
+        box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.5);
     }
     puzzle-page header.page h1 {
         display: none;
     }
     puzzle-page header.page:after {
         display: none;
+    }
+    puzzle-page header.page .actions, puzzle-page header.page button {
+        padding: 0;
+        background: transparent;
     }
     puzzle-page header.page.collapsed button, puzzle-page header.page.collapsed li {
         display: none;
@@ -102,6 +109,14 @@ puzzle-page header h1 {
         bottom: 2.5rem;
         border-bottom: 1px solid #ededed;
     }
+    section.clues.seldir{
+        background: #ffff99;
+        color: #606060;
+    }
+    section.clues{
+        background: #f4f4c2;
+        color: #6c6c6c;
+    }
     section.clues header {
         position: absolute;
         width: 3.5rem;
@@ -117,7 +132,6 @@ puzzle-page header h1 {
         bottom: 0;
         left: 4rem;
         right: 56px;
-        background: #c2c2c2;
     }
     section.clues ul li {
         display: none;
@@ -131,8 +145,6 @@ puzzle-page header h1 {
         max-height: 100%;
         overflow: auto;
         padding-left: 0.5rem;
-        color: #f8f8f8;
-        background: transparent;
     }
 }
 
@@ -275,11 +287,11 @@ section.clues ul li {
     white-space: normal;
 }
 
-section.clues .selClue {
+section.clues.seldir .selClue {
     background: #ffff99;
     color: #606060;
 }
-section.clues .selClueP {
+section.clues .selClue {
     background: #f4f4c2;
     color: #6c6c6c;
 }

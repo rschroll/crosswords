@@ -100,6 +100,19 @@
             return classes.join(" ");
         }
         
+        setSeldir(dir) {
+            if (!dir)
+                dir = (self.seldir == "across") ? "down" : "across";
+            self.seldir = dir;
+            if (dir == "across") {
+                self.across.classList.add("seldir");
+                self.down.classList.remove("seldir");
+            } else {
+                self.across.classList.remove("seldir");
+                self.down.classList.add("seldir");
+            }
+        }
+        
         function coordsFromID(id) {
             var coords = id.slice(1).split("c");
             return [parseInt(coords[0]), parseInt(coords[1])];
@@ -108,7 +121,7 @@
         clickClue(dir, num) {
             return function (event) {
                 event.preventUpdate = true;
-                self.seldir = dir;
+                self.setSeldir(dir);
                 var cells = document.querySelectorAll("." + dir + num);
                 for (var i=0; i<cells.length; i++) {
                     var coords = coordsFromID(cells[i].id);
@@ -124,7 +137,7 @@
 
         clickCell(y, x) {
             if (self.selr == y && self.selc == x)
-                self.seldir = (self.seldir == "across") ? "down" : "across";
+                self.setSeldir();
             self.selectCell(y, x);
         }
 
@@ -141,7 +154,7 @@
             self.selc = x;
             var across = self.puzzle.grid[y][x].across,
                 down = self.puzzle.grid[y][x].down,
-                styleClasses = ["selCell", "selCells", "selClue", "selClueP"];
+                styleClasses = ["selCell", "selCells", "selClue"];
 
             for (var i=0; i<styleClasses.length; i++) {
                 var els = document.querySelectorAll("." + styleClasses[i]);
@@ -176,7 +189,7 @@
 
             for (var i=0; i<2; i++) {
                 var clue = document.querySelector(["#across" + across, "#down" + down][i]);
-                clue.classList.add((self.seldir == ["across", "down"][i]) ? "selClue" : "selClueP");
+                clue.classList.add("selClue");
                 var parent = clue.offsetParent;
                 if (clue.offsetTop < parent.scrollTop ||
                         clue.offsetTop + clue.offsetHeight > parent.scrollTop + parent.offsetHeight)
@@ -261,7 +274,7 @@
                                       "bubbles": true,
                                       "cancelable": true });
             if (next == null) {
-                self.seldir = (self.seldir == "across") ? "down" : "across";
+                self.setSeldir();
                 var clues = document.querySelectorAll("#" + self.seldir + " ul li");
                 next = clues[(dir > 0) ? 0 : clues.length -1 ];
             }
@@ -414,7 +427,7 @@
 
             self.selr = 0;
             self.selc = 0;
-            self.seldir = "across";
+            self.setSeldir("across");
             while (self.puzzle.grid[self.selr][self.selc].type == "block")
                 self.selc += 1;
             
@@ -517,7 +530,7 @@
                 self.insertLetter(String.fromCharCode(e.keyCode));
                 self.moveCursor(1, false);
             } else if (e.keyCode == 13 || e.keyCode == 188) { // enter, comma
-                self.seldir = (self.seldir == "across") ? "down" : "across";
+                self.setSeldir();
                 self.selectCell(self.selr, self.selc);
             } else if (e.keyCode == 9 || e.keyCode == 190) { // tab, period
                 self.moveClue(e.shiftKey ? -1 : 1);
@@ -526,11 +539,11 @@
                 var inc = (e.keyCode < 39) ? -1 : 1;
                 if (self.seldir != dir && self.fill[self.selr][self.selc] == " ") {
                     // Change direction only if cell is empty
-                    self.seldir = dir;
+                    self.setSeldir(dir);
                     self.selectCell(self.selr, self.selc);
                 } else {
                     // Otherwise, change direction and step
-                    self.seldir = dir;
+                    self.setSeldir(dir);
                     self.moveCursor(inc, true);
                 }
             } else if (e.keyCode == 35 || e.keyCode == 36) { // end, home
@@ -562,7 +575,7 @@
             } else {
                 prevchar = char;
                 if (char == ",") {
-                    self.seldir = (self.seldir == "across") ? "down" : "across";
+                    self.setSeldir();
                     self.selectCell(self.selr, self.selc);
                 } else if (char == ".") {
                     self.moveClue(1);
