@@ -323,7 +323,7 @@ overlay-dialog menu button:last-child {
 }
 
 /* Tablet */
-@media only screen and (min-width: 870px) {
+@media only screen and (min-width: 20rem) {
   overlay-dialog {
     background: rgba(0, 0, 0, 0.6);
     opacity: 1;
@@ -400,8 +400,8 @@ section.list ul li {
 }
 section.list ul li:after {
   content: "";
-  background: transparent url(../img/chevron@27.png) no-repeat 0.5rem 0.5rem;
-  background-size: 40% 75%;
+  background: transparent url(../img/chevron.svg) no-repeat center 0.5rem;
+  background-size: 70%;
   position: absolute;
   width: 2rem;
   height: 2rem;

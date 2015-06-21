@@ -72,3 +72,44 @@ list-page {
     background: -webkit-linear-gradient(left, rgba(0,0,0,0) 50%, rgba(0,0,0,0.07));
     background: linear-gradient(to right, rgba(0,0,0,0) 50%, rgba(0,0,0,0.07));
 }
+
+@media only screen and (max-width: 40rem) {
+    #sources {
+        right: 0;
+    }
+    #dates {
+        visibility: hidden;
+    }
+    .view-dates #sources {
+        visibility: hidden;
+        overflow: hidden;
+        top: 60px;
+        border-top: none;
+    }
+    .view-dates #dates {
+        left: 0;
+        top: calc(60px + 3.1rem);
+        visibility: visible;
+    }
+    
+    .view-dates header.page:after {
+        display: none;
+    }
+    .view-dates #sources .selected {
+        visibility: visible;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        background: #c2c2c2;
+        color: #f8f8f8;
+        border-top: 1px solid #afafaf;
+        padding-left: 32px;
+        font-size: 1rem;
+    }
+    .view-dates #sources li.selected:after {
+        left: 0;
+        right: auto;
+        background-image: url(../img/back-light.svg);
+    }
+}

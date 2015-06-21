@@ -180,10 +180,19 @@
         self.selected = null;
         
         setPuzzles(event) {
+            var smallscreen = (self.sources.offsetWidth == document.body.offsetWidth);
             if (event.item.title == self.selected) {
+                if (smallscreen) {
+                    self.selected = null;
+                    self.puzzles = [];
+                    self.note = "";
+                    return;
+                }
                 event.preventUpdate = true;
                 return;
             }
+            if (smallscreen)
+                self.sources.scrollTop = 0;
             self.dates.scrollTop = 0;
             self.selected = event.item.title;
             self.puzzles = event.item.func();
@@ -205,6 +214,10 @@
                 }
             }
             self.puzzles = puzzles;
+            if (self.selected)
+                self.root.classList.add("view-dates");
+            else
+                self.root.classList.remove("view-dates");
         });
     </script>
 </list-page>
