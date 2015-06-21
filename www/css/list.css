@@ -68,9 +68,13 @@ list-page {
 }
 
 #sources .selected {
-    background: -webkit-gradient(linear, left top, right top, color-stop(50%, rgba(0,0,0,0)), color-stop(100%, rgba(0,0,0,0.07)));
-    background: -webkit-linear-gradient(left, rgba(0,0,0,0) 50%, rgba(0,0,0,0.07));
-    background: linear-gradient(to right, rgba(0,0,0,0) 50%, rgba(0,0,0,0.07));
+    background: #c2c2c2;
+    color: #f8f8f8;
+    border-top-color: #c2c2c2;
+    border-bottom-color: #afafaf;
+}
+#sources li.selected:after {
+    background-image: url(../img/chevron-light.svg);
 }
 
 @media only screen and (max-width: 40rem) {
@@ -101,9 +105,8 @@ list-page {
         left: 0;
         right: 0;
         top: 0;
-        background: #c2c2c2;
-        color: #f8f8f8;
         border-top: 1px solid #afafaf;
+        border-bottom-color: #c7c7c7;
         padding-left: 32px;
         font-size: 1rem;
     }
