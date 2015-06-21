@@ -1,5 +1,5 @@
 <puzzle-page>
-    <header class="page">
+    <header class="page collapsed">
         <button class="back" onclick={ back }></button>
         <h1>{ puzzle.metadata.title }</h1>
         <ul class="actions">
@@ -18,6 +18,10 @@
             <li onclick={ info }>
                 <img src="img/info.svg" alt="Info" />
                 <span>Info</span>
+            </li>
+            <li class="menu" onclick={ collapse }>
+                <img src="img/navigation-menu.svg" alt="Menu" />
+                <span>Menu</span>
             </li>
         </ul>
     </header>
@@ -381,7 +385,17 @@
 
         back(event) {
             event.preventUpdate = true;
+            self.root.querySelector("header.page").classList.add("collapsed");
             riot.route("list");
+        }
+        
+        collapse(event) {
+            event.preventUpdate = true;
+            var classList = self.root.querySelector("header.page").classList;
+            if (classList.contains("collapsed"))
+                classList.remove("collapsed");
+            else
+                classList.add("collapsed");
         }
 
         loadDoc(surl, doc, sfill, completion) {

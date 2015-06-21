@@ -16,6 +16,9 @@ puzzle-page {
 puzzle-page header h1 {
     max-width: calc(100% - 216px);
 }
+.actions .menu {
+    display: none;
+}
 
 #gridcontainer {
     position: absolute;
@@ -58,6 +61,78 @@ puzzle-page header h1 {
         bottom: 0;
         border-bottom: none;
         border-right: 0.1rem solid #c9c9c9;
+    }
+}
+
+@media only screen and (max-width: 40rem) {
+    puzzle-page header.page {
+        right: 0;
+        bottom: calc((5rem - 60px)/2);
+        width: auto;
+        height: auto;
+    }
+    puzzle-page header.page h1 {
+        display: none;
+    }
+    puzzle-page header.page:after {
+        display: none;
+    }
+    puzzle-page header.page.collapsed button, puzzle-page header.page.collapsed li {
+        display: none;
+    }
+    puzzle-page header.page .actions .menu {
+        display: list-item;
+    }
+    
+    #gridcontainer {
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        bottom: calc(5rem + 6px);
+    }
+    
+    #across, #down {
+        left: 0;
+        right: 0;
+        top: auto;
+        height: 2.5rem;
+        border-top: none;
+    }
+    #across {
+        bottom: 2.5rem;
+        border-bottom: 1px solid #ededed;
+    }
+    section.clues header {
+        position: absolute;
+        width: 3.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 0;
+        text-align: right;
+        border: none;
+        line-height: normal;
+    }
+    section.clues ul {
+        top: 0;
+        bottom: 0;
+        left: 4rem;
+        right: 56px;
+        background: #c2c2c2;
+    }
+    section.clues ul li {
+        display: none;
+        border: none;
+    }
+    section.clues ul li.selClue, section.clues ul li.selClueP {
+        display: block;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        max-height: 100%;
+        overflow: auto;
+        padding-left: 0.5rem;
+        color: #f8f8f8;
+        background: transparent;
     }
 }
 
