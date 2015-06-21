@@ -204,6 +204,10 @@ section.clues .selClue {
     background: #ffff99;
     color: #606060;
 }
+section.clues .selClueP {
+    background: #f4f4c2;
+    color: #6c6c6c;
+}
 
 #info-dialog p {
     margin-top: 0.5rem;

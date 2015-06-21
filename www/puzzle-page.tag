@@ -137,7 +137,7 @@
             self.selc = x;
             var across = self.puzzle.grid[y][x].across,
                 down = self.puzzle.grid[y][x].down,
-                styleClasses = ["selCell", "selCells", "selClue"];
+                styleClasses = ["selCell", "selCells", "selClue", "selClueP"];
 
             for (var i=0; i<styleClasses.length; i++) {
                 var els = document.querySelectorAll("." + styleClasses[i]);
@@ -172,7 +172,7 @@
 
             for (var i=0; i<2; i++) {
                 var clue = document.querySelector(["#across" + across, "#down" + down][i]);
-                clue.classList.add("selClue");
+                clue.classList.add((self.seldir == ["across", "down"][i]) ? "selClue" : "selClueP");
                 var parent = clue.offsetParent;
                 if (clue.offsetTop < parent.scrollTop ||
                         clue.offsetTop + clue.offsetHeight > parent.scrollTop + parent.offsetHeight)
