@@ -147,9 +147,6 @@
         }
 
         selectCell(y, x) {
-            if (!self.displayed)
-                return;
-            
             self.selr = y;
             self.selc = x;
             var across = self.puzzle.grid[y][x].across,
@@ -282,9 +279,6 @@
         }
 
         setGeometry() {
-            if (!self.displayed)
-                return;
-            
             var containerEl = self.gridcontainer;
             // clientWidth <= offsetWidth, which contains borders + scrollbars
             self.container = { X: containerEl.offsetLeft, Y: containerEl.offsetTop,
@@ -435,13 +429,14 @@
         }
         
         self.on("updated", function () {
-            self.selectCell(self.selr, self.selc);
-            self.setGeometry();
-            
-            if (self.displayed)
+            if (self.displayed) {
+                self.checkSolved();
+                self.selectCell(self.selr, self.selc);
+                self.setGeometry();
                 self.focuser.focus();
-            else
+            } else {
                 self.focuser.blur();
+            }
         });
 
         loadRemote(url) {
