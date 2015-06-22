@@ -10,8 +10,9 @@
                 <img src="img/delete-red.svg" alt="Delete" title="Delete" />
                 <span>Delete</span>
             </li>
-            <li if={ !deleteMode && (selected == 'In Progress' || selected == 'Completed') && puzzles.length }
-                onclick={ enableDelete }>
+            <li onclick={ enableDelete }
+                if={ !deleteMode &&  puzzles.length &&
+                    (selected == 'Empty' || selected == 'In Progress' || selected == 'Completed') }>
                 <img src="img/delete.svg" alt="Delete" title="Delete" />
                 <span>Delete</span>
             </li>
@@ -103,15 +104,20 @@
         }
 
         this.urlGens = [
+            { title: "Empty",
+                func: function () {
+                    self.note = "No empty puzzles";
+                    return fromList(database.getPuzzleUrls(database.EMPTY));
+                }},
             { title: "In Progress",
                 func: function () {
                     self.note = "No puzzles in progress";
-                    return fromList(database.getPuzzleUrls(false));
+                    return fromList(database.getPuzzleUrls(database.INPROGRESS));
                 }},
             { title: "Completed",
                 func: function () {
                     self.note = "No completed puzzles";
-                    return fromList(database.getPuzzleUrls(true));
+                    return fromList(database.getPuzzleUrls(database.COMPLETED));
                 }},
             { title: "Eugene Sheffer",
                 func: lastTwoWeeks(function (date) {
@@ -315,10 +321,12 @@
         self.on("update", function () {
             var puzzles;
             // A list of saved puzzles may change between updates, so reload them from the database.
-            if (self.selected == "In Progress")
-                puzzles = fromList(database.getPuzzleUrls(false));
+            if (self.selected == "Empty")
+                puzzles = fromList(database.getPuzzleUrls(database.EMPTY));
+            else if (self.selected == "In Progress")
+                puzzles = fromList(database.getPuzzleUrls(database.INPROGRESS));
             else if (self.selected == "Completed")
-                puzzles = fromList(database.getPuzzleUrls(true));
+                puzzles = fromList(database.getPuzzleUrls(database.COMPLETED));
             else
                 puzzles = self.puzzles;
             

@@ -430,7 +430,7 @@
         
         self.on("updated", function () {
             if (self.displayed) {
-                self.checkSolved();
+                self.checkAndSave();
                 self.selectCell(self.selr, self.selc);
                 self.setGeometry();
                 self.focuser.focus();

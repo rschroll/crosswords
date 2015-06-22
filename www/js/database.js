@@ -8,6 +8,8 @@
 
     var db = localStorage["crosswords"] ? JSON.parse(localStorage["crosswords"]) :
                                           { puzzles: {}, inprogress: [], completed: [] };
+    if (db.empty === undefined)
+        db.empty = [];
 
     function saveDb() {
         localStorage["crosswords"] = JSON.stringify(db);
@@ -20,6 +22,9 @@
         i = db.completed.indexOf(url);
         if (i > -1)
             db.completed.splice(i, 1);
+        i = db.empty.indexOf(url);
+        if (i > -1)
+            db.empty.splice(i, 1);
     }
 
     // Completion worked out from fill, but capped at 0.99.  Must pass 1 for full completion.
@@ -42,8 +47,10 @@
         deleteFromLists(url);
         if (completion == 1)
             db.completed.splice(0, 0, url);
-        else
+        else if (completion > 0)
             db.inprogress.splice(0, 0, url);
+        else
+            db.empty.splice(0, 0, url);
         saveDb();
     }
 
@@ -51,8 +58,18 @@
         return db.puzzles[url];
     }
 
-    self.getPuzzleUrls = function (solved) {
-        return solved ? db.completed : db.inprogress;
+    self.EMPTY = 0
+    self.INPROGRESS = 1
+    self.COMPLETED = 2
+    self.getPuzzleUrls = function (type) {
+        switch (type) {
+          case self.EMPTY:
+            return db.empty;
+          case self.INPROGRESS:
+            return db.inprogress;
+          case self.COMPLETED:
+            return db.completed;
+        }
     }
 
     self.deletePuzzles = function (urls) {
