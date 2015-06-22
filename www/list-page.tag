@@ -119,6 +119,10 @@
                     self.note = "No completed puzzles";
                     return fromList(database.getPuzzleUrls(database.COMPLETED));
                 }},
+            { title: "Chronicle of Higher Education",
+                func: weekly(function (date) {
+                    return "http://chronicle.com/items/biz/puzzles/" + eightDigitDate(date) + ".puz";
+                }, 5)},
             { title: "Eugene Sheffer",
                 func: lastTwoWeeks(function (date) {
                     return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
