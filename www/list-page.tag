@@ -200,12 +200,7 @@
                 func: weekly(function (date) {
                     return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
                             strZero(date.getDate()) + date.getFullYear() + ".dat";
-                }, 1)},
-            { title: "Washington Post",
-                func: lastTwoWeeks(function (date) {
-                    return "http://cdn.games.arkadiumhosted.com/washingtonpost/crossynergy/cs" +
-                            sixDigitDate(date) + ".jpz";
-                })}
+                }, 1)}
         ];
         
         self.puzzles = [];

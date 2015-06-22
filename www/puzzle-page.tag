@@ -443,7 +443,7 @@
             var fn = url.split("/").slice(-1)[0];
             var ext = fn.slice(-3);
             var xhr = new XMLHttpRequest();
-            var type = (ext == "jpz") ? "arraybuffer" : "text";
+            var type = "text";
             xhr.open("GET", url);
             xhr.responseType = type;
 
@@ -451,20 +451,9 @@
                 if (this.readyState == 4 ) {
                     if (this.status == 200) {
                         var parser = new DOMParser();
-                        if (type == "arraybuffer") {
-                            try {
-                                var zip = new JSZip(this.response);
-                                var str = zip.file(fn).asText();
-                            } catch (error) {
-                                self.loadError(url, error.message);
-                                return;
-                            }
-                        } else {
-                            var str = this.response;
-                        }
+                        var str = this.response;
                         var json, error;
                         switch (ext) {
-                          case "jpz":
                           case "xml":
                             var doc = parser.parseFromString(str.replace("&nbsp;", " "), "text/xml"),
                                 rootname = doc.firstChild.nodeName;
