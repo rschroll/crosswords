@@ -124,6 +124,10 @@
                     return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
                             eightDigitDate(date) + ".txt";
                 }, [0])},
+            { title: "Jonesin' Crosswords",
+                func: weekly(function (date) {
+                    return "http://herbach.dnsalias.com/Jonesin/jz" + sixDigitDate(date) + ".puz";
+                }, 2)},
             { title: "King Premier",
                 func: weekly(function (date) {
                     return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
