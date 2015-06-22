@@ -18,6 +18,7 @@ of the GPL. See the file LICENSE for full details.
     <link href="css/app.css" rel="stylesheet" type="text/css" />
     <link href="css/list.css" rel="stylesheet" type="text/css" />
     <link href="css/puzzle.css" rel="stylesheet" type="text/css" />
+    <link href="css/about.css" rel="stylesheet" type="text/css" />
 
     <script src="js/jszip.js"></script>
     <script src="js/hammer.js"></script>
@@ -33,6 +34,7 @@ of the GPL. See the file LICENSE for full details.
     
     <list-page></list-page>
     <puzzle-page></puzzle-page>
+    <about-page></about-page>
     <overlay-dialog id="load-error-dialog" title="Error Loading Puzzle" buttonlabel="Bummer">
       <p>Crosswords received an error, <span id="error-message">{ error }</span>,
       while trying to open the puzzle at <span id="error-url">{ url }</span>.</p>
@@ -57,6 +59,7 @@ of the GPL. See the file LICENSE for full details.
       
         var list = riot.mount("list-page")[0];
         var puzzle = riot.mount("puzzle-page")[0];
+        var about = riot.mount("about-page")[0];
         var dialogs = riot.mount("overlay-dialog");
         
         riot.route.parser(function (path) {
@@ -71,11 +74,15 @@ of the GPL. See the file LICENSE for full details.
             list.update({ displayed: true });
             puzzle.update({ displayed: false, puzzle: { across: [], down: [] } });
             // Puzzle set to fake value to work around riot bug #848.
+            about.update({ displayed: false });
           } else if (command == "load") {
             puzzle.loadURL(args);
           } else if (command == "loaded") {
             list.update({ displayed: false });
             puzzle.update({ displayed: true });
+          } else if (command == "about") {
+            list.update({ displayed: false });
+            about.update({ displayed: true });
           } else if (command == "error") {
             var arglist = args.split("~~~");
             dialogs[0].update({ displayed: true, error: arglist[0], url: arglist[1] });

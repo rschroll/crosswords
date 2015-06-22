@@ -1,6 +1,12 @@
 <list-page>
     <header class="page">
         <h1>Puzzles</h1>
+        <ul class="actions">
+            <li onclick={ about }>
+                <img src="img/info.svg" alt="About" />
+                <span>About</span>
+            </li>
+        </ul>
     </header>
     
     <section id="sources" class="list">
@@ -199,7 +205,13 @@
         }
 
         clickPuzzle(event) {
+            event.preventUpdate = true;
             riot.route("load/" + event.item.url);
+        }
+        
+        about(event) {
+            event.preventUpdate = true;
+            riot.route("about");
         }
         
         self.on("update", function () {
