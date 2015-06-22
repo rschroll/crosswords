@@ -39,6 +39,13 @@ list-page {
     right: 2rem;
 }
 
+#dates.deleteMode ul li:after {
+    display: none;
+}
+#dates.deleteMode li > span {
+    right: 1rem;
+}
+
 #dates-notes {
     position: absolute;
     top: 0;
@@ -75,6 +82,10 @@ list-page {
 }
 #sources li.selected:after {
     background-image: url(../img/chevron-light.svg);
+}
+#sources.deleteMode li > span {
+    position: absolute;
+    right: 2rem;
 }
 
 @media only screen and (max-width: 40rem) {
@@ -114,5 +125,8 @@ list-page {
         left: 0;
         right: auto;
         background-image: url(../img/back-light.svg);
+    }
+    #sources.deleteMode li > span {
+        right: 1rem;
     }
 }

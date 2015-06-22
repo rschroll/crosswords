@@ -2,23 +2,44 @@
     <header class="page">
         <h1>Puzzles</h1>
         <ul class="actions">
-            <li onclick={ about }>
+            <li if={ deleteMode } onclick={ disableDelete }>
+                <img src="img/cancel.svg" alt="Cancel" title="Cancel" />
+                <span>Delete</span>
+            </li>
+            <li if={ deleteMode } onclick={ deletePuzzles }>
+                <img src="img/delete-red.svg" alt="Delete" title="Delete" />
+                <span>Delete</span>
+            </li>
+            <li if={ !deleteMode && (selected == 'In Progress' || selected == 'Completed') && puzzles.length }
+                onclick={ enableDelete }>
+                <img src="img/delete.svg" alt="Delete" title="Delete" />
+                <span>Delete</span>
+            </li>
+            <li if={ !deleteMode } onclick={ about }>
                 <img src="img/info.svg" alt="About" title="About" />
                 <span>About</span>
             </li>
         </ul>
     </header>
     
-    <section id="sources" class="list">
+    <section id="sources" class={ list: true, deleteMode: deleteMode }>
         <ul>
-            <li each={ urlGens } class={ selected: parent.selected == title } onclick={ parent.setPuzzles }>{ title }</li>
+            <li each={ urlGens } class={ selected: parent.selected == title } onclick={ parent.setPuzzles }>
+                { title }
+                <span if={ parent.deleteMode && parent.selected == title }>
+                    <input type="checkbox" onclick={ parent.setPuzzlesInput }/>
+                </span>
+            </li>
         </ul>
     </section>
     
-    <section id="dates" class="list">
+    <section id="dates" class={ list: true, deleteMode: deleteMode }>
         <ul>
             <li each={ puzzles } onclick={ parent.clickPuzzle }>{ title }
-                <span if={ completion > 0 }>{ (completion*100).toFixed(0) + "%" }</span>
+                <span if={ !parent.deleteMode && completion > 0 }>{ (completion*100).toFixed(0) + "%" }</span>
+                <span if={ parent.deleteMode }>
+                    <input type="checkbox" url={ url } onclick={ parent.clickPuzzleInput } />
+                </span>
             </li>
         
             <div id="dates-notes" show={ puzzles.length == 0 }>
@@ -184,14 +205,28 @@
         self.puzzles = [];
         self.note = "";
         self.selected = null;
+        self.deleteMode = false;
         
         setPuzzles(event) {
             var smallscreen = (self.sources.offsetWidth == document.body.offsetWidth);
             if (event.item.title == self.selected) {
+                if (self.deleteMode) {
+                    var input = event.target.querySelector("input");
+                    if (input.indeterminate) {
+                        input.indeterminate = false;
+                        input.checked = true;
+                    } else {
+                        input.checked = !input.checked;
+                    }
+                    self.datesDelete(input.checked);
+                    event.preventUpdate = true;
+                    return;
+                }
                 if (smallscreen) {
                     self.selected = null;
                     self.puzzles = [];
                     self.note = "";
+                    self.deleteMode = false;
                     return;
                 }
                 event.preventUpdate = true;
@@ -202,11 +237,50 @@
             self.dates.scrollTop = 0;
             self.selected = event.item.title;
             self.puzzles = event.item.func();
+            self.deleteMode = false;
+        }
+        
+        setPuzzlesInput(event) {
+            event.preventUpdate = true;
+            event.stopPropagation();
+            self.datesDelete(event.target.checked);
+        }
+        
+        datesDelete(checked) {
+            var inputs = self.dates.querySelectorAll("input");
+            for (var i=0; i<inputs.length; i++)
+                inputs[i].checked = checked;
         }
 
         clickPuzzle(event) {
             event.preventUpdate = true;
-            riot.route("load/" + event.item.url);
+            if (self.deleteMode) {
+                var input = event.target.querySelector("input");
+                input.checked = !input.checked;
+                self.sourcesDeleteIndeterminate();
+            } else {
+                riot.route("load/" + event.item.url);
+            }
+        }
+        
+        clickPuzzleInput(event) {
+            event.preventUpdate = true;
+            event.stopPropagation();
+            self.sourcesDeleteIndeterminate();
+        }
+        
+        sourcesDeleteIndeterminate() {
+            var input = self.sources.querySelector("input");
+            var inputs = self.dates.querySelectorAll("input");
+            var checked = false;
+            var unchecked = false;
+            for (var i=0; i<inputs.length; i++)
+                if (inputs[i].checked)
+                    checked = true;
+                else
+                    unchecked = true;
+            input.indeterminate = checked && unchecked;
+            input.checked = checked && !unchecked;
         }
         
         about(event) {
@@ -214,8 +288,40 @@
             riot.route("about");
         }
         
+        enableDelete(event) {
+            self.deleteMode = true;
+        }
+        
+        disableDelete(event) {
+            self.deleteMode = false;
+            var inputs = self.root.querySelectorAll("input[type='checkbox']");
+            for (var i=0; i<inputs.length; i++) {
+                inputs[i].checked = false;
+                inputs[i].indeterminate = false;
+            }
+        }
+        
+        deletePuzzles(event) {
+            var inputs = self.dates.querySelectorAll("input");
+            var deleteUrls = [];
+            for (var i=0; i<inputs.length; i++)
+                if (inputs[i].checked)
+                    deleteUrls.push(inputs[i].attributes.url.value);
+            database.deletePuzzles(deleteUrls);
+            self.disableDelete();
+            self.update();
+        }
+        
         self.on("update", function () {
-            var puzzles = self.puzzles;
+            var puzzles;
+            // A list of saved puzzles may change between updates, so reload them from the database.
+            if (self.selected == "In Progress")
+                puzzles = fromList(database.getPuzzleUrls(false));
+            else if (self.selected == "Completed")
+                puzzles = fromList(database.getPuzzleUrls(true));
+            else
+                puzzles = self.puzzles;
+            
             for (var i in puzzles) {
                 var stored = database.getPuzzle(puzzles[i]["url"]);
                 if (stored) {

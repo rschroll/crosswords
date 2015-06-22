@@ -9,6 +9,19 @@
     var db = localStorage["crosswords"] ? JSON.parse(localStorage["crosswords"]) :
                                           { puzzles: {}, inprogress: [], completed: [] };
 
+    function saveDb() {
+        localStorage["crosswords"] = JSON.stringify(db);
+    }
+    
+    function deleteFromLists(url) {
+        var i = db.inprogress.indexOf(url);
+        if (i > -1)
+            db.inprogress.splice(i, 1);
+        i = db.completed.indexOf(url);
+        if (i > -1)
+            db.completed.splice(i, 1);
+    }
+
     // Completion worked out from fill, but capped at 0.99.  Must pass 1 for full completion.
     self.putPuzzle = function (url, puzzle, fill, completion) {
         if (completion == null) {
@@ -26,17 +39,12 @@
         var obj = { puzzle: puzzle, fill: fill, completion: completion };
         db.puzzles[url] = obj;
 
-        var i = db.inprogress.indexOf(url);
-        if (i > -1)
-            db.inprogress.splice(i, 1);
-        i = db.completed.indexOf(url);
-        if (i > -1)
-            db.completed.splice(i, 1);
+        deleteFromLists(url);
         if (completion == 1)
             db.completed.splice(0, 0, url);
         else
             db.inprogress.splice(0, 0, url);
-        localStorage["crosswords"] = JSON.stringify(db);
+        saveDb();
     }
 
     self.getPuzzle = function (url) {
@@ -45,6 +53,14 @@
 
     self.getPuzzleUrls = function (solved) {
         return solved ? db.completed : db.inprogress;
+    }
+
+    self.deletePuzzles = function (urls) {
+        for (var i in urls) {
+            delete db.puzzles[urls[i]];
+            deleteFromLists(urls[i]);
+        }
+        saveDb();
     }
 
 })(window.database = window.database || {})
