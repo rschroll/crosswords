@@ -18,6 +18,7 @@
         
         close() {
             self.update({ displayed: false });
+            riot.route("dialog-closed");
         }
     </script>
 </overlay-dialog>

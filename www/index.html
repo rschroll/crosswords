@@ -69,7 +69,8 @@ of the GPL. See the file LICENSE for full details.
         riot.route(function (command, args) {
           if (command == "list") {
             list.update({ displayed: true });
-            puzzle.update({ displayed: false, puzzle: null });  // Puzzle set to null to work around riot bug #848
+            puzzle.update({ displayed: false, puzzle: { across: [], down: [] } });
+            // Puzzle set to fake value to work around riot bug #848.
           } else if (command == "load") {
             puzzle.loadURL(args);
           } else if (command == "loaded") {
@@ -82,6 +83,8 @@ of the GPL. See the file LICENSE for full details.
             var arglist = args.split("~~~");
             dialogs[1].update({ displayed: true, title: arglist[0], creator: arglist[1],
                                 description: arglist[2], copyright: arglist[3] });
+          } else if (command == "dialog-closed") {
+            // Dialog closes itself, but change the URL so we can open it again.
           }
         });
         list.update({ displayed: true });
