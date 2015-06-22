@@ -443,7 +443,7 @@
             var fn = url.split("/").slice(-1)[0];
             var ext = fn.slice(-3);
             var xhr = new XMLHttpRequest();
-            var type = "text";
+            var type = (ext == "puz") ? "arraybuffer" : "text";
             xhr.open("GET", url);
             xhr.responseType = type;
 
@@ -475,6 +475,12 @@
 
                           case "son":  // Actually json, but truncated by above
                             json = NYTtoJSON(str);
+                            break;
+
+                          case "puz":
+                            json = PUZtoJSON(str);
+                            if (typeof json == "string")
+                                error = json;
                             break;
 
                           default:
