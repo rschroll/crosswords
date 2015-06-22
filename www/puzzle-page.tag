@@ -1,26 +1,26 @@
 <puzzle-page>
     <header class="page collapsed">
-        <button class="back" onclick={ back }></button>
+        <button class="back" onclick={ back } title="Back"></button>
         <h1>{ puzzle.metadata.title }</h1>
         <ul class="actions">
             <li onclick={ solve }>
-                <img src="img/compose.svg" alt="Solve" />
+                <img src="img/compose.svg" alt="Solve" title="Solve" />
                 <span>Solve</span>
             </li>
             <li onclick={ check }>
-                <img src="img/tick@30.png" alt="Check" />
+                <img src="img/tick@30.png" alt="Check" title="Check" />
                 <span>Check</span>
             </li>
             <li onclick={ reveal }>
-                <img src="img/reveal.svg" alt="Reveal" />
+                <img src="img/reveal.svg" alt="Reveal" title="Reveal" />
                 <span>Reveal</span>
             </li>
             <li onclick={ info }>
-                <img src="img/info.svg" alt="Info" />
+                <img src="img/info.svg" alt="Info" title="Info" />
                 <span>Info</span>
             </li>
             <li class="menu" onclick={ collapse }>
-                <img src="img/navigation-menu.svg" alt="Menu" />
+                <img src="img/navigation-menu.svg" alt="Menu" title="Menu" />
                 <span>Menu</span>
             </li>
         </ul>

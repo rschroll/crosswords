@@ -1,6 +1,6 @@
 <about-page>
     <header class="page">
-        <button class="back" onclick={ back }></button>
+        <button class="back" onclick={ back } title="Back"></button>
         <h1>About</h1>
     </header>
 

@@ -3,7 +3,7 @@
         <h1>Puzzles</h1>
         <ul class="actions">
             <li onclick={ about }>
-                <img src="img/info.svg" alt="About" />
+                <img src="img/info.svg" alt="About" title="About" />
                 <span>About</span>
             </li>
         </ul>
