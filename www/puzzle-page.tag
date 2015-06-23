@@ -51,7 +51,7 @@
     <section id="down" class="clues list">
         <header>Down</header>
         <ul>
-            <li each={ clue, n in puzzle.down } id={ 'down' + n } onclick={ parent.clickClue('down', n) }>
+            <li each={ enumerate(puzzle.down) } id={ 'down' + n } onclick={ parent.clickClue('down', n) }>
                 { n + ". " + clue }
             </li>
         </ul>
