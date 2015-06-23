@@ -208,7 +208,21 @@
                 func: weekly(function (date) {
                     return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
                             strZero(date.getDate()) + date.getFullYear() + ".dat";
-                }, 1)}
+                }, 1)},
+            { title: "The Week",
+                func: function () {
+                    var week0 = new Date('2009-06-12');
+                    var msperwk = 1000 * 60 * 60 * 24 * 7;
+                    var week = Math.floor((new Date() - week0) / msperwk);
+                    var retval = [];
+                    for (var i=0; i<8; i++, week--) {
+                        var url = "http://api.theweek.com/sites/default/files/crosswords/Week" + week + ".puz";
+                        var pub = new Date(week0.getTime() + week * msperwk);
+                        pub.setMinutes(pub.getTimezoneOffset());
+                        retval.push({ url: url, title: pub.toDateString() });
+                    }
+                    return retval;
+                }}
         ];
         
         self.puzzles = [];
