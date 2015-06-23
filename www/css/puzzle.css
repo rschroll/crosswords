@@ -64,7 +64,7 @@ puzzle-page header h1 {
     }
 }
 
-@media only screen and (max-width: 40rem) {
+@media only screen and (max-width: 40rem) and (max-height: 40rem) {
     puzzle-page header.page {
         right: calc((5rem - 60px)/2);
         bottom: calc((5rem - 60px)/2);
