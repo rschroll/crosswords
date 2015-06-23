@@ -398,3 +398,60 @@ function PUZtoJSON(buffer) {
     retval.metadata["description"] = readString();
     return retval;
 }
+
+function NewsdaytoJSON(str) {
+    var retval = {
+        metadata: {},
+        grid: [],
+        across: [],
+        down: [],
+        ncells: 0
+    };
+    var parts = str.split("\n\n");
+    retval.metadata["title"] = parts[2];
+    retval.metadata["creator"] = parts[3];
+
+    // Not sure about the order here!
+    retval.nrow = parts[5];
+    retval.ncol = parts[4];
+    var n = 1;
+    var rows = parts[8].split("\n");
+    var acrossN = [];
+    var downN = [];
+    for (var i=0; i<retval.nrow; i++) {
+        retval.grid[i] = [];
+        for (var j=0; j<retval.ncol; j++) {
+            var letter = rows[i][j];
+            if (letter != "#") {
+                retval.ncells += 1;
+                retval.grid[i][j] = { solution: letter };
+                if (j == 0 || retval.grid[i][j-1].type == "block") {
+                    retval.grid[i][j].number = n++;
+                    retval.grid[i][j].across = retval.grid[i][j].number;
+                    acrossN.push(retval.grid[i][j].number);
+                } else {
+                    retval.grid[i][j].across = retval.grid[i][j-1].across;
+                }
+                if (i==0 || retval.grid[i-1][j].type == "block") {
+                    if (!retval.grid[i][j].number)
+                        retval.grid[i][j].number = n++;
+                    retval.grid[i][j].down = retval.grid[i][j].number;
+                    downN.push(retval.grid[i][j].number);
+                } else {
+                    retval.grid[i][j].down = retval.grid[i-1][j].down;
+                }
+            } else {
+                retval.grid[i][j] = { type: "block" };
+            }
+        }
+    }
+
+    var acrossClues = parts[9].split("\n");
+    for (var i=0; i<acrossN.length; i++)
+        retval.across[acrossN[i]] = acrossClues[i];
+    var downClues = parts[10].split("\n");
+    for (var i=0; i<downN.length; i++)
+        retval.down[downN[i]] = downClues[i];
+
+    return retval;
+}

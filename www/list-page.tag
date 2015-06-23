@@ -147,6 +147,11 @@
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/SundayCrossword/mreagle_"
                     + sixDigitDate(date) + ".xml";
                 }, 0)},
+            { title: "Newsday",
+                func: lastTwoWeeks(function (date) {
+                    return "http://www.brainsonly.com/servlets-newsday-crossword/newsdaycrossword?date=" +
+                    sixDigitDate(date) + "&fmt=nwd";  // fmt only to help our format detection
+                })},
             { title: "New York Times Classics",
                 func: function () {
                     var xhr = new XMLHttpRequest();

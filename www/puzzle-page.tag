@@ -483,6 +483,10 @@
                                 error = json;
                             break;
 
+                          case "nwd":
+                            json = NewsdaytoJSON(str);
+                            break;
+
                           default:
                             error = "Unknown format (" + ext + ")";
                         }
