@@ -88,6 +88,27 @@ list-page {
     right: 2rem;
 }
 
+@keyframes busy-gradient {
+    0% { background-position: left bottom; }
+    100% { background-position: right bottom; }
+}
+@-webkit-keyframes busy-gradient {
+    0% { background-position: left bottom; }
+    100% { background-position: right bottom; }
+}
+li.busy {
+    background-image: linear-gradient(105deg, #ededed, #ddd, #ededed);
+    background-size: 25% 100%;
+    -webkit-animation-name: busy-gradient;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-name: busy-gradient;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
 #fileinput {
     display: none;
 }

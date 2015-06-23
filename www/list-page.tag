@@ -289,6 +289,7 @@
                 input.checked = !input.checked;
                 self.sourcesDeleteIndeterminate();
             } else {
+                event.target.classList.add("busy");
                 riot.route("load//" + event.item.url);
             }
         }
@@ -384,6 +385,10 @@
                 self.root.classList.add("view-dates");
             else
                 self.root.classList.remove("view-dates");
+            
+            var busy = self.root.querySelectorAll(".busy");
+            for (var i=0; i<busy.length; i++)
+                busy[i].classList.remove("busy");
         });
     </script>
 </list-page>

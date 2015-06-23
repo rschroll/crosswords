@@ -87,6 +87,7 @@ of the GPL. See the file LICENSE for full details.
           } else if (command == "error") {
             var arglist = args.split("~~~");
             dialogs[0].update({ displayed: true, error: arglist[0], url: arglist[1] });
+            list.update();  // Stop busy throbber
           } else if (command == "info") {
             var arglist = args.split("~~~");
             dialogs[1].update({ displayed: true, title: arglist[0], creator: arglist[1],
