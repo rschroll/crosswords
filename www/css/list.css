@@ -88,6 +88,10 @@ list-page {
     right: 2rem;
 }
 
+#fileinput {
+    display: none;
+}
+
 @media only screen and (max-width: 40rem) {
     #sources {
         right: 0;

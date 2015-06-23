@@ -75,7 +75,9 @@ of the GPL. See the file LICENSE for full details.
             // Puzzle set to fake value to work around riot bug #848.
             about.update({ displayed: false });
           } else if (command == "load") {
-            puzzle.loadURL(args);
+            var fn = args.split("/", 1)[0];
+            var url = args.slice(fn.length + 1);
+            puzzle.loadURL(url, fn);
           } else if (command == "loaded") {
             list.update({ displayed: false });
             puzzle.update({ displayed: true });

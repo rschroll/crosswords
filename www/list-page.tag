@@ -31,7 +31,9 @@
                     <input type="checkbox" onclick={ parent.setPuzzlesInput }/>
                 </span>
             </li>
+            <li onclick={ getFile }>Import File</li>
         </ul>
+         <input type="file" id="fileinput" onchange={ loadFile } />
     </section>
     
     <section id="dates" class={ list: true, deleteMode: deleteMode }>
@@ -287,7 +289,7 @@
                 input.checked = !input.checked;
                 self.sourcesDeleteIndeterminate();
             } else {
-                riot.route("load/" + event.item.url);
+                riot.route("load//" + event.item.url);
             }
         }
         
@@ -338,6 +340,22 @@
             database.deletePuzzles(deleteUrls);
             self.disableDelete();
             self.update();
+        }
+        
+        getFile(event) {
+            self.fileinput.click();
+            
+            self.puzzles = [];
+            self.note = "";
+            self.selected = null;
+            self.deleteMode = false;
+        }
+        
+        loadFile(event) {
+            if (event.target.files.length == 0)
+                return;
+            var f = event.target.files[0];
+            riot.route("load/" + f.name + "/" + window.URL.createObjectURL(f));
         }
         
         self.on("update", function () {

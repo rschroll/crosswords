@@ -439,8 +439,9 @@
             }
         });
 
-        loadRemote(url) {
-            var fn = url.split("/").slice(-1)[0];
+        loadRemote(url, fn) {
+            if (!fn)
+                fn = url.split("/").slice(-1)[0];
             var ext = fn.slice(-3);
             var xhr = new XMLHttpRequest();
             var type = (ext == "puz") ? "arraybuffer" : "text";
@@ -497,6 +498,8 @@
                     } else {
                         self.loadError(url, "Server status " + this.status);
                     }
+                    if (url.slice(0, 4) == "blob")
+                        window.URL.revokeObjectURL(url);
                 }
             }
             xhr.send();
@@ -506,12 +509,12 @@
             riot.route(encodeURI("error/" + message + "~~~" + url));
         }
 
-        loadURL(url) {
+        loadURL(url, fn) {
             var puzzle = database.getPuzzle(url);
             if (puzzle)
                 self.loadDoc(url, puzzle.puzzle, puzzle.fill, puzzle.completion);
             else
-                self.loadRemote(url);
+                self.loadRemote(url, fn);
         };
 
         document.addEventListener('keydown', function(e) {
