@@ -96,7 +96,7 @@
             if (cell.down)
                 classes.push("down" + cell.down);
             if (cell.shape)
-                classes.push(grid.shape);
+                classes.push(cell.shape);
             return classes.join(" ");
         }
         
