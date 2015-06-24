@@ -25,3 +25,28 @@ body {
     width: 1rem;
     background: #ededed;
 }
+
+#drag-accept {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    z-index: 200;
+}
+body.dnd #drag-accept {
+    display: block;
+}
+#drag-accept span {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 100%;
+    font-size: 200%;
+    font-weight: bold;
+    text-align: center;
+}
