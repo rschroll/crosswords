@@ -265,7 +265,7 @@
 
         moveClue(dir) {
             var clue = document.querySelector("#" + self.seldir + " .selClue"),
-                next = (dir > 0) ? clue.nextSibling : clue.previousSibling,
+                next = (dir > 0) ? clue.nextElementSibling : clue.previousElementSibling,
                 event = new Event("click", {
                                       "view": window,
                                       "bubbles": true,
