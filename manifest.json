@@ -5,7 +5,8 @@
     "hooks": {
         "crosswords": {
             "apparmor": "crosswords.json",
-            "desktop": "crosswords.desktop"
+            "desktop": "crosswords.desktop",
+            "content-hub": "crosswords.contenthub.json"
         }
     },
     "maintainer": "Robert Schroll <rschroll@gmail.com>",

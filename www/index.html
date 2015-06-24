@@ -97,6 +97,25 @@ of the GPL. See the file LICENSE for full details.
           }
         });
         list.update({ displayed: true });
+        
+        window.onload = function () {
+          var hub = null;
+          try {
+            hub = external.getUnityObject(1.0).ContentHub;
+          } catch (error) {
+            // Not on Ubuntu Touch
+          }
+          if (hub) {
+            function getItemUrl(items) {
+              riot.route("load//" + items[0].url);
+            }
+            function incoming(transfer) {
+              transfer.items(getItemUrl);
+            }
+            hub.onImportRequested(incoming);
+            hub.onShareRequested(incoming);
+          }
+        }
     </script>
 
   </body>

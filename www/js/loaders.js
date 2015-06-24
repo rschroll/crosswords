@@ -206,12 +206,16 @@ function KingTXTtoJSON(str, url) {
         ncells: 0
     };
     // No metadata in this format, so make up a title from the URL
-    var m = url.match(/clues\/(\w*)\/(\d{4})(\d{2})(\d{2}).txt/),
-        name = { joseph: "Thomas Joseph", sheffer: "Eugene Sheffer", premier: "King Premier" }[m[1]],
-        date = new Date(m[2] + "-" + m[3] + "-" + m[4]);
-    // date is interpreted as midnight in UTC, but will print in current time zone, so shift it
-    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-    retval.metadata["title"] = name + " Crossword—" + date.toDateString();
+    var m = url.match(/clues\/(\w*)\/(\d{4})(\d{2})(\d{2}).txt/);
+    if (m) {
+        var name = { joseph: "Thomas Joseph", sheffer: "Eugene Sheffer", premier: "King Premier" }[m[1]],
+            date = new Date(m[2] + "-" + m[3] + "-" + m[4]);
+        // date is interpreted as midnight in UTC, but will print in current time zone, so shift it
+        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+        retval.metadata["title"] = name + " Crossword—" + date.toDateString();
+    } else {
+        retval.metadata["title"] = url.split("/").slice(-1);
+    }
 
     // Sometimes lines are split by \n, sometimes by \r\n...
     str = str.replace(/\r/g, "");

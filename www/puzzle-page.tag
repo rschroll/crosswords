@@ -450,7 +450,8 @@
 
             xhr.onreadystatechange = function(e) {
                 if (this.readyState == 4 ) {
-                    if (this.status == 200) {
+                    // Loading from file:// has status == 0 even when successful
+                    if (this.status == 200 || url.slice(0, 4) == "file") {
                         var parser = new DOMParser();
                         var str = this.response;
                         var json, error;
