@@ -1,3 +1,5 @@
 test/
 _site/
 *.tag
+*.tar.gz
+*.click
