@@ -10,7 +10,7 @@ crosswords.tar.gz: crosswords README.md LICENSE www/index.html www/tags.js www/c
 
 tar: crosswords.tar.gz
 
-click:
+click: www/tags.js
 	( \
 	mkdir -p click; \
 	PROJECT_EXCLUDES="--exclude .bzr --exclude .git --exclude .hg --exclude .svn --exclude *.qmlproject --exclude *.user --exclude tests --exclude Makefile --exclude .excludes --exclude click/ --exclude *.ubuntuhtmlproject"; \
@@ -24,3 +24,12 @@ click:
 	)
 
 all: tar click
+
+device-launch: click
+	( \
+	CLICK=`ls -t *.click | head -1`; \
+	adb push $$CLICK $$CLICK; \
+	adb shell pkcon install-local $$CLICK -p --allow-untrusted; \
+	PKG_NAME=`echo $$CLICK | sed 's/crosswords/crosswords_crosswords/;s/_all.click//'`; \
+	adb shell ubuntu-app-launch $$PKG_NAME \
+	)
