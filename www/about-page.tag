@@ -40,7 +40,7 @@
         
         <h2>Colophon</h2>
         
-        <p>This is version 0.2.1 of <a href="http://rschroll.github.io/crosswords/">Crosswords</a> for Ubuntu.</p>
+        <p>This is version 0.3.0 of <a href="http://rschroll.github.io/crosswords/">Crosswords</a> for Ubuntu.</p>
         
         <p>Crosswords is Copyright 2014-2015 by Robert Schroll and incorporates copyrighted material for several other authors under various licenses.</p>
         
