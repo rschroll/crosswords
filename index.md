@@ -5,115 +5,80 @@ title: Crosswords for Ubuntu
 Crosswords for Ubuntu
 =====================
 
-Crosswords in a work-in-progress app for Ubuntu, with the goal of
-letting you solve your favorite puzzles on your phone, tablet, and
-desktop.  Crosswords itself is fairly stable now, but we're waiting on
-some issues in the SDK.
+Crosswords is an HTML5 application that lets you enjoy crossword puzzles
+from a number of online sources.  It can also load puzzles in the
+popular Across Lite .PUZ format.  Crosswords was originally written for
+Ubuntu, but it should work on any platform with a modern browser.
 
-![Screenshot](assets/crosswords2.png "screenshot")
+[![Screenshot](assets/crosswords3.png "screenshot")](assets/crosswords3.png)
 
 Features
 --------
-* Lets you play puzzles from the Washington Post, LA Times, Wall Street Journal, and others.
-* Checks your answers, get hints, or see the solution when you get stuck.
-* Saves your progress (locally for now, but to UbuntuOne when the SDK allows it).
+* Lets you play puzzles from the LA Times, Wall Street Journal, Merl Reagle, and others.
+* Loads puzzles in the Across Lite .PUZ format.
+* Checks your answers, provides hints, or shows the solution when you get stuck.
+* Saves your progress.
 * Adaptive layout adjusts to screen size.
 * Panable and zoomable grid helps you see puzzle on small screens.
 * Keyboard navigation of grid for desktop use.
 
-Getting It
+Running It
 ----------
-Crosswords is being developed on [Github][1], so the easiest way to
+As an HTML5 application, Crosswords should run just about everywhere.
+The best way to get it depends on how you will be using it.
+
+### On Ubuntu Touch devices
+
+Crosswords is available through the official app store.  [Touch
+here](scope://com.canonical.scopes.clickstore?q=Crosswords) on your
+Ubuntu device to view and install it from the app store scope.
+
+### On the desktop
+
+Download and extract [this tar
+file](https://github.com/rschroll/crosswords/releases/download/0.3.0/crosswords.tar.gz)
+to a location of your choosing.  The included `crosswords` script will
+open a window with the app loaded.  This script requires Python, GTK,
+and WebKitGTK.
+
+Alternatively, you can just open `www/index.html` in your favorite
+browser.  Note that some of the puzzles will not be able to be
+downloaded due to cross-origin restrictions.  You may be able to work
+around these by adjusting your browser's settings.
+
+### On the web
+
+You can try Crosswords right away in your browser---just [click
+here](www/).  I've trimmed the source list down to those that will work
+under the cross-origin scripting restrictions in a web environment.  To
+get the rest, you've got to download it yourself.  (Be aware that the
+back button is slightly broken here.)
+
+### For development
+
+Crosswords is being developed on
+[Github](https://github.com/rschroll/crosswords), so the easiest way to
 get it on your computer is to clone the git repository:
 {% highlight bash %}
 git clone https://github.com/rschroll/crosswords.git
 {% endhighlight %}
 If you're not a git person, you can download Crosswords as a
-[zip file][2].
+[zip file](https://github.com/rschroll/crosswords/archive/master.zip).
 
-Alternatively, you can download it as a [click package][3] or from the
-Ubuntu click store.
-
-[1]: https://github.com/rschroll/crosswords
-[2]: https://github.com/rschroll/crosswords/archive/master.zip
-[3]: assets/crosswords_0.2.1_all.click
-
-Running It
-----------
-Crosswords is built on Ubuntu's [HTML5 SDK][4], which means it should
-run easily everywhere.  That's the theory---in practice it doesn't
-word so well.  Here are some notes that might help:
-
-[4]: http://developer.ubuntu.com/api/html5/sdk-14.04/
-
-### On devices (and emulators)
-
-A bug in the SDK ([#1296463][1296463]) meant that the on-screen keyboard
-would cover some of the content.  This has been fixed, but I don't know
-if the fix has made it into images yet.
-
-Crosswords has work-arounds in place to deal with the on-screen keyboard
-not appearing ([#1296462][1296462]), lists not scrolling
-([#1296468][1296468]), clicks on buttons in the toolbar not registering
-([#1296469][1296469], [#1302284][1302284]), and the toolbar not hiding
-itself ([#1293899][1293899]).  It's not improbable that you'll see some
-odd behavior in these areas.
-
-While actually playing on a touch device will be an exercise in
-frustration, testing and bug-hunting would be very useful,
-especially since I only have an emulator for these purposes.  Please
-[report any bugs](#reporting_bugs) that you find!
-
-[1293899]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1293899
-[1296462]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1296462
-[1296463]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1296463
-[1296468]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1296468
-[1296469]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1296469
-[1302284]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1302284
-
-### On the desktop
-
-HTML5 apps are supposed to be run with `ubuntu-html5-app-launcher
---www=www`.  Unfortunately, several bugs ([#1293898][1293898],
-[#1294981][1294981], [#1294985][1294985]) mean that mouse use in
-this environment is sub-optimal.
-
-Instead, you can launch Crosswords inside a simple GTK container
-with the `crosswords` script included in the repository.  This is
-how I run it myself.  If you feel like [hunting bugs](#reporting_bugs),
-note that you can get the inspector from the right-click menu.
-
-Since Crosswords is just HTML, you can also run it in your favorite
-web browser: just open up `www/index.html` within the source.  Note
-that cross-site scripting restrictions may prevent you from opening
-crosswords from some sources.  You may be able to fix this through
-your browser's settings.  Also note that list items will not be
-visible in Firefox until [#1294993][1294993] is fixed.
-
-[1293898]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1293898
-[1294981]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1294981
-[1294985]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1294985
-[1294993]: https://bugs.launchpad.net/ubuntu-html5-theme/+bug/1294993
-
-### On the web
-
-You don't have to download the source to try it in your
-browser---just [click here](www/).  I've trimmed the source list
-down to those that will work under the scripting restrictions in a
-web environment.  To get the rest, you've got to download it yourself.
+Crosswords is built with the [Riot](https://muut.com/riotjs/) Javascript
+library, and it requires the [Riot
+compiler](https://muut.com/riotjs/compiler.html#pre-compilation).  For
+more details, see the
+[README](https://github.com/rschroll/crosswords/blob/master/README.md).
 
 Reporting Bugs
 --------------
-Bugs are tracked on the [Github issues page][5].  Don't be shy---I
-enjoy getting bug reports.  It's the best way for me to know that
-people are using my software.
-
-[5]: https://github.com/rschroll/crosswords/issues
+Bugs are tracked on the [Github issues
+page](https://github.com/rschroll/crosswords/issues).  Don't be shy---I
+enjoy getting bug reports.  It's the best way for me to know that people
+are using my software.
 
 License
 -------
-Crosswords is copyright 2014 by [Robert Schroll][6].  It is released
-under the [GPL][7].
-
-[6]: http://rschroll.github.io/
-[7]: LICENSE.txt
+Crosswords is copyright 2014-2015 by [Robert Schroll](http://rschroll.github.io/) and others.  It
+is released under the [GPL](LICENSE.txt).
