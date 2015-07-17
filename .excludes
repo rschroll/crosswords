@@ -1,5 +1,5 @@
-*.user
 test/
-www/tags.js
+_site/
+*.tag
 *.tar.gz
 *.click

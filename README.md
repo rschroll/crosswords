@@ -1,26 +1,48 @@
 Crosswords
 ==========
 
-Crosswords lets you play crosswords on Ubuntu.  It is based on Ubuntu's
-[HTML5 SDK][1].
+Crosswords is an HTML5 application that lets you enjoy crossword puzzles
+from a number of online sources.  It can also load puzzles in the
+popular Across Lite .PUZ format.  Crosswords was originally written for
+Ubuntu, but it should work on any platform with a modern browser.
 
-[1]: http://developer.ubuntu.com/api/html5/sdk-14.04/
+Building
+--------
+Crosswords is built with the [Riot][1] Javascript library.  It requires
+the [Riot compiler][2] to compile the tag files into Javascript.  The
+included Makefile lets you do this with a simple
+```
+$ make
+```
+Other make targets include `tar` to bundle the necessary files for an
+end-user into a tarball, and `click` to create a Click package for
+Ubuntu Touch.
 
-Crosswords is in very early development.  Right now, there's no
-installation procedure.  Ideally, it could be run with
-`ubuntu-html5-app-launcher --www=www`.  However, several bugs make the
-app launcher sub-optimal in the desktop.  Instead, run the `crosswords`
-script to get a little GTK window that does better.
+[1]: https://muut.com/riotjs/
+[2]: https://muut.com/riotjs/compiler.html#pre-compilation
 
-You can also open `www/index.html` in your WebKit-based web browser.
-(The SDK doesn't work so well in Firefox.)  Note that some puzzles may
-not load, due to cross-origin restrictions.  You may be able to fix this
-with your browser's settings.
+Running
+-------
+Once the tag files have been compiled, you can simply open
+`www/index.html` in any modern web browser.  Note that cross-origin
+restrictions may prevent some of the puzzles from being loaded.  You may
+be able to fix this with your browser's settings.
 
-Crosswords will sort-of work on the phone, but we're waiting on a fix
-for the on-screen keyboard before it's really useful.
+The script `crosswords` will open this page in a dedicated window, which
+is set up to allow access to the remote puzzles.  It requires Python,
+GTK, and WebKitGTK.
+
+The included desktop file is meant for use on Ubuntu Touch.
+
+Usage instructions can be found via the "info" icon in the application.
+More information on ready-built downloads can be found on the
+[website][3].
+
+[3]: http://rschroll.github.io/crosswords/
 
 License
 -------
-Crosswords is licensed under the GNU General Public License (version 3
-or later).  See the LICENSE files for terms.
+Crosswords is copyright Robert Schroll and others.  As a whole, the
+software is licensed under the GNU General Public License (version 3 or
+later).  See the LICENSE files for terms.  Some components are used
+under more liberal licences; see the individual files for details.

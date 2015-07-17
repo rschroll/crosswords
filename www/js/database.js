@@ -1,4 +1,4 @@
-/* Copyright 2014 Robert Schroll
+/* Copyright 2014-2015 Robert Schroll
  *
  * This file is part of Crosswords and is distributed under the terms
  * of the GPL. See the file LICENSE for full details.
@@ -8,6 +8,24 @@
 
     var db = localStorage["crosswords"] ? JSON.parse(localStorage["crosswords"]) :
                                           { puzzles: {}, inprogress: [], completed: [] };
+    if (db.empty === undefined)
+        db.empty = [];
+
+    function saveDb() {
+        localStorage["crosswords"] = JSON.stringify(db);
+    }
+    
+    function deleteFromLists(url) {
+        var i = db.inprogress.indexOf(url);
+        if (i > -1)
+            db.inprogress.splice(i, 1);
+        i = db.completed.indexOf(url);
+        if (i > -1)
+            db.completed.splice(i, 1);
+        i = db.empty.indexOf(url);
+        if (i > -1)
+            db.empty.splice(i, 1);
+    }
 
     // Completion worked out from fill, but capped at 0.99.  Must pass 1 for full completion.
     self.putPuzzle = function (url, puzzle, fill, completion) {
@@ -26,35 +44,40 @@
         var obj = { puzzle: puzzle, fill: fill, completion: completion };
         db.puzzles[url] = obj;
 
-        var i = db.inprogress.indexOf(url);
-        if (i > -1)
-            db.inprogress.splice(i, 1);
-        i = db.completed.indexOf(url);
-        if (i > -1)
-            db.completed.splice(i, 1);
+        deleteFromLists(url);
         if (completion == 1)
             db.completed.splice(0, 0, url);
-        else
+        else if (completion > 0)
             db.inprogress.splice(0, 0, url);
-        localStorage["crosswords"] = JSON.stringify(db);
-    }
-
-    self.getPuzzle = function (url, onsucceed, onfail) {
-        var data = db.puzzles[url];
-        if (data == undefined)
-            onfail(url);
         else
-            onsucceed(url, data.puzzle, data.fill, data.completion);
+            db.empty.splice(0, 0, url);
+        saveDb();
     }
 
-    self.forEach = function (solved, callback, callbackNone) {
-        var list = solved ? db.completed : db.inprogress;
-        for (var i=0; i<list.length; i++) {
-            var data = db.puzzles[list[i]];
-            callback(list[i], data.puzzle, data.fill, data.completion);
+    self.getPuzzle = function (url) {
+        return db.puzzles[url];
+    }
+
+    self.EMPTY = 0
+    self.INPROGRESS = 1
+    self.COMPLETED = 2
+    self.getPuzzleUrls = function (type) {
+        switch (type) {
+          case self.EMPTY:
+            return db.empty;
+          case self.INPROGRESS:
+            return db.inprogress;
+          case self.COMPLETED:
+            return db.completed;
         }
-        if (!list.length)
-            callbackNone(solved ? "No completed puzzles" : "No puzzles in progress");
+    }
+
+    self.deletePuzzles = function (urls) {
+        for (var i in urls) {
+            delete db.puzzles[urls[i]];
+            deleteFromLists(urls[i]);
+        }
+        saveDb();
     }
 
 })(window.database = window.database || {})

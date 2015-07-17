@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Copyright 2014 Robert Schroll
+Copyright 2014-2015 Robert Schroll
 
 This file is part of Crosswords and is distributed under the terms
 of the GPL. See the file LICENSE for full details.
@@ -13,135 +13,112 @@ of the GPL. See the file LICENSE for full details.
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
     <!-- Ubuntu UI Style imports - Ambiance theme -->
-    <link href="../ubuntu/css/appTemplate.css" rel="stylesheet" type="text/css" />
-
-    <!-- Ubuntu UI javascript imports - Ambiance theme -->
-    <script src="../ubuntu/js/fast-buttons.js"></script>
-    <script src="../ubuntu/js/core.js"></script>
-    <script src="../ubuntu/js/buttons.js"></script>
-    <script src="../ubuntu/js/dialogs.js"></script>
-    <script src="../ubuntu/js/list.js"></script>
-    <script src="../ubuntu/js/page.js"></script>
-    <script src="../ubuntu/js/pagestacks.js"></script>
-    <script src="../ubuntu/js/tabs.js"></script>
-    <script src="../ubuntu/js/toolbars.js"></script>
-
-    <!-- Cordova platform API access - Uncomment this to have access to the Javascript APIs -->
-    <!-- <script src="cordova/cordova.js"></script> -->
+    <link href="css/template.css" rel="stylesheet" type="text/css" />
 
     <link href="css/app.css" rel="stylesheet" type="text/css" />
     <link href="css/list.css" rel="stylesheet" type="text/css" />
     <link href="css/puzzle.css" rel="stylesheet" type="text/css" />
+    <link href="css/about.css" rel="stylesheet" type="text/css" />
 
-    <script src="js/jszip.js"></script>
     <script src="js/hammer.js"></script>
+    <script src="js/riot.js"></script>
     <!-- Application script -->
-    <script src="js/dragscroll.js"></script>
-    <script src="js/app.js"></script>
     <script src="js/loaders.js"></script>
     <script src="js/database.js"></script>
-    <script src="js/list.js"></script>
-    <script src="js/puzzle.js"></script>
+    <script src="js/dnd.js" defer></script>
   </head>
 
   <body>
-    <input type="text" id="focuser" />
+    <input type="password" id="focuser" />
+    <div id="focuser-hide"></div>
+    <div id="drag-accept"><span>Drop file<br />to load puzzle</span></div>
+    
+    <list-page></list-page>
+    <puzzle-page></puzzle-page>
+    <about-page></about-page>
+    <overlay-dialog id="load-error-dialog" title="Error Loading Puzzle" buttonlabel="Bummer">
+      <p>Crosswords received an error, <span id="error-message">{ error }</span>,
+      while trying to open the puzzle at <span id="error-url">{ url }</span>.</p>
+    </overlay-dialog>
+    <overlay-dialog id="info-dialog" buttonlabel="OK">
+      <p id="info-creator">{ creator }</p>
+      <p id="info-description">{ description }</p>
+      <p id="info-copyright">{ copyright }</p>
+    </overlay-dialog>
+    
+    <script src="tags.js"></script>
+    <script>
+        var displayMixin = {
+          init: function () {
+            this.displayed = false;
+            this.on("update", function () {
+              this.root.style.display = this.displayed ? "block" : "none";
+            });
+          }
+        };
+        riot.mixin('display', displayMixin);
+      
+        var list = riot.mount("list-page")[0];
+        var puzzle = riot.mount("puzzle-page")[0];
+        var about = riot.mount("about-page")[0];
+        var dialogs = riot.mount("overlay-dialog");
+        
+        riot.route.parser(function (path) {
+          path = decodeURI(path);
+          var command = path.split("/", 1)[0];
+          var args = path.slice(command.length + 1);
+          return [command, args];
+        });
+        
+        riot.route(function (command, args) {
+          if (command == "list") {
+            list.update({ displayed: true });
+            puzzle.update({ displayed: false, puzzle: { across: [], down: [] } });
+            // Puzzle set to fake value to work around riot bug #848.
+            about.update({ displayed: false });
+          } else if (command == "load") {
+            var fn = args.split("/", 1)[0];
+            var url = args.slice(fn.length + 1);
+            puzzle.loadURL(url, fn);
+          } else if (command == "loaded") {
+            list.update({ displayed: false });
+            puzzle.update({ displayed: true });
+          } else if (command == "about") {
+            list.update({ displayed: false });
+            about.update({ displayed: true });
+          } else if (command == "error") {
+            var arglist = args.split("~~~");
+            dialogs[0].update({ displayed: true, error: arglist[0], url: arglist[1] });
+            list.update();  // Stop busy throbber
+          } else if (command == "info") {
+            var arglist = args.split("~~~");
+            dialogs[1].update({ displayed: true, title: arglist[0], creator: arglist[1],
+                                description: arglist[2], copyright: arglist[3] });
+          } else if (command == "dialog-closed") {
+            // Dialog closes itself, but change the URL so we can open it again.
+          }
+        });
+        list.update({ displayed: true });
+        
+        window.onload = function () {
+          var hub = null;
+          try {
+            hub = external.getUnityObject(1.0).ContentHub;
+          } catch (error) {
+            // Not on Ubuntu Touch
+          }
+          if (hub) {
+            function getItemUrl(items) {
+              riot.route("load//" + items[0].url);
+            }
+            function incoming(transfer) {
+              transfer.items(getItemUrl);
+            }
+            hub.onImportRequested(incoming);
+            hub.onShareRequested(incoming);
+          }
+        }
+    </script>
 
-    <div data-role="mainview">
-
-      <header data-role="header">
-      </header>
-
-      <div data-role="content">
-
-        <div data-role="pagestack">
-
-          <!-- The application main page -->
-
-          <div data-role="page" data-title="Puzzles" id="list-page">
-
-              <section data-role="list" id="sources">
-                <ul data-role="listview">
-                </ul>
-              </section>
-
-              <section data-role="list" id="dates">
-                <ul data-rol="list-view"></ul>
-                <div id="dates-notes"><span></span></div>
-              </section>
-
-          </div>
-
-          <div data-role="page" data-title="Crossword Puzzle" id="puzzle-page">
-
-            <div id="grid">
-              <table></table>
-              <div id="Vscroll"></div>
-              <div id="Hscroll"></div>
-            </div>
-
-            <section data-role="list" id="across" class="clues">
-              <header class="large-font">Across</header>
-              <ul data-role="listview"></ul>
-            </section>
-
-            <section data-role="list" id="down" class="clues">
-              <header class="large-font">Down</header>
-              <ul data-role="listview"></ul>
-            </section>
-
-            <footer data-role="footer" id="puzzle-footer">
-              <nav>
-                <ul>
-                <li><a href="#" id="solve">
-                  <img src="img/compose.svg" alt="Solve" />
-                  <span>Solve</span>
-                </a></li>
-                <li><a href="#" id="check">
-                  <img src="../ubuntu/img/tick@30.png" alt="Check" />
-                  <span>Check</span>
-                </a></li>
-                <li><a href="#" id="reveal">
-                  <img src="img/reveal.svg" alt="Reveal" />
-                  <span>Reveal</span>
-                </a></li>
-                <li><a href="#" id="info">
-                  <img src="../ubuntu/img/actions/info.svg" alt="Info" />
-                  <span>Info</span>
-                </a></li>
-                </ul>
-              </nav>
-            </footer>
-
-          </div>
-
-        </div>
-
-        <div data-role="dialog" id="info-dialog">
-          <section>
-            <h1></h1>
-            <p id="info-creator"></p>
-            <p id="info-description"></p>
-            <p id="info-copyright"></p>
-            <menu>
-              <button data-role="button">OK</button>
-            </menu>
-          </section>
-        </div>
-
-        <div data-role="dialog" id="load-error-dialog">
-          <section>
-            <h1>Error Loading Puzzle</h1>
-            <p>Crosswords received an error, <span id="error-message"></span>, while trying to open
-            the puzzle at <span id="error-url"></span>.</p>
-            <menu>
-              <button data-role="button">Bummer</button>
-            </menu>
-          </section>
-        </div>
-
-      </div>
-
-    </div>
   </body>
 </html>
