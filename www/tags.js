@@ -108,7 +108,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     self.note = "No completed puzzles";
                     return fromList(database.getPuzzleUrls(database.COMPLETED));
                 }},
-            { title: "Chronicle of Higher Education",
+/*            { title: "Chronicle of Higher Education",
                 func: weekly(function (date) {
                     return "http://chronicle.com/items/biz/puzzles/" + eightDigitDate(date) + ".puz";
                 }, 5)},
@@ -125,7 +125,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                 func: weekly(function (date) {
                     return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
                             eightDigitDate(date) + ".txt";
-                }, 0)},
+                }, 0)},*/
             { title: "LA Times",
                 func: lastTwoWeeks(function (date) {
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
@@ -136,7 +136,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/SundayCrossword/mreagle_"
                     + sixDigitDate(date) + ".xml";
                 }, 0)},
-            { title: "Newsday",
+/*            { title: "Newsday",
                 func: lastTwoWeeks(function (date) {
                     return "http://www.brainsonly.com/servlets-newsday-crossword/newsdaycrossword?date=" +
                     sixDigitDate(date) + "&fmt=nwd";  // fmt only to help our format detection
@@ -202,7 +202,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                 func: weekly(function (date) {
                     return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
                             strZero(date.getDate()) + date.getFullYear() + ".dat";
-                }, 1)},
+                }, 1)},*/
             { title: "The Week",
                 func: function () {
                     var week0 = new Date('2009-06-12');
