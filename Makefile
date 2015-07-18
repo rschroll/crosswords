@@ -6,7 +6,7 @@ www/tags.js: www/list-page.tag www/puzzle-page.tag www/dialog.tag www/about-page
 crosswords.tar.gz: crosswords README.md LICENSE www/index.html www/tags.js www/css/* www/img/* www/js/*
 	tar --transform 's_^_crosswords/_' -czf $@ $^
 
-.PHONY: tar click all
+.PHONY: tar click all device-launch android
 
 tar: crosswords.tar.gz
 
@@ -33,3 +33,9 @@ device-launch: click
 	PKG_NAME=`echo $$CLICK | sed 's/crosswords/crosswords_crosswords/;s/_all.click//'`; \
 	adb shell ubuntu-app-launch $$PKG_NAME \
 	)
+
+android: www/tags.js
+	cordova build android
+
+android-launch: www/tags.js
+	cordova run android
