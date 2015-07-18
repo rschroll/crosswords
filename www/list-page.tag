@@ -41,7 +41,7 @@
          <input type="file" id="fileinput" onchange={ loadFile } />
     </section>
     
-    <section id="dates" class={ list: true, deleteMode: deleteMode }>
+    <section id="dates" class={ list: true, deleteMode: deleteMode } show={ selected }>
         <ul>
             <li each={ puzzles } onclick={ parent.clickPuzzle }>{ title }
                 <span if={ !parent.deleteMode && completion > 0 }>{ (completion*100).toFixed(0) + "%" }</span>
@@ -258,10 +258,10 @@
                     return;
                 }
                 if (smallscreen) {
-                    self.selected = null;
                     self.puzzles = [];
                     self.note = "";
                     self.deleteMode = false;
+                    window.history.back();
                     return;
                 }
                 event.preventUpdate = true;
@@ -270,9 +270,9 @@
             if (smallscreen)
                 self.sources.scrollTop = 0;
             self.dates.scrollTop = 0;
-            self.selected = event.item.title;
             self.puzzles = event.item.func();
             self.deleteMode = false;
+            riot.route("/" + event.item.title);
         }
         
         setPuzzlesInput(event) {
@@ -295,7 +295,7 @@
                 self.sourcesDeleteIndeterminate();
             } else {
                 event.target.classList.add("busy");
-                riot.route("load//" + event.item.url);
+                riot.loadPuzzle(event.item.url);
             }
         }
         
@@ -361,7 +361,7 @@
             if (event.target.files.length == 0)
                 return;
             var f = event.target.files[0];
-            riot.route("load/" + f.name + "/" + window.URL.createObjectURL(f));
+            riot.loadPuzzle(window.URL.createObjectURL(f), f.name);
         }
         
         self.on("update", function () {

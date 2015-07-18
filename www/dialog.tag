@@ -20,10 +20,5 @@
         
         self.title = opts.title;
         self.buttonlabel = opts.buttonlabel;
-        
-        close() {
-            self.update({ displayed: false });
-            riot.route("dialog-closed");
-        }
     </script>
 </overlay-dialog>

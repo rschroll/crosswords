@@ -396,9 +396,8 @@
         }
 
         back(event) {
-            event.preventUpdate = true;
             self.root.querySelector("header.page").classList.add("collapsed");
-            riot.route("list");
+            self.close(event);
         }
         
         collapse(event) {

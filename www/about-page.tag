@@ -5,7 +5,7 @@
  */
 <about-page>
     <header class="page">
-        <button class="back" onclick={ back } title="Back"></button>
+        <button class="back" onclick={ close } title="Back"></button>
         <h1>About</h1>
     </header>
 
@@ -50,10 +50,5 @@
     <script>
         var self = this;
         self.mixin("display");
-        
-        back(event) {
-            event.preventUpdate = true;
-            riot.route("list");
-        }
     </script>
 </about-page>
