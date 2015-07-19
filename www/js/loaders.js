@@ -102,7 +102,7 @@ function UClickXMLtoJSON(doc) {
     for (var i=0; i<retval.nrow; i++) {
         retval.grid[i] = [];
         for (var j=0; j<retval.ncol; j++) {
-            var letter = letters[i*retval.nrow + j];
+            var letter = letters[i*retval.ncol + j];
             retval.grid[i][j] = {
                 solution: (letter == "-") ? null : letter,
                 type: (letter == "-") ? "block" : null
@@ -164,7 +164,7 @@ function WSJtoJSON(str) {
     for (var i=0; i<retval.nrow; i++) {
         retval.grid[i] = [];
         for (var j=0; j<retval.ncol; j++) {
-            var letter = lines[1][i*retval.nrow + j];
+            var letter = lines[1][i*retval.ncol + j];
             if (letter != "+") {
                 retval.ncells += 1;
                 retval.grid[i][j] = { solution: letter };
@@ -289,7 +289,7 @@ function NYTtoJSON(str) {
     for (var i=0; i<retval.nrow; i++) {
         retval.grid[i] = [];
         for (var j=0; j<retval.ncol; j++) {
-            var letter = nyt.puzzle_data.answers[i*retval.nrow + j];
+            var letter = nyt.puzzle_data.answers[i*retval.ncol + j];
             retval.grid[i][j] = letter ? { solution: letter } : { type: "block" };
             if (letter)
                 retval.ncells += 1;
@@ -348,7 +348,7 @@ function PUZtoJSON(buffer) {
     for (var i=0; i<retval.nrow; i++) {
         retval.grid[i] = [];
         for (var j=0; j<retval.ncol; j++) {
-            var letter = String.fromCharCode(bytes[52 + i*retval.nrow + j]);
+            var letter = String.fromCharCode(bytes[52 + i*retval.ncol + j]);
             if (letter != ".") {
                 retval.ncells += 1;
                 retval.grid[i][j] = { solution: letter };
@@ -377,7 +377,7 @@ function PUZtoJSON(buffer) {
     function readString() {
         var retval = "";
         var b = bytes[++ibyte];
-        while (b != 0) {
+        while (b != 0 && ibyte < bytes.length) {
             retval += String.fromCharCode(b);
             b = bytes[++ibyte];
         }
