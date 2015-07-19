@@ -4,3 +4,4 @@ www/tags.js
 *.tar.gz
 *.click
 platforms/
+plugins/
