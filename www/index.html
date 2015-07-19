@@ -47,6 +47,7 @@ of the GPL. See the file LICENSE for full details.
     </overlay-dialog>
     
     <script src="tags.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
     <script>
         var displayMixin = {
           init: function () {
@@ -111,8 +112,16 @@ of the GPL. See the file LICENSE for full details.
         });
         list.update({ displayed: true });
         
-        riot.loadPuzzle = function (url, fn) {
-          puzzle.loadURL(url, fn);
+        riot.loadPuzzle = function (url, fn, resetStack) {
+          if (resetStack && window.location.href.split("#")[1]) {
+            window.onpopstate = function (event) {
+              riot.loadPuzzle(url, fn, resetStack);
+            }
+            window.history.back();
+          } else {
+            window.onpopstate = null;
+            puzzle.loadURL(url, fn);
+          }
         }
         
         window.onload = function () {
@@ -124,13 +133,21 @@ of the GPL. See the file LICENSE for full details.
           }
           if (hub) {
             function getItemUrl(items) {
-              riot.loadPuzzle(items[0].url);
+              riot.loadPuzzle(items[0].url, null, true);
             }
             function incoming(transfer) {
               transfer.items(getItemUrl);
             }
             hub.onImportRequested(incoming);
             hub.onShareRequested(incoming);
+          }
+          if (window.webintent) {
+            function onIntent(uri) {
+              if (uri)
+                riot.loadPuzzle(uri, null, true);
+            }
+            window.webintent.getUri(onIntent);
+            window.webintent.onNewIntent(onIntent);
           }
         }
     </script>
