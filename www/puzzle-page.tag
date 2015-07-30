@@ -532,11 +532,11 @@
             if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode == 32) { // space
                 self.insertLetter(String.fromCharCode(e.keyCode));
                 self.moveCursor(1, false);
-            } else if (e.keyCode == 13 || e.keyCode == 188) { // enter, comma
+            } else if (e.keyCode == 188) { // comma
                 self.setSeldir();
                 self.selectCell(self.selr, self.selc);
-            } else if (e.keyCode == 9 || e.keyCode == 190) { // tab, period
-                self.moveClue(e.shiftKey ? -1 : 1);
+            } else if (e.keyCode == 9 || e.keyCode == 13 || e.keyCode == 190) { // tab, enter, period
+                self.moveClue(e.shiftKey != (e.keyCode == 190) ? -1 : 1);
             } else if (e.keyCode >= 37 && e.keyCode <= 40) { // left, up, right, down
                 var dir = (e.keyCode % 2) ? "across" : "down";
                 var inc = (e.keyCode < 39) ? -1 : 1;
