@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="io.github.rschroll.intentfilter" version="0.0.1">
+    <name>IntentFilter</name>
+    <description>Intent Filter Plugin</description>
+    <license>GPLv3</license>
+    <platform name="android">
+        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="*" android:pathPattern=".*\\.puz" android:scheme="http" />
+                <data android:host="*" android:pathPattern=".*\\.puz" android:scheme="https" />
+                <data android:host="*" android:pathPattern=".*\\.puz" android:scheme="file" />
+            </intent-filter>
+        </config-file>
+    </platform>
+</plugin>

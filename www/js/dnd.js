@@ -41,7 +41,7 @@
     document.addEventListener("drop", doIfHasFiles(function (event) {
         decrement();
         var f = event.dataTransfer.files[0];
-        riot.route("load/" + f.name + "/" + window.URL.createObjectURL(f));
+        riot.loadPuzzle(window.URL.createObjectURL(f), f.name, true);
     }));
 
     document.addEventListener("dragleave", doIfHasFiles(decrement));

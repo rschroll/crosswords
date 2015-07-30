@@ -3,3 +3,7 @@ _site/
 *.tag
 *.tar.gz
 *.click
+config.xml
+hooks/
+platforms/
+plugins/
