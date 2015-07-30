@@ -515,6 +515,7 @@
         }
 
         loadURL(url, fn) {
+            self.update({ puzzle: { across: [], down: [] } });  // Work around riot issue #925
             var puzzle = database.getPuzzle(url);
             if (puzzle)
                 self.loadDoc(url, puzzle.puzzle, puzzle.fill, puzzle.completion);
