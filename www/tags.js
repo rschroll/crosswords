@@ -3,14 +3,9 @@
  * This file is part of Crosswords and is distributed under the terms
  * of the GPL. See the file LICENSE for full details.
  */
-riot.tag('about-page', '<header class="page"> <button class="back" onclick="{ back }" title="Back"></button> <h1>About</h1> </header> <div> <h2>Welcome to Crosswords!</h2> <p>When you first start Crosswords, you are presented with a list of sources for puzzles. Select any of these, and you will see a selection of recent puzzles, ordered newest to oldest. Selecting any puzzle will cause it to be downloaded and opened for solving.</p> <p>As you work on the crossword, your progress is saved. Incomplete puzzles are listed in the <i>In Progress</i> category and are moved to the <i>Completed</i> category once they have been solved. Puzzles with no cells filled in are listed under <i>Empty</li>.</p> <h2>Solving</h2> <p>Enter a letter in the highlighted cell with your keyboard. On touch devices, your on-screen keyboard should open automatically; if not, touch the grid to trigger it. After you enter a letter, the highlight will move to the next cell in the answer. <b>Space</b> will clear the current square and move forwards, and <b>Backspace</b> will clear and move backwards. Select another cell to move the highlight, or select the highlighted cell again to switch between across and down. Selecting a clue will move the highlight to the first empty cell in that answer.</p> <p>You may navigate around the grid using the arrow keys. Use <b>Enter</b> or <b>,</b> to change the direction without moving the highlight. <b>Tab</b> and <b>.</b> move to the answer for the next clue, while <b>Shift</b>+<b>Tab</b> moves to the previous clue\'s answer. <b>Home</b> moves to the first cell in the current answer, while <b>End</b> moves to the last cell.</p> <p>Several actions can be triggered by icons on the puzzle page. On large screens, these icons are in the header. On small screens, these icons are displayed by activating the <img src="img/navigation-menu.svg" alt="Menu"> icon in the lower right. The <img src="img/tick@30.png" alt="Check"> icon will check your fill and change any incorrect letters to red. Use the <img src="img/reveal.svg" alt="Reveal"> icon to show the correct letter for the current cell, or <img src="img/compose.svg" alt="Solve"> to solve the whole puzzle. <img src="img/info.svg" alt="Info"> will display information about the puzzle, and <img src="img/back.svg" alt="Back"> returns you to the list of puzzles.</p> <h2>Importing</h2> <p>Crosswords can import puzzle files in a number of formats, although the only one you are likely to encounter online is the Across Lite <tt>.puz</tt> format. At the bottom of the list of puzzle sources is the <i>Import File</i> item. Select this and a file dialog will open, allowing you to choose a file to import. At the moment, only a single puzzle can be imported at a time. (Unfortunately, Ubuntu Touch does not support this option as of this writing.) Puzzles can also be drag-and-dropped into Crosswords.</p> <p>On Ubuntu Touch, you can also import files via the Content Hub. Crosswords is registered as an importer of documents. Any other app that recognizes puzzle files as documents can export them to Crosswords. (As of this writing, we are unaware of any apps that do so.) You can also share links to puzzles and have Crosswords import them automatically. (As of this writing, this can be done from the web browser only with a bit of trickery: When you encounter a link to a puzzle online, long press it and then select "Open link in new tab". A new tab will open, and then an "Open with" dialog appears, which gives you no options. Touch "Cancel" at the bottom to return to the (empty) tab. Open the menu at the top right, select "Share", and then choose "Crosswords" as the destination.)</p> <h2>Deleting</h2> <p>You may delete puzzles in the <i>Empty</i>, <i>In Progress</i>, and <i>Completed</i> categories. Select the <img src="img/delete.svg" alt="Delete"> icon to enter delete mode. Select the puzzles which you wish to delete, or select the category to choose all the puzzles. Use the <img src="img/delete-red.svg" alt="Delete"> icon to delete those puzzles, or cancel with <img src="img/cancel.svg" alt="Cancel">.</p> <h2>Bugs</h2> <p>While we hope you will only be frustrated with the crossword puzzles, we\'re sure there are a few bugs in the app itself. If you find one, please report it to our <a href="https://github.com/rschroll/crosswords/issues">bug tracker</a>.</p> <h2>Colophon</h2> <p>This is version 0.3.0 of <a href="http://rschroll.github.io/crosswords/">Crosswords</a> for Ubuntu.</p> <p>Crosswords is Copyright 2014-2015 by Robert Schroll and incorporates copyrighted material for several other authors under various licenses.</p> <p>Crosswords is released under the <a href="https://github.com/rschroll/crosswords/blob/master/LICENSE">GPL v3 (or later)</a>. The source code is <a href="https://github.com/rschroll/crosswords/">available on Github</a>.</p> </div>', function(opts) {
+riot.tag('about-page', '<header class="page"> <button class="back" onclick="{ close }" title="Back"></button> <h1>About</h1> </header> <div> <h2>Welcome to Crosswords!</h2> <p>When you first start Crosswords, you are presented with a list of sources for puzzles. Select any of these, and you will see a selection of recent puzzles, ordered newest to oldest. Selecting any puzzle will cause it to be downloaded and opened for solving.</p> <p>As you work on the crossword, your progress is saved. Incomplete puzzles are listed in the <i>In Progress</i> category and are moved to the <i>Completed</i> category once they have been solved. Puzzles with no cells filled in are listed under <i>Empty</li>.</p> <h2>Solving</h2> <p>Enter a letter in the highlighted cell with your keyboard. On touch devices, your on-screen keyboard should open automatically; if not, touch the grid to trigger it. After you enter a letter, the highlight will move to the next cell in the answer. <b>Space</b> will clear the current square and move forwards, and <b>Backspace</b> will clear and move backwards. Select another cell to move the highlight, or select the highlighted cell again to switch between across and down. Selecting a clue will move the highlight to the first empty cell in that answer.</p> <p>You may navigate around the grid using the arrow keys. Use <b>,</b> to change the direction without moving the highlight. <b>Tab</b> and <b>Enter</b> move to the answer for the next clue, while <b>Shift</b>+<b>Tab</b> or <b>.</b> moves to the previous clue\'s answer. <b>Home</b> moves to the first cell in the current answer, while <b>End</b> moves to the last cell.</p> <p>Several actions can be triggered by icons on the puzzle page. On large screens, these icons are in the header. On small screens, these icons are displayed by activating the <img src="img/navigation-menu.svg" alt="Menu"> icon in the lower right. The <img src="img/tick@30.png" alt="Check"> icon will check your fill and change any incorrect letters to red. Use the <img src="img/reveal.svg" alt="Reveal"> icon to show the correct letter for the current cell, or <img src="img/compose.svg" alt="Solve"> to solve the whole puzzle. <img src="img/info.svg" alt="Info"> will display information about the puzzle, and <img src="img/back.svg" alt="Back"> returns you to the list of puzzles.</p> <h2>Importing</h2> <p>Crosswords can import puzzle files in a number of formats, although the only one you are likely to encounter online is the Across Lite <tt>.puz</tt> format. At the bottom of the list of puzzle sources is the <i>Import File</i> item. Select this and a file dialog will open, allowing you to choose a file to import. At the moment, only a single puzzle can be imported at a time. <span if="{ riot.system == \'Ubuntu Touch\' }">(Unfortunately, Ubuntu Touch does not support this option as of this writing.)</span> Puzzles can also be drag-and-dropped into Crosswords.</p> <p if="{ riot.system == \'Ubuntu Touch\' }">On Ubuntu Touch, you can also import files via the Content Hub. Crosswords is registered as an importer of documents. Any other app that recognizes puzzle files as documents can export them to Crosswords. (As of this writing, we are unaware of any apps that do so.) You can also share links to puzzles and have Crosswords import them automatically. (As of this writing, this can be done from the web browser only with a bit of trickery: When you encounter a link to a puzzle online, long press it and then select "Open link in new tab". A new tab will open, and then an "Open with" dialog appears, which gives you no options. Touch "Cancel" at the bottom to return to the (empty) tab. Open the menu at the top right, select "Share", and then choose "Crosswords" as the destination.)</p> <p if="{ riot.system == \'Android\' }">On Android, Crosswords can act as a viewer for <tt>.puz</tt> files. When you try to open a <tt>.puz</tt> from the internet or your files, Crosswords should be listed as an option.</p> <h2>Deleting</h2> <p>You may delete puzzles in the <i>Empty</i>, <i>In Progress</i>, and <i>Completed</i> categories. Select the <img src="img/delete.svg" alt="Delete"> icon to enter delete mode. Select the puzzles which you wish to delete, or select the category to choose all the puzzles. Use the <img src="img/delete-red.svg" alt="Delete"> icon to delete those puzzles, or cancel with <img src="img/cancel.svg" alt="Cancel">.</p> <h2>Bugs</h2> <p>While we hope you will only be frustrated with the crossword puzzles, we\'re sure there are a few bugs in the app itself. If you find one, please report it to our <a href="https://github.com/rschroll/crosswords/issues">bug tracker</a>.</p> <h2>Colophon</h2> <p>This is version 0.3.1 of <a href="http://rschroll.github.io/crosswords/">Crosswords</a>.</p> <p>Crosswords is Copyright 2014-2015 by Robert Schroll and incorporates copyrighted material for several other authors under various licenses.</p> <p>Crosswords is released under the <a href="https://github.com/rschroll/crosswords/blob/master/LICENSE">GPL v3 (or later)</a>. The source code is <a href="https://github.com/rschroll/crosswords/">available on Github</a>.</p> </div>', function(opts) {
         var self = this;
         self.mixin("display");
-        
-        this.back = function(event) {
-            event.preventUpdate = true;
-            riot.route("list");
-        }.bind(this);
     
 });
 
@@ -25,11 +20,6 @@ riot.tag('overlay-dialog', '<div> <h1>{ title }</h1> <div> <yield></yield> </div
         
         self.title = opts.title;
         self.buttonlabel = opts.buttonlabel;
-        
-        this.close = function() {
-            self.update({ displayed: false });
-            riot.route("dialog-closed");
-        }.bind(this);
     
 });
 
@@ -38,7 +28,7 @@ riot.tag('overlay-dialog', '<div> <h1>{ title }</h1> <div> <yield></yield> </div
  * This file is part of Crosswords and is distributed under the terms
  * of the GPL. See the file LICENSE for full details.
  */
-riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions"> <li if="{ deleteMode }" onclick="{ disableDelete }"> <img src="img/cancel.svg" alt="Cancel" title="Cancel"> <span>Delete</span> </li> <li if="{ deleteMode }" onclick="{ deletePuzzles }"> <img src="img/delete-red.svg" alt="Delete" title="Delete"> <span>Delete</span> </li> <li onclick="{ enableDelete }" if="{ !deleteMode && puzzles.length && (selected == \'Empty\' || selected == \'In Progress\' || selected == \'Completed\') }"> <img src="img/delete.svg" alt="Delete" title="Delete"> <span>Delete</span> </li> <li if="{ !deleteMode }" onclick="{ about }"> <img src="img/info.svg" alt="About" title="About"> <span>About</span> </li> </ul> </header> <section id="sources" class="{ list: true, deleteMode: deleteMode }"> <ul> <li each="{ urlGens }" class="{ selected: parent.selected == title }" onclick="{ parent.setPuzzles }"> { title } <span if="{ parent.deleteMode && parent.selected == title }"> <input type="checkbox" onclick="{ parent.setPuzzlesInput }"> </span> </li> <li onclick="{ getFile }">Import File</li> </ul> <input type="file" id="fileinput" onchange="{ loadFile }"> </section> <section id="dates" class="{ list: true, deleteMode: deleteMode }"> <ul> <li each="{ puzzles }" onclick="{ parent.clickPuzzle }">{ title } <span if="{ !parent.deleteMode && completion > 0 }">{ (completion*100).toFixed(0) + "%" }</span> <span if="{ parent.deleteMode }"> <input type="checkbox" url="{ url }" onclick="{ parent.clickPuzzleInput }"> </span> </li> <div id="dates-notes" show="{ puzzles.length == 0 }"> <span>{ note }</span> </div> </ul> </section>', function(opts) {
+riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions"> <li if="{ deleteMode }" onclick="{ disableDelete }"> <img src="img/cancel.svg" alt="Cancel" title="Cancel"> <span>Delete</span> </li> <li if="{ deleteMode }" onclick="{ deletePuzzles }"> <img src="img/delete-red.svg" alt="Delete" title="Delete"> <span>Delete</span> </li> <li onclick="{ enableDelete }" if="{ !deleteMode && puzzles.length && (selected == \'Empty\' || selected == \'In Progress\' || selected == \'Completed\') }"> <img src="img/delete.svg" alt="Delete" title="Delete"> <span>Delete</span> </li> <li if="{ !deleteMode }" onclick="{ about }"> <img src="img/info.svg" alt="About" title="About"> <span>About</span> </li> </ul> </header> <section id="sources" class="{ list: true, deleteMode: deleteMode }"> <ul> <li each="{ urlGens }" class="{ selected: parent.selected == title }" onclick="{ parent.setPuzzles }"> { title } <span if="{ parent.deleteMode && parent.selected == title }"> <input type="checkbox" onclick="{ parent.setPuzzlesInput }"> </span> </li> <li onclick="{ getFile }">Import File</li> </ul> <input type="file" id="fileinput" onchange="{ loadFile }"> </section> <section id="dates" class="{ list: true, deleteMode: deleteMode }" show="{ selected }"> <ul> <li each="{ puzzles }" onclick="{ parent.clickPuzzle }">{ title } <span if="{ !parent.deleteMode && completion > 0 }">{ (completion*100).toFixed(0) + "%" }</span> <span if="{ parent.deleteMode }"> <input type="checkbox" url="{ url }" onclick="{ parent.clickPuzzleInput }"> </span> </li> <div id="dates-notes" show="{ puzzles.length == 0 }"> <span>{ note }</span> </div> </ul> </section>', function(opts) {
         var self = this;
         self.mixin("display");
         
@@ -108,7 +98,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     self.note = "No completed puzzles";
                     return fromList(database.getPuzzleUrls(database.COMPLETED));
                 }},
-/*            { title: "Chronicle of Higher Education",
+            { title: "Chronicle of Higher Education",
                 func: weekly(function (date) {
                     return "http://chronicle.com/items/biz/puzzles/" + eightDigitDate(date) + ".puz";
                 }, 5)},
@@ -125,7 +115,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                 func: weekly(function (date) {
                     return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
                             eightDigitDate(date) + ".txt";
-                }, 0)},*/
+                }, 0)},
             { title: "LA Times",
                 func: lastTwoWeeks(function (date) {
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
@@ -136,7 +126,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/SundayCrossword/mreagle_"
                     + sixDigitDate(date) + ".xml";
                 }, 0)},
-/*            { title: "Newsday",
+            { title: "Newsday",
                 func: lastTwoWeeks(function (date) {
                     return "http://www.brainsonly.com/servlets-newsday-crossword/newsdaycrossword?date=" +
                     sixDigitDate(date) + "&fmt=nwd";  // fmt only to help our format detection
@@ -202,7 +192,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                 func: weekly(function (date) {
                     return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
                             strZero(date.getDate()) + date.getFullYear() + ".dat";
-                }, 1)},*/
+                }, 1)},
             { title: "The Week",
                 func: function () {
                     var week0 = new Date('2009-06-12');
@@ -240,10 +230,10 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     return;
                 }
                 if (smallscreen) {
-                    self.selected = null;
                     self.puzzles = [];
                     self.note = "";
                     self.deleteMode = false;
+                    window.history.back();
                     return;
                 }
                 event.preventUpdate = true;
@@ -252,9 +242,9 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
             if (smallscreen)
                 self.sources.scrollTop = 0;
             self.dates.scrollTop = 0;
-            self.selected = event.item.title;
             self.puzzles = event.item.func();
             self.deleteMode = false;
+            riot.route("/" + event.item.title);
         }.bind(this);
         
         this.setPuzzlesInput = function(event) {
@@ -277,7 +267,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                 self.sourcesDeleteIndeterminate();
             } else {
                 event.target.classList.add("busy");
-                riot.route("load//" + event.item.url);
+                riot.loadPuzzle(event.item.url);
             }
         }.bind(this);
         
@@ -343,7 +333,7 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
             if (event.target.files.length == 0)
                 return;
             var f = event.target.files[0];
-            riot.route("load/" + f.name + "/" + window.URL.createObjectURL(f));
+            riot.loadPuzzle(window.URL.createObjectURL(f), f.name);
         }.bind(this);
         
         self.on("update", function () {
@@ -719,9 +709,8 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
         }.bind(this);
 
         this.back = function(event) {
-            event.preventUpdate = true;
             self.root.querySelector("header.page").classList.add("collapsed");
-            riot.route("list");
+            self.close(event);
         }.bind(this);
         
         this.collapse = function(event) {
@@ -839,6 +828,7 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
         }.bind(this);
 
         this.loadURL = function(url, fn) {
+            self.update({ puzzle: { across: [], down: [] } });  // Work around riot issue #925
             var puzzle = database.getPuzzle(url);
             if (puzzle)
                 self.loadDoc(url, puzzle.puzzle, puzzle.fill, puzzle.completion);
@@ -855,11 +845,11 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
             if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode == 32) { // space
                 self.insertLetter(String.fromCharCode(e.keyCode));
                 self.moveCursor(1, false);
-            } else if (e.keyCode == 13 || e.keyCode == 188) { // enter, comma
+            } else if (e.keyCode == 188) { // comma
                 self.setSeldir();
                 self.selectCell(self.selr, self.selc);
-            } else if (e.keyCode == 9 || e.keyCode == 190) { // tab, period
-                self.moveClue(e.shiftKey ? -1 : 1);
+            } else if (e.keyCode == 9 || e.keyCode == 13 || e.keyCode == 190) { // tab, enter, period
+                self.moveClue(e.shiftKey != (e.keyCode == 190) ? -1 : 1);
             } else if (e.keyCode >= 37 && e.keyCode <= 40) { // left, up, right, down
                 var dir = (e.keyCode % 2) ? "across" : "down";
                 var inc = (e.keyCode < 39) ? -1 : 1;
