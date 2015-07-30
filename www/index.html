@@ -126,6 +126,7 @@ of the GPL. See the file LICENSE for full details.
         
         window.onload = function () {
           var hub = null;
+          riot.system = null;
           try {
             hub = external.getUnityObject(1.0).ContentHub;
           } catch (error) {
@@ -140,6 +141,7 @@ of the GPL. See the file LICENSE for full details.
             }
             hub.onImportRequested(incoming);
             hub.onShareRequested(incoming);
+            riot.system = "Ubuntu Touch";
           }
           if (window.webintent) {
             function onIntent(uri) {
@@ -148,6 +150,7 @@ of the GPL. See the file LICENSE for full details.
             }
             window.webintent.getUri(onIntent);
             window.webintent.onNewIntent(onIntent);
+            riot.system = "Android";
           }
         }
     </script>

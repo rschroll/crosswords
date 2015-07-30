@@ -26,9 +26,11 @@
         
         <h2>Importing</h2>
         
-        <p>Crosswords can import puzzle files in a number of formats, although the only one you are likely to encounter online is the Across Lite <tt>.puz</tt> format.  At the bottom of the list of puzzle sources is the <i>Import File</i> item.  Select this and a file dialog will open, allowing you to choose a file to import.  At the moment, only a single puzzle can be imported at a time.  (Unfortunately, Ubuntu Touch does not support this option as of this writing.)  Puzzles can also be drag-and-dropped into Crosswords.</p>
+        <p>Crosswords can import puzzle files in a number of formats, although the only one you are likely to encounter online is the Across Lite <tt>.puz</tt> format.  At the bottom of the list of puzzle sources is the <i>Import File</i> item.  Select this and a file dialog will open, allowing you to choose a file to import.  At the moment, only a single puzzle can be imported at a time.  <span if={ riot.system == 'Ubuntu Touch' }>(Unfortunately, Ubuntu Touch does not support this option as of this writing.)</span>  Puzzles can also be drag-and-dropped into Crosswords.</p>
         
-        <p>On Ubuntu Touch, you can also import files via the Content Hub.  Crosswords is registered as an importer of documents.  Any other app that recognizes puzzle files as documents can export them to Crosswords.  (As of this writing, we are unaware of any apps that do so.)  You can also share links to puzzles and have Crosswords import them automatically.  (As of this writing, this can be done from the web browser only with a bit of trickery:  When you encounter a link to a puzzle online, long press it and then select "Open link in new tab".  A new tab will open, and then an "Open with" dialog appears, which gives you no options.  Touch "Cancel" at the bottom to return to the (empty) tab.  Open the menu at the top right, select "Share", and then choose "Crosswords" as the destination.)</p>
+        <p if={ riot.system == 'Ubuntu Touch' }>On Ubuntu Touch, you can also import files via the Content Hub.  Crosswords is registered as an importer of documents.  Any other app that recognizes puzzle files as documents can export them to Crosswords.  (As of this writing, we are unaware of any apps that do so.)  You can also share links to puzzles and have Crosswords import them automatically.  (As of this writing, this can be done from the web browser only with a bit of trickery:  When you encounter a link to a puzzle online, long press it and then select "Open link in new tab".  A new tab will open, and then an "Open with" dialog appears, which gives you no options.  Touch "Cancel" at the bottom to return to the (empty) tab.  Open the menu at the top right, select "Share", and then choose "Crosswords" as the destination.)</p>
+        
+        <p if={ riot.system == 'Android' }>On Android, Crosswords can act as a viewer for <tt>.puz</tt> files.  When you try to open a <tt>.puz</tt> from the internet or your files, Crosswords should be listed as an option.</p>
         
         <h2>Deleting</h2>
         
@@ -40,7 +42,7 @@
         
         <h2>Colophon</h2>
         
-        <p>This is version 0.3.0 of <a href="http://rschroll.github.io/crosswords/">Crosswords</a> for Ubuntu.</p>
+        <p>This is version 0.3.0 of <a href="http://rschroll.github.io/crosswords/">Crosswords</a>.</p>
         
         <p>Crosswords is Copyright 2014-2015 by Robert Schroll and incorporates copyrighted material for several other authors under various licenses.</p>
         
