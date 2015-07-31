@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Crosswords for Ubuntu
+title: Crosswords
 ---
-Crosswords for Ubuntu
-=====================
+Crosswords
+==========
 
 Crosswords is an HTML5 application that lets you enjoy crossword puzzles
 from a number of online sources.  It can also load puzzles in the
@@ -33,10 +33,17 @@ Crosswords is available through the official app store.  [Touch
 here](scope://com.canonical.scopes.clickstore?q=Crosswords) on your
 Ubuntu device to view and install it from the app store scope.
 
+### On Android devices
+
+You should be able to install this
+[APK](https://github.com/rschroll/crosswords/releases/download/0.3.1/crosswords.apk)
+on any relatively recent version of Android.  If you have problems,
+please [let us know](#reporting-bugs).
+
 ### On the desktop
 
 Download and extract [this tar
-file](https://github.com/rschroll/crosswords/releases/download/0.3.0/crosswords.tar.gz)
+file](https://github.com/rschroll/crosswords/releases/download/0.3.1/crosswords.tar.gz)
 to a location of your choosing.  The included `crosswords` script will
 open a window with the app loaded.  This script requires Python, GTK,
 and WebKitGTK.
@@ -51,8 +58,7 @@ around these by adjusting your browser's settings.
 You can try Crosswords right away in your browser---just [click
 here](www/).  I've trimmed the source list down to those that will work
 under the cross-origin scripting restrictions in a web environment.  To
-get the rest, you've got to download it yourself.  (Be aware that the
-back button is slightly broken here.)
+get the rest, you've got to download it yourself.
 
 ### For development
 
