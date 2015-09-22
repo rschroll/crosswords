@@ -55,6 +55,9 @@ function JPZtoJSON(doc) {
         var clue = acrossClues[i];
         var number = intAttribute(clue, "number");
         retval.across[number] = clue.textContent;
+        var format = clue.getAttribute("format");
+        if (format)
+            retval.across[number] += " (" + format + ")";
         var word = doc.querySelector("word[id='" + clue.getAttribute("word") + "']");
         var x = rangeAttribute(word, "x");
         var y = intAttribute(word, "y");
@@ -66,6 +69,9 @@ function JPZtoJSON(doc) {
         var clue = downClues[i];
         var number = intAttribute(clue, "number");
         retval.down[number] = clue.textContent;
+        var format = clue.getAttribute("format");
+        if (format)
+            retval.down[number] += " (" + format + ")";
         var word = doc.querySelector("word[id='" + clue.getAttribute("word") + "']");
         var x = intAttribute(word, "x");
         var y = rangeAttribute(word, "y");
