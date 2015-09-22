@@ -177,11 +177,6 @@
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
                             sixDigitDate(date) + ".xml";
                 })},
-            { title: "Merl Reagle",
-                func: weekly(function (date) {
-                    return "http://cdn.games.arkadiumhosted.com/latimes/assets/SundayCrossword/mreagle_"
-                    + sixDigitDate(date) + ".xml";
-                }, 0)},
             { title: "Newsday",
                 func: lastTwoWeeks(function (date) {
                     return "http://www.brainsonly.com/servlets-newsday-crossword/newsdaycrossword?date=" +
