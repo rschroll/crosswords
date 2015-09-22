@@ -236,14 +236,10 @@
                             sixDigitDate(date) + "-data.xml";
                 })},
             { title: "Wall Street Journal",
-                func: weekly(function (date) {
-                    return "http://blogs.wsj.com/applets/wsjxwd" + eightDigitDate(date) + ".dat";
-                }, 5)},
-            { title: "WSJ Greater New York",
-                func: weekly(function (date) {
-                    return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
-                            strZero(date.getDate()) + date.getFullYear() + ".dat";
-                }, 1)},
+                func: lastTwoWeeks(function (date) {
+                    var prefix = (date.getDay() == 6) ? "wsjxwd" : "gnyxwd";
+                    return "http://blogs.wsj.com/applets/" + prefix + eightDigitDate(date) + ".dat";
+                }, [0])},
             { title: "The Week",
                 func: function () {
                     var week0 = new Date('2009-06-12');
