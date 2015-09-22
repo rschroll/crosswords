@@ -135,6 +135,34 @@
                     return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
                             eightDigitDate(date) + ".txt";
                 }, [0])},
+            { title: "Globe and Mail Canadiana",
+                func: weekly(function (date) {
+                    return "http://v1.theglobeandmail.com/v5/content/puzzles/crossword_canadian/source/can" +
+                            sixDigitDate(date) + "-data.xml";
+                }, 1)},
+            { title: "Globe and Mail Cryptic",
+                func: function () {
+                    var week0 = new Date('1968-01-21');
+                    var now = new Date();
+                    var msperwk = 1000 * 60 * 60 * 24 * 7;
+                    var week = Math.floor((now - week0) / msperwk);
+                    var n = week * 6 + now.getDay();
+                    var retval = [];
+                    for (var i=0; i<12; i++, n--)
+                        retval.push({ url: "http://www.theglobeandmail.com/static/crosswords/" + n + "crp.xml",
+                                      title: "No. " + n });
+                    return retval;
+                }},
+            { title: "The Independent's Concise",
+                func: lastTwoWeeks(function (date) {
+                    return "http://cdn.games.arkadiumhosted.com/independent/daily-crossword/s_" +
+                            sixDigitDate(date) + ".xml";
+                })},
+            { title: "The Independent's Cryptic",
+                func: lastTwoWeeks(function (date) {
+                    return "http://cdn.games.arkadiumhosted.com/independent/daily-crossword/c_" +
+                            sixDigitDate(date) + ".xml";
+                })},
             { title: "Jonesin' Crosswords",
                 func: weekly(function (date) {
                     return "http://herbach.dnsalias.com/Jonesin/jz" + sixDigitDate(date) + ".puz";

@@ -118,6 +118,10 @@
             }
         }
         
+        canChangeDir(dir) {
+            return (self.puzzle.grid[self.selr][self.selc][dir] !== undefined);
+        }
+        
         function coordsFromID(id) {
             var coords = id.slice(1).split("c");
             return [parseInt(coords[0]), parseInt(coords[1])];
@@ -157,6 +161,12 @@
             var across = self.puzzle.grid[y][x].across,
                 down = self.puzzle.grid[y][x].down,
                 styleClasses = ["selCell", "selCells", "selClue"];
+            
+            // Cryptic crosswords have cells that are used in only one answer
+            if (!across)
+                self.setSeldir("down");
+            else if (!down)
+                self.setSeldir("across");
 
             for (var i=0; i<styleClasses.length; i++) {
                 var els = document.querySelectorAll("." + styleClasses[i]);
@@ -189,8 +199,9 @@
             }
             self.fixView(true);
 
-            for (var i=0; i<2; i++) {
-                var clue = document.querySelector(["#across" + across, "#down" + down][i]);
+            var clues = document.querySelectorAll("#across" + across + ", #down" + down);
+            for (var i=0; i<clues.length; i++) {
+                var clue = clues[i];
                 clue.classList.add("selClue");
                 var parent = clue.offsetParent;
                 if (clue.offsetTop < parent.scrollTop ||
@@ -540,12 +551,12 @@
             } else if (e.keyCode >= 37 && e.keyCode <= 40) { // left, up, right, down
                 var dir = (e.keyCode % 2) ? "across" : "down";
                 var inc = (e.keyCode < 39) ? -1 : 1;
-                if (self.seldir != dir && self.fill[self.selr][self.selc] == " ") {
-                    // Change direction only if cell is empty
+                if (self.seldir != dir && self.fill[self.selr][self.selc] == " " && self.canChangeDir(dir)) {
+                    // Change direction only if cell is empty and able
                     self.setSeldir(dir);
                     self.selectCell(self.selr, self.selc);
                 } else {
-                    // Otherwise, change direction and step
+                    // Otherwise, change direction and step (direction will be reset if unable to be changed)
                     self.setSeldir(dir);
                     self.moveCursor(inc, true);
                 }
