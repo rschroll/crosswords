@@ -7,3 +7,6 @@ config.xml
 hooks/
 platforms/
 plugins/
+*.apk
+*.keystore
+intentFilterPlugin/

@@ -5,3 +5,4 @@ www/tags.js
 *.click
 platforms/
 plugins/
+*.keystore

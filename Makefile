@@ -39,3 +39,7 @@ android: www/tags.js
 
 android-launch: www/tags.js
 	cordova run android
+
+android-release: www/tags.js
+	cordova build android --release -- --keystore=crosswords.keystore --alias=CrosswordsKey
+
