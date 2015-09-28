@@ -98,33 +98,6 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     self.note = "No completed puzzles";
                     return fromList(database.getPuzzleUrls(database.COMPLETED));
                 }},
-            { title: "Chronicle of Higher Education",
-                func: weekly(function (date) {
-                    return "http://chronicle.com/items/biz/puzzles/" + eightDigitDate(date) + ".puz";
-                }, 5)},
-            { title: "Eugene Sheffer",
-                func: lastTwoWeeks(function (date) {
-                    return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
-                            eightDigitDate(date) + ".txt";
-                }, [0])},
-            { title: "Globe and Mail Canadiana",
-                func: weekly(function (date) {
-                    return "http://v1.theglobeandmail.com/v5/content/puzzles/crossword_canadian/source/can" +
-                            sixDigitDate(date) + "-data.xml";
-                }, 1)},
-            { title: "Globe and Mail Cryptic",
-                func: function () {
-                    var week0 = new Date('1968-01-21');
-                    var now = new Date();
-                    var msperwk = 1000 * 60 * 60 * 24 * 7;
-                    var week = Math.floor((now - week0) / msperwk);
-                    var n = week * 6 + now.getDay();
-                    var retval = [];
-                    for (var i=0; i<12; i++, n--)
-                        retval.push({ url: "http://www.theglobeandmail.com/static/crosswords/" + n + "crp.xml",
-                                      title: "No. " + n });
-                    return retval;
-                }},
             { title: "The Independent's Concise",
                 func: lastTwoWeeks(function (date) {
                     return "http://cdn.games.arkadiumhosted.com/independent/daily-crossword/s_" +
@@ -135,83 +108,11 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     return "http://cdn.games.arkadiumhosted.com/independent/daily-crossword/c_" +
                             sixDigitDate(date) + ".xml";
                 })},
-            { title: "Jonesin' Crosswords",
-                func: weekly(function (date) {
-                    return "http://herbach.dnsalias.com/Jonesin/jz" + sixDigitDate(date) + ".puz";
-                }, 2)},
-            { title: "King Premier",
-                func: weekly(function (date) {
-                    return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
-                            eightDigitDate(date) + ".txt";
-                }, 0)},
             { title: "LA Times",
                 func: lastTwoWeeks(function (date) {
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
                             sixDigitDate(date) + ".xml";
                 })},
-            { title: "Newsday",
-                func: lastTwoWeeks(function (date) {
-                    return "http://www.brainsonly.com/servlets-newsday-crossword/newsdaycrossword?date=" +
-                    sixDigitDate(date) + "&fmt=nwd";  // fmt only to help our format detection
-                })},
-            { title: "New York Times Classics",
-                func: function () {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "http://www.nytimes.com/svc/crosswords/v2/puzzles-for-section-front.json");
-                    xhr.responseType = "text";
-
-
-                    function error(msg) {
-                        self.update({ note: "Could not load puzzle list (" + msg + ")" });
-                    }
-
-                    xhr.onreadystatechange = function(e) {
-                        if (this.readyState != 4 )
-                            return;
-
-                        if (this.status != 200)
-                            return error("Server status: " + this.status);
-
-                        var resp = JSON.parse(this.response);
-                        if (resp.status != "OK")
-                            return error("JSON status: " + resp.status);
-
-                        var puzzles = resp.results.free_puzzles[200].results;
-                        var retval = [];
-                        for (var i=0; i<puzzles.length; i++) {
-                            var date = new Date(puzzles[i].print_date);
-                            date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-                            var url = "http://www.nytimes.com/svc/crosswords/v2/puzzle/daily-" +
-                                        puzzles[i].print_date + ".json";
-                            retval.push({ url: url, title: date.toDateString() });
-                        }
-                        self.update({ puzzles: retval });
-                    }
-                    xhr.send();
-                    
-                    self.note = "Loading list...";
-                    return [];
-                }},
-            { title: "Thomas Joseph",
-                func: lastTwoWeeks(function (date) {
-                    return "http://puzzles.kingdigital.com/javacontent/clues/joseph/" +
-                            eightDigitDate(date) + ".txt";
-                }, [0])},
-            { title: "Universal",
-                func: lastTwoWeeks(function (date) {
-                    return "http://picayune.uclick.com/comics/fcx/data/fcx" +
-                            sixDigitDate(date) + "-data.xml";
-                    })},
-            { title: "USA Today",
-                func: lastTwoWeeks(function (date) {
-                    return "http://picayune.uclick.com/comics/usaon/data/usaon" +
-                            sixDigitDate(date) + "-data.xml";
-                })},
-            { title: "Wall Street Journal",
-                func: lastTwoWeeks(function (date) {
-                    var prefix = (date.getDay() == 6) ? "wsjxwd" : "gnyxwd";
-                    return "http://blogs.wsj.com/applets/" + prefix + eightDigitDate(date) + ".dat";
-                }, [0])},
             { title: "The Week",
                 func: function () {
                     var week0 = new Date('2009-06-12');
