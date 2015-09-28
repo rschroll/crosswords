@@ -3,7 +3,7 @@
  * This file is part of Crosswords and is distributed under the terms
  * of the GPL. See the file LICENSE for full details.
  */
-riot.tag('about-page', '<header class="page"> <button class="back" onclick="{ close }" title="Back"></button> <h1>About</h1> </header> <div> <h2>Welcome to Crosswords!</h2> <p>When you first start Crosswords, you are presented with a list of sources for puzzles. Select any of these, and you will see a selection of recent puzzles, ordered newest to oldest. Selecting any puzzle will cause it to be downloaded and opened for solving.</p> <p>As you work on the crossword, your progress is saved. Incomplete puzzles are listed in the <i>In Progress</i> category and are moved to the <i>Completed</i> category once they have been solved. Puzzles with no cells filled in are listed under <i>Empty</li>.</p> <h2>Solving</h2> <p>Enter a letter in the highlighted cell with your keyboard. On touch devices, your on-screen keyboard should open automatically; if not, touch the grid to trigger it. After you enter a letter, the highlight will move to the next cell in the answer. <b>Space</b> will clear the current square and move forwards, and <b>Backspace</b> will clear and move backwards. Select another cell to move the highlight, or select the highlighted cell again to switch between across and down. Selecting a clue will move the highlight to the first empty cell in that answer.</p> <p>You may navigate around the grid using the arrow keys. Use <b>,</b> to change the direction without moving the highlight. <b>Tab</b> and <b>Enter</b> move to the answer for the next clue, while <b>Shift</b>+<b>Tab</b> or <b>.</b> moves to the previous clue\'s answer. <b>Home</b> moves to the first cell in the current answer, while <b>End</b> moves to the last cell.</p> <p>Several actions can be triggered by icons on the puzzle page. On large screens, these icons are in the header. On small screens, these icons are displayed by activating the <img src="img/navigation-menu.svg" alt="Menu"> icon in the lower right. The <img src="img/tick@30.png" alt="Check"> icon will check your fill and change any incorrect letters to red. Use the <img src="img/reveal.svg" alt="Reveal"> icon to show the correct letter for the current cell, or <img src="img/compose.svg" alt="Solve"> to solve the whole puzzle. <img src="img/info.svg" alt="Info"> will display information about the puzzle, and <img src="img/back.svg" alt="Back"> returns you to the list of puzzles.</p> <h2>Importing</h2> <p>Crosswords can import puzzle files in a number of formats, although the only one you are likely to encounter online is the Across Lite <tt>.puz</tt> format. At the bottom of the list of puzzle sources is the <i>Import File</i> item. Select this and a file dialog will open, allowing you to choose a file to import. At the moment, only a single puzzle can be imported at a time. <span if="{ riot.system == \'Ubuntu Touch\' }">(Unfortunately, Ubuntu Touch does not support this option as of this writing.)</span> Puzzles can also be drag-and-dropped into Crosswords.</p> <p if="{ riot.system == \'Ubuntu Touch\' }">On Ubuntu Touch, you can also import files via the Content Hub. Crosswords is registered as an importer of documents. Any other app that recognizes puzzle files as documents can export them to Crosswords. (As of this writing, we are unaware of any apps that do so.) You can also share links to puzzles and have Crosswords import them automatically. (As of this writing, this can be done from the web browser only with a bit of trickery: When you encounter a link to a puzzle online, long press it and then select "Open link in new tab". A new tab will open, and then an "Open with" dialog appears, which gives you no options. Touch "Cancel" at the bottom to return to the (empty) tab. Open the menu at the top right, select "Share", and then choose "Crosswords" as the destination.)</p> <p if="{ riot.system == \'Android\' }">On Android, Crosswords can act as a viewer for <tt>.puz</tt> files. When you try to open a <tt>.puz</tt> from the internet or your files, Crosswords should be listed as an option.</p> <h2>Deleting</h2> <p>You may delete puzzles in the <i>Empty</i>, <i>In Progress</i>, and <i>Completed</i> categories. Select the <img src="img/delete.svg" alt="Delete"> icon to enter delete mode. Select the puzzles which you wish to delete, or select the category to choose all the puzzles. Use the <img src="img/delete-red.svg" alt="Delete"> icon to delete those puzzles, or cancel with <img src="img/cancel.svg" alt="Cancel">.</p> <h2>Bugs</h2> <p>While we hope you will only be frustrated with the crossword puzzles, we\'re sure there are a few bugs in the app itself. If you find one, please report it to our <a href="https://github.com/rschroll/crosswords/issues">bug tracker</a>.</p> <h2>Colophon</h2> <p>This is version 0.3.1 of <a href="http://rschroll.github.io/crosswords/">Crosswords</a>.</p> <p>Crosswords is Copyright 2014-2015 by Robert Schroll and incorporates copyrighted material for several other authors under various licenses.</p> <p>Crosswords is released under the <a href="https://github.com/rschroll/crosswords/blob/master/LICENSE">GPL v3 (or later)</a>. The source code is <a href="https://github.com/rschroll/crosswords/">available on Github</a>.</p> </div>', function(opts) {
+riot.tag('about-page', '<header class="page"> <button class="back" onclick="{ close }" title="Back"></button> <h1>About</h1> </header> <div> <h2>Welcome to Crosswords!</h2> <p>When you first start Crosswords, you are presented with a list of sources for puzzles. Select any of these, and you will see a selection of recent puzzles, ordered newest to oldest. Selecting any puzzle will cause it to be downloaded and opened for solving.</p> <p>As you work on the crossword, your progress is saved. Incomplete puzzles are listed in the <i>In Progress</i> category and are moved to the <i>Completed</i> category once they have been solved. Puzzles with no cells filled in are listed under <i>Empty</li>.</p> <h2>Solving</h2> <p>Enter a letter in the highlighted cell with your keyboard. On touch devices, your on-screen keyboard should open automatically; if not, touch the grid to trigger it. After you enter a letter, the highlight will move to the next cell in the answer. <b>Space</b> will clear the current square and move forwards, and <b>Backspace</b> will clear and move backwards. Select another cell to move the highlight, or select the highlighted cell again to switch between across and down. Selecting a clue will move the highlight to the first empty cell in that answer.</p> <p>You may navigate around the grid using the arrow keys. Use <b>,</b> to change the direction without moving the highlight. <b>Tab</b> and <b>Enter</b> move to the answer for the next clue, while <b>Shift</b>+<b>Tab</b> or <b>.</b> moves to the previous clue\'s answer. <b>Home</b> moves to the first cell in the current answer, while <b>End</b> moves to the last cell.</p> <p>Several actions can be triggered by icons on the puzzle page. On large screens, these icons are in the header. On small screens, these icons are displayed by activating the <img src="img/navigation-menu.svg" alt="Menu"> icon in the lower right. The <img src="img/tick@30.png" alt="Check"> icon will check your fill and change any incorrect letters to red. Use the <img src="img/reveal.svg" alt="Reveal"> icon to show the correct letter for the current cell, or <img src="img/compose.svg" alt="Solve"> to solve the whole puzzle. <img src="img/info.svg" alt="Info"> will display information about the puzzle, and <img src="img/back.svg" alt="Back"> returns you to the list of puzzles.</p> <h2>Importing</h2> <p>Crosswords can import puzzle files in a number of formats, although the only one you are likely to encounter online is the Across Lite <tt>.puz</tt> format. At the bottom of the list of puzzle sources is the <i>Import File</i> item. Select this and a file dialog will open, allowing you to choose a file to import. At the moment, only a single puzzle can be imported at a time. <span if="{ riot.system == \'Ubuntu Touch\' }">(Unfortunately, Ubuntu Touch does not support this option as of this writing.)</span> Puzzles can also be drag-and-dropped into Crosswords.</p> <p if="{ riot.system == \'Ubuntu Touch\' }">On Ubuntu Touch, you can also import files via the Content Hub. Crosswords is registered as an importer of documents. Any other app that recognizes puzzle files as documents can export them to Crosswords. (As of this writing, we are unaware of any apps that do so.) You can also share links to puzzles and have Crosswords import them automatically. (As of this writing, this can be done from the web browser only with a bit of trickery: When you encounter a link to a puzzle online, long press it and then select "Open link in new tab". A new tab will open, and then an "Open with" dialog appears, which gives you no options. Touch "Cancel" at the bottom to return to the (empty) tab. Open the menu at the top right, select "Share", and then choose "Crosswords" as the destination.)</p> <p if="{ riot.system == \'Android\' }">On Android, Crosswords can act as a viewer for <tt>.puz</tt> files. When you try to open a <tt>.puz</tt> from the internet or your files, Crosswords should be listed as an option.</p> <h2>Deleting</h2> <p>You may delete puzzles in the <i>Empty</i>, <i>In Progress</i>, and <i>Completed</i> categories. Select the <img src="img/delete.svg" alt="Delete"> icon to enter delete mode. Select the puzzles which you wish to delete, or select the category to choose all the puzzles. Use the <img src="img/delete-red.svg" alt="Delete"> icon to delete those puzzles, or cancel with <img src="img/cancel.svg" alt="Cancel">.</p> <h2>Bugs</h2> <p>While we hope you will only be frustrated with the crossword puzzles, we\'re sure there are a few bugs in the app itself. If you find one, please report it to our <a href="https://github.com/rschroll/crosswords/issues">bug tracker</a>.</p> <h2>Colophon</h2> <p>This is version 0.3.2 of <a href="http://rschroll.github.io/crosswords/">Crosswords</a>.</p> <p>Crosswords is Copyright 2014-2015 by Robert Schroll and incorporates copyrighted material for several other authors under various licenses.</p> <p>Crosswords is released under the <a href="https://github.com/rschroll/crosswords/blob/master/LICENSE">GPL v3 (or later)</a>. The source code is <a href="https://github.com/rschroll/crosswords/">available on Github</a>.</p> </div>', function(opts) {
         var self = this;
         self.mixin("display");
     
@@ -107,6 +107,34 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
                             eightDigitDate(date) + ".txt";
                 }, [0])},
+            { title: "Globe and Mail Canadiana",
+                func: weekly(function (date) {
+                    return "http://v1.theglobeandmail.com/v5/content/puzzles/crossword_canadian/source/can" +
+                            sixDigitDate(date) + "-data.xml";
+                }, 1)},
+            { title: "Globe and Mail Cryptic",
+                func: function () {
+                    var week0 = new Date('1968-01-21');
+                    var now = new Date();
+                    var msperwk = 1000 * 60 * 60 * 24 * 7;
+                    var week = Math.floor((now - week0) / msperwk);
+                    var n = week * 6 + now.getDay();
+                    var retval = [];
+                    for (var i=0; i<12; i++, n--)
+                        retval.push({ url: "http://www.theglobeandmail.com/static/crosswords/" + n + "crp.xml",
+                                      title: "No. " + n });
+                    return retval;
+                }},
+            { title: "The Independent's Concise",
+                func: lastTwoWeeks(function (date) {
+                    return "http://cdn.games.arkadiumhosted.com/independent/daily-crossword/s_" +
+                            sixDigitDate(date) + ".xml";
+                })},
+            { title: "The Independent's Cryptic",
+                func: lastTwoWeeks(function (date) {
+                    return "http://cdn.games.arkadiumhosted.com/independent/daily-crossword/c_" +
+                            sixDigitDate(date) + ".xml";
+                })},
             { title: "Jonesin' Crosswords",
                 func: weekly(function (date) {
                     return "http://herbach.dnsalias.com/Jonesin/jz" + sixDigitDate(date) + ".puz";
@@ -121,11 +149,6 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
                             sixDigitDate(date) + ".xml";
                 })},
-            { title: "Merl Reagle",
-                func: weekly(function (date) {
-                    return "http://cdn.games.arkadiumhosted.com/latimes/assets/SundayCrossword/mreagle_"
-                    + sixDigitDate(date) + ".xml";
-                }, 0)},
             { title: "Newsday",
                 func: lastTwoWeeks(function (date) {
                     return "http://www.brainsonly.com/servlets-newsday-crossword/newsdaycrossword?date=" +
@@ -185,14 +208,10 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                             sixDigitDate(date) + "-data.xml";
                 })},
             { title: "Wall Street Journal",
-                func: weekly(function (date) {
-                    return "http://blogs.wsj.com/applets/wsjxwd" + eightDigitDate(date) + ".dat";
-                }, 5)},
-            { title: "WSJ Greater New York",
-                func: weekly(function (date) {
-                    return "http://blogs.wsj.com/applets/gnyxwd" + strZero(date.getMonth() + 1) +
-                            strZero(date.getDate()) + date.getFullYear() + ".dat";
-                }, 1)},
+                func: lastTwoWeeks(function (date) {
+                    var prefix = (date.getDay() == 6) ? "wsjxwd" : "gnyxwd";
+                    return "http://blogs.wsj.com/applets/" + prefix + eightDigitDate(date) + ".dat";
+                }, [0])},
             { title: "The Week",
                 func: function () {
                     var week0 = new Date('2009-06-12');
@@ -431,6 +450,10 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
             }
         }.bind(this);
         
+        this.canChangeDir = function(dir) {
+            return (self.puzzle.grid[self.selr][self.selc][dir] !== undefined);
+        }.bind(this);
+        
         function coordsFromID(id) {
             var coords = id.slice(1).split("c");
             return [parseInt(coords[0]), parseInt(coords[1])];
@@ -471,6 +494,11 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
                 down = self.puzzle.grid[y][x].down,
                 styleClasses = ["selCell", "selCells", "selClue"];
 
+            if (!across)
+                self.setSeldir("down");
+            else if (!down)
+                self.setSeldir("across");
+
             for (var i=0; i<styleClasses.length; i++) {
                 var els = document.querySelectorAll("." + styleClasses[i]);
                 for (var j=0; j<els.length; j++)
@@ -502,8 +530,9 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
             }
             self.fixView(true);
 
-            for (var i=0; i<2; i++) {
-                var clue = document.querySelector(["#across" + across, "#down" + down][i]);
+            var clues = document.querySelectorAll("#across" + across + ", #down" + down);
+            for (var i=0; i<clues.length; i++) {
+                var clue = clues[i];
                 clue.classList.add("selClue");
                 var parent = clue.offsetParent;
                 if (clue.offsetTop < parent.scrollTop ||
@@ -853,7 +882,7 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
             } else if (e.keyCode >= 37 && e.keyCode <= 40) { // left, up, right, down
                 var dir = (e.keyCode % 2) ? "across" : "down";
                 var inc = (e.keyCode < 39) ? -1 : 1;
-                if (self.seldir != dir && self.fill[self.selr][self.selc] == " ") {
+                if (self.seldir != dir && self.fill[self.selr][self.selc] == " " && self.canChangeDir(dir)) {
 
                     self.setSeldir(dir);
                     self.selectCell(self.selr, self.selc);
