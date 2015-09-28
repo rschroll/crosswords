@@ -230,7 +230,12 @@
         insertLetter(v, y, x, skipcheck) {
             if (x == null) x = self.selc;
             if (y == null) y = self.selr;
-            if (v == "solve") v = self.puzzle.grid[y][x].solution;
+            if (v == "solve") {
+                if (self.puzzle.grid[y][x].solution)
+                    v = self.puzzle.grid[y][x].solution;
+                else
+                    return;
+            }
             self.fill[y][x] = v;
             var el = getCellEl(y, x, " .letter");
             el.textContent = v;
