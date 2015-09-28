@@ -14,7 +14,7 @@ Ubuntu, but it should work on any platform with a modern browser.
 
 Features
 --------
-* Lets you play puzzles from the LA Times, Wall Street Journal, Merl Reagle, and others.
+* Lets you play puzzles from the LA Times, the Wall Street Journal, the Independent, and others.
 * Loads puzzles in the Across Lite .PUZ format.
 * Checks your answers, provides hints, or shows the solution when you get stuck.
 * Saves your progress.
