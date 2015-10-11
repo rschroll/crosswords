@@ -446,6 +446,8 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
             var tableClasses = self.grid.classList;
             tableClasses.remove("solved");
             self.solved = false;
+            if (self.puzzle.noSolution)
+                return;
             for (var i=0; i<self.puzzle.nrow; i++)
                 for (var j=0; j<self.puzzle.ncol; j++)
                     if (self.puzzle.grid[i][j].solution && self.fill[i][j] != self.puzzle.grid[i][j].solution)
@@ -462,7 +464,12 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
         this.insertLetter = function(v, y, x, skipcheck) {
             if (x == null) x = self.selc;
             if (y == null) y = self.selr;
-            if (v == "solve") v = self.puzzle.grid[y][x].solution;
+            if (v == "solve") {
+                if (self.puzzle.grid[y][x].solution)
+                    v = self.puzzle.grid[y][x].solution;
+                else
+                    return;
+            }
             self.fill[y][x] = v;
             var el = getCellEl(y, x, " .letter");
             el.textContent = v;
@@ -734,6 +741,12 @@ riot.tag('puzzle-page', '<header class="page collapsed"> <button class="back" on
 
                           case "nwd":
                             json = NewsdaytoJSON(str);
+                            break;
+                            
+                          case "gdn":
+                            json = GuardiantoJSON(str);
+                            if (typeof json == "string")
+                                error = json;
                             break;
 
                           default:
