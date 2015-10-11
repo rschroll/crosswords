@@ -8,15 +8,15 @@
         <button class="back" onclick={ back } title="Back"></button>
         <h1>{ puzzle.metadata.title }</h1>
         <ul class="actions">
-            <li onclick={ solve }>
+            <li onclick={ solve } show={ !puzzle.noSolution }>
                 <img src="img/compose.svg" alt="Solve" title="Solve" />
                 <span>Solve</span>
             </li>
-            <li onclick={ check }>
+            <li onclick={ check } show={ !puzzle.noSolution }>
                 <img src="img/tick@30.png" alt="Check" title="Check" />
                 <span>Check</span>
             </li>
-            <li onclick={ reveal }>
+            <li onclick={ reveal } show={ !puzzle.noSolution }>
                 <img src="img/reveal.svg" alt="Reveal" title="Reveal" />
                 <span>Reveal</span>
             </li>
@@ -214,6 +214,8 @@
             var tableClasses = self.grid.classList;
             tableClasses.remove("solved");
             self.solved = false;
+            if (self.puzzle.noSolution)
+                return;
             for (var i=0; i<self.puzzle.nrow; i++)
                 for (var j=0; j<self.puzzle.ncol; j++)
                     if (self.puzzle.grid[i][j].solution && self.fill[i][j] != self.puzzle.grid[i][j].solution)
@@ -507,6 +509,12 @@
 
                           case "nwd":
                             json = NewsdaytoJSON(str);
+                            break;
+                            
+                          case "gdn":
+                            json = GuardiantoJSON(str);
+                            if (typeof json == "string")
+                                error = json;
                             break;
 
                           default:

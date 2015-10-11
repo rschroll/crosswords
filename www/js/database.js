@@ -38,7 +38,7 @@
                     for (var j=0; j<puzzle.ncol; j++)
                         if (fill[i][j] != " ")
                             count += 1;
-                completion = Math.min(count/puzzle.ncells, 0.99);
+                completion = Math.min(count/puzzle.ncells, puzzle.noSolution ? 1.0 : 0.99);
             }
         }
         var obj = { puzzle: puzzle, fill: fill, completion: completion };

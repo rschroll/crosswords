@@ -465,3 +465,63 @@ function NewsdaytoJSON(str) {
 
     return retval;
 }
+
+
+function GuardiantoJSON(str) {
+    var parser = new DOMParser();
+    try {
+        var doc = parser.parseFromString(str, "text/html");
+        var json = JSON.parse(doc.querySelector("div[data-crossword-data]")
+                              .getAttribute("data-crossword-data"));
+    } catch (error) {
+        return "Could not find crossword puzzle on page.";
+    }
+    
+    var retval = {
+        metadata: {},
+        grid: [],
+        across: [],
+        down: [],
+        ncells: 0
+    };
+    retval.metadata["title"] = json.name;
+    if (json.creator) {
+        retval.metadata["creator"] = json.creator.name;
+        retval.metadata["description"] = json.creator.webUrl;
+    }
+    
+    retval.ncol = json.dimensions.cols;
+    retval.nrow = json.dimensions.rows;
+    var emptyCell = { type: "block" };
+    for (var i=0; i<retval.nrow; i++) {
+        retval.grid[i] = [];
+        for (var j=0; j<retval.ncol; j++) {
+            retval.grid[i][j] = emptyCell;
+        }
+    }
+    
+    for (var k in json.entries) {
+        var entry = json.entries[k];
+        retval[entry.direction][entry.number] = entry.clue;
+        if (!entry.solution)
+            retval.noSolution = true;
+        
+        var i = entry.position.y,
+            j = entry.position.x,
+            di = (entry.direction == "down") ? 1 : 0,
+            dj = (entry.direction == "across") ? 1 : 0;
+        for (var l=0; l<entry.length; l++) {
+            if (retval.grid[i][j] === emptyCell) {
+                retval.grid[i][j] = { solution: entry.solution ? entry.solution[l] : "" };
+                retval.ncells += 1;
+            }
+            if (l == 0)
+                retval.grid[i][j].number = entry.number;
+            retval.grid[i][j][entry.direction] = entry.number;
+            i += di;
+            j += dj;
+        }
+    }
+    
+    return retval;
+}

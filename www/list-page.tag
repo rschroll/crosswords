@@ -60,6 +60,8 @@
         var self = this;
         self.mixin("display");
         
+        var msperwk = 1000 * 60 * 60 * 24 * 7;
+        
         function strZero(n) {
             if (n < 10)
                 return "0" + n;
@@ -110,6 +112,14 @@
             return retval;
         }
 
+        function weeksSinceDate(date) {
+            var week0 = new Date(date);
+            var now = new Date();
+            // Use current time zone offset to avoid different daylight savings on end dates
+            week0.setMinutes(week0.getMinutes() + now.getTimezoneOffset());
+            return Math.floor((now - week0) / msperwk);
+        }
+
         this.urlGens = [
             { title: "Empty",
                 func: function () {
@@ -142,15 +152,71 @@
                 }, 1)},
             { title: "Globe and Mail Cryptic",
                 func: function () {
-                    var week0 = new Date('1968-01-21');
                     var now = new Date();
-                    var msperwk = 1000 * 60 * 60 * 24 * 7;
-                    var week = Math.floor((now - week0) / msperwk);
-                    var n = week * 6 + now.getDay();
+                    var n = weeksSinceDate('1968-01-28') * 6 + now.getDay();
                     var retval = [];
                     for (var i=0; i<12; i++, n--)
                         retval.push({ url: "http://www.theglobeandmail.com/static/crosswords/" + n + "crp.xml",
                                       title: "No. " + n });
+                    return retval;
+                }},
+            { title: "The Guardian Cryptic",
+                func: function () {
+                    var date = new Date();
+                    
+                    var ncr = weeksSinceDate('1930-06-29') * 6 + date.getDay();
+                    if (date.getDay() == 6)
+                        ncr -= 1;
+                    var nev = weeksSinceDate('1946-10-03');
+                    
+                    var retval = [];
+                    for (var i=0; i<14; i++) {
+                        if (date.getDay() == 6) {
+                            retval.push({ url: "http://www.theguardian.com/crosswords/everyman/" + nev + "#gdn",
+                                          title: "Everyman No. " + nev });
+                            nev -= 1;
+                        } else if (date.getDay() == 5) {
+                            retval.push({ url: "http://www.theguardian.com/crosswords/prize/" + ncr + "#gdn",
+                                          title: "Prize No. " + ncr });
+                            ncr -= 1;
+                        } else {
+                            retval.push({ url: "http://www.theguardian.com/crosswords/cryptic/" + ncr + "#gdn",
+                                          title: "Cryptic No. " + ncr });
+                            ncr -= 1;
+                        }
+                        date.setDate(date.getDate() - 1);
+                    }
+                    return retval;
+                }},
+            { title: "The Guardian Quick",
+                func: function () {
+                    var date = new Date();
+                    
+                    var nqu = weeksSinceDate('1970-07-05') * 6 + 1 + date.getDay();
+                    if (date.getDay() == 6)
+                        nqu -= 1;
+                    var nsp = weeksSinceDate('1995-09-23');
+                    var nqc = weeksSinceDate('1999-11-14');
+                    
+                    var retval = [];
+                    for (var i=0; i<14; i++) {
+                        if (date.getDay() != 6) {
+                            retval.push({ url: "http://www.theguardian.com/crosswords/quick/" + nqu + "#gdn",
+                                          title: "Quick No. " + nqu });
+                            nqu -= 1;
+                        }
+                        if (date.getDay() == 6) {
+                            retval.push({ url: "http://www.theguardian.com/crosswords/speedy/" + nsp + "#gdn",
+                                          title: "Speedy No. " + nsp });
+                            nsp -= 1;
+                        }
+                        if (date.getDay() == 0) {
+                            retval.push({ url: "http://www.theguardian.com/crosswords/quiptic/" + nqc + "#gdn",
+                                          title: "Quiptic No. " + nqc });
+                            nqc -= 1;
+                        }
+                        date.setDate(date.getDate() - 1);
+                    }
                     return retval;
                 }},
             { title: "The Independent's Concise",
@@ -242,9 +308,9 @@
                 }, [0])},
             { title: "The Week",
                 func: function () {
-                    var week0 = new Date('2009-06-12');
-                    var msperwk = 1000 * 60 * 60 * 24 * 7;
-                    var week = Math.floor((new Date() - week0) / msperwk);
+                    var week0str = '2009-06-12';
+                    var week0 = new Date(week0str);
+                    var week = weeksSinceDate(week0str);
                     var retval = [];
                     for (var i=0; i<8; i++, week--) {
                         var url = "http://api.theweek.com/sites/default/files/crosswords/Week" + week + ".puz";
