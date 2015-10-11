@@ -108,89 +108,6 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     self.note = "No completed puzzles";
                     return fromList(database.getPuzzleUrls(database.COMPLETED));
                 }},
-            { title: "Chronicle of Higher Education",
-                func: weekly(function (date) {
-                    return "http://chronicle.com/items/biz/puzzles/" + eightDigitDate(date) + ".puz";
-                }, 5)},
-            { title: "Eugene Sheffer",
-                func: lastTwoWeeks(function (date) {
-                    return "http://puzzles.kingdigital.com/javacontent/clues/sheffer/" +
-                            eightDigitDate(date) + ".txt";
-                }, [0])},
-            { title: "Globe and Mail Canadiana",
-                func: weekly(function (date) {
-                    return "http://v1.theglobeandmail.com/v5/content/puzzles/crossword_canadian/source/can" +
-                            sixDigitDate(date) + "-data.xml";
-                }, 1)},
-            { title: "Globe and Mail Cryptic",
-                func: function () {
-                    var now = new Date();
-                    var n = weeksSinceDate('1968-01-28') * 6 + now.getDay();
-                    var retval = [];
-                    for (var i=0; i<12; i++, n--)
-                        retval.push({ url: "http://www.theglobeandmail.com/static/crosswords/" + n + "crp.xml",
-                                      title: "No. " + n });
-                    return retval;
-                }},
-            { title: "The Guardian Cryptic",
-                func: function () {
-                    var date = new Date();
-                    
-                    var ncr = weeksSinceDate('1930-06-29') * 6 + date.getDay();
-                    if (date.getDay() == 6)
-                        ncr -= 1;
-                    var nev = weeksSinceDate('1946-10-03');
-                    
-                    var retval = [];
-                    for (var i=0; i<14; i++) {
-                        if (date.getDay() == 6) {
-                            retval.push({ url: "http://www.theguardian.com/crosswords/everyman/" + nev + "#gdn",
-                                          title: "Everyman No. " + nev });
-                            nev -= 1;
-                        } else if (date.getDay() == 5) {
-                            retval.push({ url: "http://www.theguardian.com/crosswords/prize/" + ncr + "#gdn",
-                                          title: "Prize No. " + ncr });
-                            ncr -= 1;
-                        } else {
-                            retval.push({ url: "http://www.theguardian.com/crosswords/cryptic/" + ncr + "#gdn",
-                                          title: "Cryptic No. " + ncr });
-                            ncr -= 1;
-                        }
-                        date.setDate(date.getDate() - 1);
-                    }
-                    return retval;
-                }},
-            { title: "The Guardian Quick",
-                func: function () {
-                    var date = new Date();
-                    
-                    var nqu = weeksSinceDate('1970-07-05') * 6 + 1 + date.getDay();
-                    if (date.getDay() == 6)
-                        nqu -= 1;
-                    var nsp = weeksSinceDate('1995-09-23');
-                    var nqc = weeksSinceDate('1999-11-14');
-                    
-                    var retval = [];
-                    for (var i=0; i<14; i++) {
-                        if (date.getDay() != 6) {
-                            retval.push({ url: "http://www.theguardian.com/crosswords/quick/" + nqu + "#gdn",
-                                          title: "Quick No. " + nqu });
-                            nqu -= 1;
-                        }
-                        if (date.getDay() == 6) {
-                            retval.push({ url: "http://www.theguardian.com/crosswords/speedy/" + nsp + "#gdn",
-                                          title: "Speedy No. " + nsp });
-                            nsp -= 1;
-                        }
-                        if (date.getDay() == 0) {
-                            retval.push({ url: "http://www.theguardian.com/crosswords/quiptic/" + nqc + "#gdn",
-                                          title: "Quiptic No. " + nqc });
-                            nqc -= 1;
-                        }
-                        date.setDate(date.getDate() - 1);
-                    }
-                    return retval;
-                }},
             { title: "The Independent's Concise",
                 func: lastTwoWeeks(function (date) {
                     return "http://cdn.games.arkadiumhosted.com/independent/daily-crossword/s_" +
@@ -201,83 +118,11 @@ riot.tag('list-page', '<header class="page"> <h1>Puzzles</h1> <ul class="actions
                     return "http://cdn.games.arkadiumhosted.com/independent/daily-crossword/c_" +
                             sixDigitDate(date) + ".xml";
                 })},
-            { title: "Jonesin' Crosswords",
-                func: weekly(function (date) {
-                    return "http://herbach.dnsalias.com/Jonesin/jz" + sixDigitDate(date) + ".puz";
-                }, 2)},
-            { title: "King Premier",
-                func: weekly(function (date) {
-                    return "http://puzzles.kingdigital.com/javacontent/clues/premier/" +
-                            eightDigitDate(date) + ".txt";
-                }, 0)},
             { title: "LA Times",
                 func: lastTwoWeeks(function (date) {
                     return "http://cdn.games.arkadiumhosted.com/latimes/assets/DailyCrossword/la" +
                             sixDigitDate(date) + ".xml";
                 })},
-            { title: "Newsday",
-                func: lastTwoWeeks(function (date) {
-                    return "http://www.brainsonly.com/servlets-newsday-crossword/newsdaycrossword?date=" +
-                    sixDigitDate(date) + "&fmt=nwd";  // fmt only to help our format detection
-                })},
-            { title: "New York Times Classics",
-                func: function () {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", "http://www.nytimes.com/svc/crosswords/v2/puzzles-for-section-front.json");
-                    xhr.responseType = "text";
-
-
-                    function error(msg) {
-                        self.update({ note: "Could not load puzzle list (" + msg + ")" });
-                    }
-
-                    xhr.onreadystatechange = function(e) {
-                        if (this.readyState != 4 )
-                            return;
-
-                        if (this.status != 200)
-                            return error("Server status: " + this.status);
-
-                        var resp = JSON.parse(this.response);
-                        if (resp.status != "OK")
-                            return error("JSON status: " + resp.status);
-
-                        var puzzles = resp.results.free_puzzles[200].results;
-                        var retval = [];
-                        for (var i=0; i<puzzles.length; i++) {
-                            var date = new Date(puzzles[i].print_date);
-                            date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-                            var url = "http://www.nytimes.com/svc/crosswords/v2/puzzle/daily-" +
-                                        puzzles[i].print_date + ".json";
-                            retval.push({ url: url, title: date.toDateString() });
-                        }
-                        self.update({ puzzles: retval });
-                    }
-                    xhr.send();
-                    
-                    self.note = "Loading list...";
-                    return [];
-                }},
-            { title: "Thomas Joseph",
-                func: lastTwoWeeks(function (date) {
-                    return "http://puzzles.kingdigital.com/javacontent/clues/joseph/" +
-                            eightDigitDate(date) + ".txt";
-                }, [0])},
-            { title: "Universal",
-                func: lastTwoWeeks(function (date) {
-                    return "http://picayune.uclick.com/comics/fcx/data/fcx" +
-                            sixDigitDate(date) + "-data.xml";
-                    })},
-            { title: "USA Today",
-                func: lastTwoWeeks(function (date) {
-                    return "http://picayune.uclick.com/comics/usaon/data/usaon" +
-                            sixDigitDate(date) + "-data.xml";
-                })},
-            { title: "Wall Street Journal",
-                func: lastTwoWeeks(function (date) {
-                    var prefix = (date.getDay() == 6) ? "wsjxwd" : "gnyxwd";
-                    return "http://blogs.wsj.com/applets/" + prefix + eightDigitDate(date) + ".dat";
-                }, [0])},
             { title: "The Week",
                 func: function () {
                     var week0str = '2009-06-12';
