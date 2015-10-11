@@ -36,14 +36,14 @@ Ubuntu device to view and install it from the app store scope.
 ### On Android devices
 
 You should be able to install this
-[APK](https://github.com/rschroll/crosswords/releases/download/0.3.2/crosswords.apk)
+[APK](https://github.com/rschroll/crosswords/releases/download/0.3.3/crosswords.apk)
 on any relatively recent version of Android.  If you have problems,
 please [let us know](#reporting-bugs).
 
 ### On the desktop
 
 Download and extract [this tar
-file](https://github.com/rschroll/crosswords/releases/download/0.3.2/crosswords.tar.gz)
+file](https://github.com/rschroll/crosswords/releases/download/0.3.3/crosswords.tar.gz)
 to a location of your choosing.  The included `crosswords` script will
 open a window with the app loaded.  This script requires Python, GTK,
 and WebKitGTK.
